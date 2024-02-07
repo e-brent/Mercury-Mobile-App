@@ -6,7 +6,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { StyleSheet, Text, View, Button, SafeAreaView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list'; //might be using?? maybe not, still figuring out best way to do forms
 import SegmentedControlTab from "react-native-segmented-control-tab";
-import FontAwesome, { SolidIcons, RegularIcons, BrandIcons } from 'react-native-fontawesome';
+//import FontAwesome, { SolidIcons, RegularIcons, BrandIcons } from 'react-native-fontawesome';
 
 //All lens data
 const lensData = [
@@ -42,6 +42,8 @@ const lensData = [
   {id:'30', name:'Wista Twin 130mm f/5.6', base:['FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8'], spacer:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'], bolts:['30', '30', '30/35W', '30/35W', '30/35W', '30/35W', '30/35W', '35W', '35W', '35W', '35W', '35W', '35W', '35W'], subj_dist:[7.5, 7, 6.5, 6.25, 6, 5.5, 5.5, 5, 5, 4.6, 4.5, 4.5, 4.25,4], f_22:['6.75 - 8.5', '6.25 - 8', '5.75 - 7.25',  '5.75 - 7', '5.5 - 6.75', '5 - 6', '5 - 6', '4.5 - 5.5', '4.5 - 5.5', '4.25 - 5', '4.25 - 4.75', '4.25 - 4.75' , '4 - 4.5', '3.75 - 4.25'], f_16:['6.75 - 8.25', '6.5 - 7.75', '6 - 7', '5.75 - 6.75', '5.5 - 6.5', '5.25 - 6', '5.25 - 6', '4.75 - 5.25', '4.75 - 5.25', '4.25 - 4.75', '4.25 - 4.75',  '4.25 - 4.75', '4 - 4.5', '3.75 - 4.25'], f_8:['7.25 - 8', '6.75 - 7.25', '6.25 - 6.75', '6 - 6.5', '5.75 - 6.25', '5.25 - 5.75', '5.25 - 5.75', '4.75 - 5.25', '4.75 - 5.25', '4.5 - 4.75', '4.4 - 4.6',  '4.4 - 4.6', '4.15 - 4.35', '3.9 - 4.1']},
 ];
 
+const initDOFScreenParams = ['1', 'Apo-Digitar 35mm f/5.6 XL', 'RS0, B6.4', 'none', 'W', 300, '4 - INF', '5.5 - INF', '11 -  INF']
+
 //Dictionary for selecting a lens name from drop down menu
 const lensName = [
   {key:'1', value:'Apo-Digitar 35mm f/5.6 XL'},
@@ -76,6 +78,20 @@ const lensName = [
   {key:'30', value:'Wista Twin 130mm f/5.6'},
 ];
 
+//var lens = "";
+var chosenLensID = 1;
+var chosenLensIndex = 0;
+
+var baseOptions;
+var spacerOptions;
+var boltOptions;
+var subjectDistOptions;
+var fStops;
+var f22DOF;
+var f16DOF;
+var f8DOF;
+
+
 
 const Stack = createNativeStackNavigator();
 
@@ -109,7 +125,7 @@ const HomeScreen = ({navigation}) => {
       <View style={homeStyle.button}>
         <Button 
           title= "Go to DOF calculator"
-          onPress={() => navigation.navigate("DOFScreen")}
+          onPress={() => navigation.navigate("DOFScreen", {lensID: initDOFScreenParams[0], lensName: initDOFScreenParams[0], lensBase: initDOFScreenParams[2], lensSpacer: initDOFScreenParams[3], lensBolt: initDOFScreenParams[4], subjDist: initDOFScreenParams[5], f22: initDOFScreenParams[6], f16: initDOFScreenParams[7], f8: initDOFScreenParams[8]})}
         />
       </View>
     </SafeAreaView>
@@ -122,16 +138,89 @@ const DOFScreen = ({route, navigation}) => {
   //state for segment control to select what to find
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-  //callback function for segment control --> will be used to 
+  //state for drop down lens selection 
+  const [selectedLens, setSelectedLens] = React.useState(route.params.lensName);
+  if(!isNaN(selectedLens)){
+    let index = selectedLens - 1;
+    setSelectedLens(lensData[index].name);
+  }
+
+  //state for drop down lens selection 
+  const [selectedBase, setSelectedBase] = React.useState(route.params.lensBase);
+  if(!isNaN(selectedBase)){
+    let index = selectedBase - 1;
+    setSelectedLens(lensData[index].base);
+  }
+
+  /*
+  if(!isNaN(selectedLens) || !isNaN(selectedBase)){
+    
+
+    if(!isNaN(selectedBase)){
+      let index = selectedBase - 1;
+      setSelectedLens(lensData[index].base);
+    }
+    
+  }
+  */
+
+  console.log(selectedLens);
+  console.log(selectedBase);
+
+  //callback function for segment control --> will be used to update state var
   const handleSingleIndexSelect = (index) => {
     // For single Tab Selection SegmentedControlTab
     setSelectedIndex(index);
   };
 
+  //callback function for lens name dropdown menu --> will be used to set variables for the rest of the menus
+  const handleSelectedLens = (val) => {
 
-  //state for drop down lens selection 
-  const [selected, setSelected] = React.useState("");
-  
+    for(let i = 0; i < 30; i++){
+      if(lensData[i].name.localeCompare(val) == 0){
+
+        chosenLensIndex = i;
+        chosenLensID = i + 1;
+        
+        //may need to change these to be dictionaries :/
+        /*
+        baseOptions = lensData[i].base;
+        spacerOptions = lensData[i].spacer;
+        boltOptions = lensData[i].bolts;
+        subjectDistOptions = lensData[i].subj_dist;
+        fStops = ['f22', 'f16', 'f8'];
+        f22DOF = lensData[i].f_22;
+        f16DOF = lensData[i].f_16;
+        f8DOF = lensData[i].f_8;
+        */
+
+        baseOptions = [];
+        spacerOptions = [];
+        boltOptions = [];
+        subjectDistOptions = [];
+        fStops = ['f22', 'f16', 'f8'];
+        f22DOF = [];
+        f16DOF = [];
+        f8DOF = [];
+
+
+        for(let j = 0; j < lensData[i].base.length; j++){
+
+          let baseKey = j + 1;
+          baseKey = baseKey.toString();
+          //console.log(baseKey);
+
+          let baseArray = lensData[i].base;
+
+          baseOptions[j] = {key: baseKey, value:baseArray[j]};
+
+          //console.log(baseOptions[j]);
+        }
+
+
+      }
+    }
+  }
 
   
   return(
@@ -150,22 +239,54 @@ const DOFScreen = ({route, navigation}) => {
           height: 40,
         }}
         tabStyle={{
-          backgroundColor: 'white',
+          backgroundColor: 'gray',
           borderColor: 'transparent'
         }}
         activeTabStyle={{
-          backgroundColor: 'gray',
+          backgroundColor: 'white',
           borderColor: 'transparent'
         }}
       />
 
+{/*Dropdown menu for selecting which lens is being used*/}
       <Text style={dofStyle.text}>Select lens:</Text>
       <SelectList 
-        setSelected={ (val) => setSelected(val)}
+        setSelected={(val) => setSelectedLens(val)}
         data={lensName}
+        defaultOption={{key: route.params.lensID, value: route.params.lensName}}
         save="value"
-        //searchicon={<FontAwesome name="search" size={20} color={'black'} />}
+        onSelect={handleSelectedLens(selectedLens)}
+        dropdownTextStyles={{color:'white'}}
+        inputStyles={{color:'white'}}
       />
+
+{/*Dropdown menu for selecting which lens base is being used*/}
+{/*
+  <Text style={dofStyle.text}>Select base:</Text>
+      <SelectList
+        setSelected={setSelectedBase}
+        data={baseOptions}
+        defaultOption={{key: '1', value: route.params.lensbase}}
+        save="value"
+        dropdownTextStyles={{color:'white'}}
+        inputStyles={{color:'white'}}
+      />
+*/}
+      
+      
+
+      {/*<Text style={dofStyle.text}>{route.params.lensID}</Text>
+      
+      <Text style={dofStyle.text}>{route.params.lensName}</Text>
+      <Text style={dofStyle.text}>{selectedLens}</Text>
+      <Text style={dofStyle.text}>{selectedIndex}</Text>*/}
+
+      <View style={dofStyle.button}>
+        <Button 
+          title= "Reload DOF"
+          onPress={() => navigation.push("DOFScreen", {lensID: chosenLensID, lensName: selectedLens})}
+        />
+      </View>
 
       <View style={dofStyle.button}>
         <Button 
@@ -173,10 +294,14 @@ const DOFScreen = ({route, navigation}) => {
           onPress={() => navigation.navigate("Home")}
         />
       </View>
-      
+
     </SafeAreaView>
   )
 }
+
+
+
+
 
 
 //Stylesheet for the app home page
