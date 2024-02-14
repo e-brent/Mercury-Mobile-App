@@ -78,6 +78,12 @@ const lensName = [
   {key:'30', value:'Wista Twin 130mm f/5.6'},
 ];
 
+const fStops = [
+  {key:'1', value:'F-22'},
+  {key:'2', value:'F-16'}, 
+  {key:'3', value:'F-8'},
+];
+
 
 var baseArray = [];
 var spacerArray = [];
@@ -109,6 +115,7 @@ var f8Response="";
 
 
 var showResult = false;
+var dofTab = true;
 
 
 const Stack = createNativeStackNavigator();
@@ -143,7 +150,7 @@ const HomeScreen = ({navigation}) => {
       <View style={homeStyle.button}>
         <Button 
           title= "Go to DOF calculator"
-          onPress={() => navigation.navigate("DOFScreen", {lensName: initDOFScreenParams[0], baseName: initDOFScreenParams[1], spacerName: initDOFScreenParams[2], DOFresults: false, boltResult: boltResponse, subjDistResult: subjectDistResponse, f22Result: f22Response, f16Result: f16Response, f8Result: f8Response})}
+          onPress={() => navigation.navigate("DOFScreen", {tab: 0, lensName: initDOFScreenParams[0], baseName: initDOFScreenParams[1], spacerName: initDOFScreenParams[2], DOFresults: false, boltResult: boltResponse, subjDistResult: subjectDistResponse, f22Result: f22Response, f16Result: f16Response, f8Result: f8Response, fStop: 'F-22'})}
         />
       </View>
 
@@ -157,24 +164,31 @@ const HomeScreen = ({navigation}) => {
 const DOFScreen = ({route, navigation}) => {
 
   //state for segment control to select what to find
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(route.params.tab);
 
   //callback function for segment control --> will be used to update state var
   const handleSingleIndexSelect = (index) => {
     setSelectedIndex(index);
+
+    if(selectedIndex != 0){
+      dofTab = true;
+    }
+    else{
+      dofTab = false;
+    }
   };
 
   //state for drop down lens selection 
   const [selectedLens, setSelectedLens] = React.useState(route.params.lensName);
   const [selectedBase, setSelectedBase] = React.useState(route.params.baseName); 
   const [selectedSpacer, setSelectedSpacer] = React.useState(route.params.spacerName);
+  const [selectedFStop, setSelectedFStop] = React.useState(route.params.fStop);
 
   
   //console.log(selectedLens);
 
   //callback function for dropdown menus --> will be used to set variables for the rest of the menus
-  const handleSelections = (lensVal, baseVal, spacerVal) => {
-
+  const handleSelections = (lensVal, baseVal) => {
     for(let i = 0; i < lensData.length; i++){
       if(lensData[i].name.localeCompare(lensVal) == 0){
 
@@ -234,6 +248,7 @@ const DOFScreen = ({route, navigation}) => {
 
   const calculateDOF = () =>{
     let spacerVal = selectedSpacer;
+    showResult = true;
 
     if(spacerVal.localeCompare('none') != 0){
       for(let i = 0; i < spacerOptions.length; i++){
@@ -259,11 +274,13 @@ const DOFScreen = ({route, navigation}) => {
     f16Response = f16Array[overallIndex];
     f8Response = f8Array[overallIndex];
 
-    showResult = true;
 
+    navigation.push("DOFScreen", {tab: selectedIndex, lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer, DOFresults: showResult, boltResult: boltResponse, subjDistResult: subjectDistResponse, f22Result: f22Response, f16Result: f16Response, f8Result: f8Response})
 
-    navigation.push("DOFScreen", {lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer, DOFresults: showResult, boltResult: boltResponse, subjDistResult: subjectDistResponse, f22Result: f22Response, f16Result: f16Response, f8Result: f8Response})
+  }
 
+  const calculateHyperfocus = () =>{
+    
   }
 
   
@@ -318,37 +335,61 @@ const DOFScreen = ({route, navigation}) => {
         data={baseOptions}
         //defaultOption={{key: route.params.baseID, value: route.params.baseName}}
         save="value"
-        onSelect={handleSelections(selectedLens, selectedBase, selectedSpacer)}
+        onSelect={handleSelections(selectedLens, selectedBase)}
         dropdownTextStyles={{color:'white'}}
         inputStyles={{color:'white'}}
       />
 
   {/*Dropdown menu for selecting which spacer is being used*/}
-      <Text style={dofStyle.text}>Select focal spacer:</Text>
-      <SelectList
+      {dofTab && (<Text style={dofStyle.text}>Select focal spacer:</Text>)}
+      {dofTab && (<SelectList
         setSelected={(val) => setSelectedSpacer(val)}
         data={spacerOptions}
         save="value"
-        onSelect={handleSelections(selectedLens, selectedBase, selectedSpacer)}
+        onSelect={handleSelections(selectedLens, selectedBase)}
         dropdownTextStyles={{color:'white'}}
         inputStyles={{color:'white'}}
-      />
+      />)}
 
-      <View style={dofStyle.button}>
-        <Button 
+  {/*Dropdown menu for selesting f-stop for hyperfocus*/}
+      {!dofTab && (<Text style={dofStyle.text}>Select f-stop:</Text>)}
+      {!dofTab && (<SelectList
+        setSelected={(val) => setSelectedFStop(val)}
+        data={fStops}
+        save="value"
+        onSelect={handleSelections(selectedLens, selectedBase)}
+        dropdownTextStyles={{color:'white'}}
+        inputStyles={{color:'white'}}
+      />)}
+
+
+
+
+
+
+      {dofTab && (<View style={dofStyle.button}>
+        {dofTab && (<Button 
           title= "Calculate DOF"
           //onPress={() => navigation.push("DOFScreen", {lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer})}
           onPress={() => calculateDOF()}
-        />
-      </View>
+        />)}
+      </View>)}
+
+      {!dofTab && (<View style={dofStyle.button}>
+        {!dofTab && (<Button 
+          title= "Calculate Hyperfocus"
+          //onPress={() => navigation.push("DOFScreen", {lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer})}
+          onPress={() => calculateHyperfocus()}
+        />)}
+      </View>)}
 
       
-      {route.params.DOFresults && (<Text style={dofStyle.text}></Text>)}
-      {route.params.DOFresults && (<Text style={dofStyle.text}>Bolt: {route.params.boltResult}</Text>)}
-      {route.params.DOFresults && (<Text style={dofStyle.text}>Subject Distance: {route.params.subjDistResult} feet</Text>)}
-      {route.params.DOFresults && (<Text style={dofStyle.text}>F-22 DOF: {route.params.f22Result}</Text>)}
-      {route.params.DOFresults && (<Text style={dofStyle.text}>F-16 DOF: {route.params.f16Result}</Text>)}
-      {route.params.DOFresults && (<Text style={dofStyle.text}>F-8 DOF: {route.params.f8Result}</Text>)}
+      {dofTab && route.params.DOFresults && (<Text style={dofStyle.text}></Text>)}
+      {dofTab && route.params.DOFresults && (<Text style={dofStyle.text}>Bolt: {route.params.boltResult}</Text>)}
+      {dofTab && route.params.DOFresults && (<Text style={dofStyle.text}>Subject Distance: {route.params.subjDistResult} feet</Text>)}
+      {dofTab && route.params.DOFresults && (<Text style={dofStyle.text}>F-22 DOF: {route.params.f22Result}</Text>)}
+      {dofTab && route.params.DOFresults && (<Text style={dofStyle.text}>F-16 DOF: {route.params.f16Result}</Text>)}
+      {dofTab && route.params.DOFresults && (<Text style={dofStyle.text}>F-8 DOF: {route.params.f8Result}</Text>)}
       
 
 
