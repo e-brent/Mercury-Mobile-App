@@ -42,7 +42,7 @@ const lensData = [
   {id:'30', name:'Wista Twin 130mm f/5.6', base:['FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8'], spacer:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'], bolts:['30', '30', '30/35W', '30/35W', '30/35W', '30/35W', '30/35W', '35W', '35W', '35W', '35W', '35W', '35W', '35W'], subj_dist:[7.5, 7, 6.5, 6.25, 6, 5.5, 5.5, 5, 5, 4.6, 4.5, 4.5, 4.25,4], f_22:['6.75 - 8.5', '6.25 - 8', '5.75 - 7.25',  '5.75 - 7', '5.5 - 6.75', '5 - 6', '5 - 6', '4.5 - 5.5', '4.5 - 5.5', '4.25 - 5', '4.25 - 4.75', '4.25 - 4.75' , '4 - 4.5', '3.75 - 4.25'], f_16:['6.75 - 8.25', '6.5 - 7.75', '6 - 7', '5.75 - 6.75', '5.5 - 6.5', '5.25 - 6', '5.25 - 6', '4.75 - 5.25', '4.75 - 5.25', '4.25 - 4.75', '4.25 - 4.75',  '4.25 - 4.75', '4 - 4.5', '3.75 - 4.25'], f_8:['7.25 - 8', '6.75 - 7.25', '6.25 - 6.75', '6 - 6.5', '5.75 - 6.25', '5.25 - 5.75', '5.25 - 5.75', '4.75 - 5.25', '4.75 - 5.25', '4.5 - 4.75', '4.4 - 4.6',  '4.4 - 4.6', '4.15 - 4.35', '3.9 - 4.1']},
 ];
 
-const initDOFScreenParams = ['1', 'Apo-Digitar 35mm f/5.6 XL', 'RS0, B6.4', 'none', 'W', 300, '4 - INF', '5.5 - INF', '11 -  INF']
+const initDOFScreenParams = ['Apo-Digitar 35mm f/5.6 XL', 'RS0, B6.4', 'none', 'W', 300, '4 - INF', '5.5 - INF', '11 -  INF']
 
 //Dictionary for selecting a lens name from drop down menu
 const lensName = [
@@ -78,19 +78,37 @@ const lensName = [
   {key:'30', value:'Wista Twin 130mm f/5.6'},
 ];
 
-//var lens = "";
-var chosenLensID = 1;
-var chosenLensIndex = 0;
+
+var baseArray = [];
+var spacerArray = [];
+
+var boltArray = [];
+var subjDistArray = [];
+var f22Array = [];
+var f16Array = [];
+var f8Array = [];
+
 
 var baseOptions;
 var spacerOptions;
-var boltOptions;
-var subjectDistOptions;
-var fStops;
-var f22DOF;
-var f16DOF;
-var f8DOF;
 
+
+//var boltOptions;
+//var subjectDistOptions;
+//var f22DOF;
+//var f16DOF;
+//var f8DOF;
+
+var overallIndex = 0;
+
+var boltResponse= "";
+var subjectDistResponse="";
+var f22Response="";
+var f16Response="";
+var f8Response="";
+
+
+var showResult = false;
 
 
 const Stack = createNativeStackNavigator();
@@ -125,9 +143,12 @@ const HomeScreen = ({navigation}) => {
       <View style={homeStyle.button}>
         <Button 
           title= "Go to DOF calculator"
-          onPress={() => navigation.navigate("DOFScreen", {lensID: initDOFScreenParams[0], lensName: initDOFScreenParams[0], lensBase: initDOFScreenParams[2], lensSpacer: initDOFScreenParams[3], lensBolt: initDOFScreenParams[4], subjDist: initDOFScreenParams[5], f22: initDOFScreenParams[6], f16: initDOFScreenParams[7], f8: initDOFScreenParams[8]})}
+          onPress={() => navigation.navigate("DOFScreen", {lensName: initDOFScreenParams[0], baseName: initDOFScreenParams[1], spacerName: initDOFScreenParams[2], DOFresults: false, boltResult: boltResponse, subjDistResult: subjectDistResponse, f22Result: f22Response, f16Result: f16Response, f8Result: f8Response})}
         />
       </View>
+
+      {/*console.log("home screen rendered")*/}
+
     </SafeAreaView>
   )
 }
@@ -138,88 +159,111 @@ const DOFScreen = ({route, navigation}) => {
   //state for segment control to select what to find
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-  //state for drop down lens selection 
-  const [selectedLens, setSelectedLens] = React.useState(route.params.lensName);
-  if(!isNaN(selectedLens)){
-    let index = selectedLens - 1;
-    setSelectedLens(lensData[index].name);
-  }
-
-  //state for drop down lens selection 
-  const [selectedBase, setSelectedBase] = React.useState(route.params.lensBase);
-  if(!isNaN(selectedBase)){
-    let index = selectedBase - 1;
-    setSelectedLens(lensData[index].base);
-  }
-
-  /*
-  if(!isNaN(selectedLens) || !isNaN(selectedBase)){
-    
-
-    if(!isNaN(selectedBase)){
-      let index = selectedBase - 1;
-      setSelectedLens(lensData[index].base);
-    }
-    
-  }
-  */
-
-  console.log(selectedLens);
-  console.log(selectedBase);
-
   //callback function for segment control --> will be used to update state var
   const handleSingleIndexSelect = (index) => {
-    // For single Tab Selection SegmentedControlTab
     setSelectedIndex(index);
   };
 
-  //callback function for lens name dropdown menu --> will be used to set variables for the rest of the menus
-  const handleSelectedLens = (val) => {
+  //state for drop down lens selection 
+  const [selectedLens, setSelectedLens] = React.useState(route.params.lensName);
+  const [selectedBase, setSelectedBase] = React.useState(route.params.baseName); 
+  const [selectedSpacer, setSelectedSpacer] = React.useState(route.params.spacerName);
 
-    for(let i = 0; i < 30; i++){
-      if(lensData[i].name.localeCompare(val) == 0){
+  
+  //console.log(selectedLens);
 
-        chosenLensIndex = i;
-        chosenLensID = i + 1;
-        
-        //may need to change these to be dictionaries :/
-        /*
-        baseOptions = lensData[i].base;
-        spacerOptions = lensData[i].spacer;
-        boltOptions = lensData[i].bolts;
-        subjectDistOptions = lensData[i].subj_dist;
-        fStops = ['f22', 'f16', 'f8'];
-        f22DOF = lensData[i].f_22;
-        f16DOF = lensData[i].f_16;
-        f8DOF = lensData[i].f_8;
-        */
+  //callback function for dropdown menus --> will be used to set variables for the rest of the menus
+  const handleSelections = (lensVal, baseVal, spacerVal) => {
+
+    for(let i = 0; i < lensData.length; i++){
+      if(lensData[i].name.localeCompare(lensVal) == 0){
+
+        baseArray = lensData[i].base;
+        spacerArray = lensData[i].spacer;
+
+        boltArray = lensData[i].bolts;
+        subjDistArray = lensData[i].subj_dist;
+        f22Array = lensData[i].f_22;
+        f16Array = lensData[i].f_16;
+        f8Array = lensData[i].f_8;
 
         baseOptions = [];
         spacerOptions = [];
-        boltOptions = [];
-        subjectDistOptions = [];
-        fStops = ['f22', 'f16', 'f8'];
-        f22DOF = [];
-        f16DOF = [];
-        f8DOF = [];
 
+        for(let j = 0; j < baseArray.length; j++){    //using base array becuase it's the one I made first, but all of the arrays should be the same length so the choice is arbitrary
 
-        for(let j = 0; j < lensData[i].base.length; j++){
-
-          let baseKey = j + 1;
+          //next key for base key/value pairs
+          let baseKey = baseOptions.length + 1;
           baseKey = baseKey.toString();
           //console.log(baseKey);
 
-          let baseArray = lensData[i].base;
+          //next key for spacer key/value pairs
+          let spacerKey = spacerOptions.length + 1;
+          spacerKey = spacerKey.toString();
 
-          baseOptions[j] = {key: baseKey, value:baseArray[j]};
 
-          //console.log(baseOptions[j]);
+          let validBaseVal = true;
+          let validSpacerVal = true;
+
+          for (let k = 0; k < baseOptions.length; k++){
+            if(baseOptions[k].value == baseArray[j]){
+              validBaseVal = false;
+              break;
+            }
+          }
+
+          if(baseArray[j].localeCompare(baseVal) != 0){
+            validSpacerVal = false;
+          }
+
+          if(validBaseVal){
+            baseOptions.push({key: baseKey, value: baseArray[j]});
+          }
+
+          if(validSpacerVal){
+            spacerOptions.push({key: spacerKey, value: spacerArray[j]});
+          }
+
         }
-
 
       }
     }
+    
+  }
+
+
+  const calculateDOF = () =>{
+    let spacerVal = selectedSpacer;
+
+    if(spacerVal.localeCompare('none') != 0){
+      for(let i = 0; i < spacerOptions.length; i++){
+        if(spacerOptions[i].value.localeCompare(spacerVal) == 0){
+          overallIndex = i;
+          break;
+        }
+      }
+    }
+    else {
+      for(let i = 0; i < baseOptions.length; i++){
+        if(baseOptions[i].value.localeCompare(baseVal) == 0){
+          overallIndex = i;
+          break;
+        }
+      }
+    }
+
+    
+    boltResponse = boltArray[overallIndex];
+    subjectDistResponse = subjDistArray[overallIndex];
+    f22Response = f22Array[overallIndex];
+    f16Response = f16Array[overallIndex];
+    f8Response = f8Array[overallIndex];
+
+    showResult = true;
+
+
+    navigation.push("DOFScreen", {lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer, DOFresults: showResult, boltResult: boltResponse, subjDistResult: subjectDistResponse, f22Result: f22Response, f16Result: f16Response, f8Result: f8Response})
+
   }
 
   
@@ -231,7 +275,7 @@ const DOFScreen = ({route, navigation}) => {
 
       {/*Tabs for selecting what fields will be shown based on what the desired calculation is*/}
       <SegmentedControlTab
-        values={['Calculate depth of field', 'Find f-stop']}
+        values={['Depth of Field', 'Hyperfocus']}
         selectedIndex={selectedIndex}
         onTabPress={handleSingleIndexSelect}
         tabsContainerStyle={{
@@ -240,11 +284,18 @@ const DOFScreen = ({route, navigation}) => {
         }}
         tabStyle={{
           backgroundColor: 'gray',
-          borderColor: 'transparent'
+          borderColor: 'black'
+        }}
+        tabTextStyle={{
+          color: 'white'
         }}
         activeTabStyle={{
           backgroundColor: 'white',
-          borderColor: 'transparent'
+          borderColor: 'white'
+        
+        }}
+        activeTabTextStyle={{
+          color: 'black'
         }}
       />
 
@@ -253,40 +304,53 @@ const DOFScreen = ({route, navigation}) => {
       <SelectList 
         setSelected={(val) => setSelectedLens(val)}
         data={lensName}
-        defaultOption={{key: route.params.lensID, value: route.params.lensName}}
+        //defaultOption={{key: route.params.lensID, value: route.params.lensName}}
         save="value"
-        onSelect={handleSelectedLens(selectedLens)}
+        onSelect={handleSelections(selectedLens, selectedBase, selectedSpacer)}
         dropdownTextStyles={{color:'white'}}
         inputStyles={{color:'white'}}
       />
 
-{/*Dropdown menu for selecting which lens base is being used*/}
-{/*
-  <Text style={dofStyle.text}>Select base:</Text>
-      <SelectList
-        setSelected={setSelectedBase}
+{/*Dropdown menu for selecting which base is being used*/}
+      <Text style={dofStyle.text}>Select base:</Text>
+      <SelectList 
+        setSelected={(val) => setSelectedBase(val)}
         data={baseOptions}
-        defaultOption={{key: '1', value: route.params.lensbase}}
+        //defaultOption={{key: route.params.baseID, value: route.params.baseName}}
         save="value"
+        onSelect={handleSelections(selectedLens, selectedBase, selectedSpacer)}
         dropdownTextStyles={{color:'white'}}
         inputStyles={{color:'white'}}
       />
-*/}
-      
-      
 
-      {/*<Text style={dofStyle.text}>{route.params.lensID}</Text>
-      
-      <Text style={dofStyle.text}>{route.params.lensName}</Text>
-      <Text style={dofStyle.text}>{selectedLens}</Text>
-      <Text style={dofStyle.text}>{selectedIndex}</Text>*/}
+  {/*Dropdown menu for selecting which spacer is being used*/}
+      <Text style={dofStyle.text}>Select focal spacer:</Text>
+      <SelectList
+        setSelected={(val) => setSelectedSpacer(val)}
+        data={spacerOptions}
+        save="value"
+        onSelect={handleSelections(selectedLens, selectedBase, selectedSpacer)}
+        dropdownTextStyles={{color:'white'}}
+        inputStyles={{color:'white'}}
+      />
 
       <View style={dofStyle.button}>
         <Button 
-          title= "Reload DOF"
-          onPress={() => navigation.push("DOFScreen", {lensID: chosenLensID, lensName: selectedLens})}
+          title= "Calculate DOF"
+          //onPress={() => navigation.push("DOFScreen", {lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer})}
+          onPress={() => calculateDOF()}
         />
       </View>
+
+      
+      {route.params.DOFresults && (<Text style={dofStyle.text}></Text>)}
+      {route.params.DOFresults && (<Text style={dofStyle.text}>Bolt: {route.params.boltResult}</Text>)}
+      {route.params.DOFresults && (<Text style={dofStyle.text}>Subject Distance: {route.params.subjDistResult} feet</Text>)}
+      {route.params.DOFresults && (<Text style={dofStyle.text}>F-22 DOF: {route.params.f22Result}</Text>)}
+      {route.params.DOFresults && (<Text style={dofStyle.text}>F-16 DOF: {route.params.f16Result}</Text>)}
+      {route.params.DOFresults && (<Text style={dofStyle.text}>F-8 DOF: {route.params.f8Result}</Text>)}
+      
+
 
       <View style={dofStyle.button}>
         <Button 
@@ -294,13 +358,9 @@ const DOFScreen = ({route, navigation}) => {
           onPress={() => navigation.navigate("Home")}
         />
       </View>
-
     </SafeAreaView>
   )
 }
-
-
-
 
 
 
