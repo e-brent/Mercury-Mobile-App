@@ -2,11 +2,12 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-//import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, SafeAreaView, Image} from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list'; //might be using?? maybe not, still figuring out best way to do forms
 import SegmentedControlTab from "react-native-segmented-control-tab";
-//import FontAwesome, { SolidIcons, RegularIcons, BrandIcons } from 'react-native-fontawesome';
+
+import ReciprocityScreen from './screens/reciprocityCalculator';
+
 
 //All lens data
 const lensData = [
@@ -144,6 +145,11 @@ const App = () => {
           //options={{ headerShown: false}} 
         /> 
 
+        <Stack.Screen
+          name="ReciprocityScreen"
+          component={ReciprocityScreen}
+        />
+
         {/* can add more pages here as they're made */}
 
       </Stack.Navigator>
@@ -160,6 +166,12 @@ const HeaderLogo = () => {
   )
 }
 
+const Menu = () => {
+  return (
+    <Text></Text>
+  )
+}
+
 // Home screen of app
 const HomeScreen = ({navigation}) => {
   return(
@@ -168,7 +180,21 @@ const HomeScreen = ({navigation}) => {
       <View style={homeStyle.button}>
         <Button 
           title= "Depth of field calculator"
-          onPress={() => navigation.navigate("DOFScreen", {tab: 0, lensName: initDOFScreenParams[0], baseName: initDOFScreenParams[1], spacerName: initDOFScreenParams[2], DOFresults: false, boltResult: boltResponse, subjDistResult: subjectDistResponse, f22Result: f22Response, f16Result: f16Response, f8Result: f8Response, fStop: 'F-22'})}
+          onPress={() => navigation.navigate("DOFScreen", {tab: 0, lensName: initDOFScreenParams[0], baseName: initDOFScreenParams[1], spacerName: initDOFScreenParams[2], DOFResults: false})}
+        />
+      </View>
+
+      <View style={homeStyle.button}>
+        <Button 
+          title= "Hyperfocal calculator"
+          onPress={() => navigation.navigate("DOFScreen", {tab: 1, lensName: initDOFScreenParams[0], hyperfocalResults: false, fStop: 'F-22'})}
+        />
+      </View>
+
+      <View style={homeStyle.button}>
+        <Button 
+          title= "Reciprocity calculator"
+          onPress={() => navigation.navigate("ReciprocityScreen")}
         />
       </View>
 
@@ -293,7 +319,7 @@ const DOFScreen = ({route, navigation}) => {
 
 
   //KEEP WORKING HERE NEXT TIME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  const calculateHyperfocus = () =>{
+  const calculateHyperfocal = () =>{
     showHyperfocalResult = true;
     showDOFResult = false;
 
@@ -440,7 +466,7 @@ const DOFScreen = ({route, navigation}) => {
         {selectedIndex==1 && (<Button 
           title= "Calculate Hyperfocal"
           //onPress={() => navigation.push("DOFScreen", {lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer})}
-          onPress={() => calculateHyperfocus()}
+          onPress={() => calculateHyperfocal()}
         />)}
       </View>)}
 
