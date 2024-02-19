@@ -3,7 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 //import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, Button, SafeAreaView, Image} from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list'; //might be using?? maybe not, still figuring out best way to do forms
 import SegmentedControlTab from "react-native-segmented-control-tab";
 //import FontAwesome, { SolidIcons, RegularIcons, BrandIcons } from 'react-native-fontawesome';
@@ -38,8 +38,8 @@ const lensData = [
   {id:'26', name:'Symmar-S 100mm f/5.6', base:['BASE 34', 'BASE 34', 'BASE 34', 'BASE 34', 'BASE 34', 'BASE 34', 'BASE 34', 'BASE 34', 'BASE 34', 'BASE 34', 'BASE 34', 'BASE 34'], spacer:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'], bolts:['55', '55', '55', '55', '55', '55', '55', '60W', '60W', '60W', '60W', '60W'], subj_dist:['INF', 200, 60, 40, 28, 20, 15, 10, 9.5, 8, 7, 6.5], f_22:['32.25 - INF', '27.75 - INF', '21 - INF',  '18 - INF', '15 - 198.5', '12.5 - 51.5', '10.5 - 27.5', '7.75 - 14.25', '7.5 - 13.5', '6.5 - 10.5', '5.75 - 8.75', '5.5 - 8'], f_16:['45.5 - INF', '37.25 - INF', '26 - INF', '21.5 - 309', '17.5 - 71.5', '14 - 35.25', '11.5 - 22', '8.25 - 12.75', '8 - 12', '6.75 - 9.5', '6.25 - 8.25',  '5.75 - 7.5'], f_8:['91 - INF', '63 - INF', '36.5 - 174', '28 - 71', '21.5 - 40.5', '16.5 - 25.5', '13 - 18', '9 - 11.25', '8.75 - 10.5', '7.5 - 8.75', '6.5 - 7.5',  '6 - 7']},
   {id:'27', name:'Trioptar 103mm f/4.5', base:['BASE 30', 'BASE 30', 'BASE 30', 'BASE 30', 'BASE 30', 'BASE 30', 'BASE 30', 'BASE 30', 'BASE 30', 'BASE 30', 'BASE 30', 'BASE 30', 'BASE 30', 'BASE 30'], spacer:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'], bolts:['50', '50/55W', '50/55W', '55W', '55W', '55W', '55W', '55W', '55W/55', '55W/55', '55W/55', '55', '55', '60W'], subj_dist:[60, 26, 20, 15, 13, 12, 10.5, 9.5, 8, 7.5, 6.75, 6, 5, 4.5], f_22:['22 - INF', '15 - 104.25', '12.75 - 47',  '10.5 - 26.25', '9.5 - 20.5', '9 - 18.25', '8 - 15', '7.5 - 13', '6.5 - 10.25', '6.25 - 9.5', '5.75 - 8.25', '5.25 - 7.25' , '4.5 - 5.75', '4 - 5'], f_16:['27 - INF', '17 - 55.5', '14.25 - 33.75', '11.5 - 21.5', '10.25 - 17.5', '9.75 - 15.75', '8.75 - 13.25', '8 - 11.75', '7 - 9.5', '6.5 - 8.75', '6 - 7.75',  '5.5 - 6.75', '4.5 - 5.5', '4.25 - 5'], f_8:['37 - 157', '20.5 - 35.5', '16.5 - 25.25', '13 - 17.75', '11.5 - 15', '10.75 - 13.5', '9.5 - 11.75', '8.75 - 10.5', '7.5 - 8.75', '7 - 8', '6.25 - 7.25',  '5.75 - 6.25', '4.75 - 5.25', '4.25 - 4.75']},
   {id:'28', name:'Apo-Symmar 120mm f/5.6', base:['FE40 + B13', 'FE40 + B13', 'FE40 + B13', 'FE40 + B13', 'FE40 + B13', 'FE40 + B13', 'FE40 + B13', 'FE40 + B13', 'FE40 + B13', 'FE40 + B13', 'FE40 + B13', 'FE40 + B13', 'FE40 + B13', 'FE40 + B13'], spacer:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'], bolts:['35', '35', '35', '35', '35', '35', '35', '35', 'none', 'none', 'none', 'none', 'none', 'none'], subj_dist:['INF', 75, 55, 35, 25, 22, 18, 15, 12, 11, 10, 9, 8, 7], f_22:['46.5 - INF', '28.75 - INF', '25.25 - INF',  '20 - 137.75', '16.25 - 53.25', '15 - 41.25', '13 - 29', '11.5 - 22', '9.5 - 16', '9 - 14.25', '8.25 - 12.5', '7.5 - 11' , '7 - 9.5', '6.25 - 8.25'], f_16:['65.5 - INF', '35 - INF', '30 - 328', '23 - 74', '18.25 - 40', '16.5 - 32.75', '14.25 - 24.5', '12.25 - 19.25', '10.25 - 14.5', '9.5 - 13', '8.75 - 11.75',  '8 - 10.5', '7.25 - 9', '6.5 - 7.75'], f_8:['131.5 - INF', '48 - 174', '38.75 - 94.25', '27.75 - 47.5', '21 - 31', '19 - 26.25', '16 - 20.75', '13.5 - 17', '11 - 13.25', '10.25 - 12', '9.5 - 10.75',  '8.5 - 9.75', '7.5 - 8.5', '6.75 - 7.25']},
-  {id:'29', name:'Wista Twin 130mm f/5.6', base:['BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43'], spacer:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'], bolts:['70mm', '70mm', '70mm', '70mm', '70mm', '70mm', '70mm', '70mm', '70mm', '70mm', '70mm', '70mm', '70mm', '70mm'], subj_dist:[200, 100, 75, 40, 35, 25, 20, 18, 14, 12, 11, 10, 9, 7], f_22:['43 - INF', '35.5 - INF', '31.75 - INF',  '23.25 - 146.5', '12.5 - 96', '17.25 - 45.5', '14.75 - 31.25', '13.5 - 26.5', '11.25 - 18.5', '10 - 15.25', '9.25 - 13.75', '8.5 - 12' , '7.75 - 10.75', '6.25 - 8'], f_16:['55.75 - INF', '43.5 - INF', '38 - 2372', '26.5 - 82.25', '24.25 - 63.5', '19 - 36.75', '16 - 26.75', '14.75 - 23.25', '12 - 17', '10.5 - 14', '9.75 - 12.75',  '9 - 11.5', '8 - 10', '6.5 - 7.75'], f_8:['87 - INF', '60.75 - 283', '50.5 - 145.5', '31.75 - 53.75', '28.5 - 45', '21.5 - 29.75', '17.75 - 23', '16.25 - 20.25', '13 - 15.5', '11.25 - 13', '10.25 - 11.75',  '9.5 - 10.75', '8.5 - 9.5', '6.75 - 7.25']},
-  {id:'30', name:'Wista Twin 130mm f/5.6', base:['FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8'], spacer:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'], bolts:['30', '30', '30/35W', '30/35W', '30/35W', '30/35W', '30/35W', '35W', '35W', '35W', '35W', '35W', '35W', '35W'], subj_dist:[7.5, 7, 6.5, 6.25, 6, 5.5, 5.5, 5, 5, 4.6, 4.5, 4.5, 4.25,4], f_22:['6.75 - 8.5', '6.25 - 8', '5.75 - 7.25',  '5.75 - 7', '5.5 - 6.75', '5 - 6', '5 - 6', '4.5 - 5.5', '4.5 - 5.5', '4.25 - 5', '4.25 - 4.75', '4.25 - 4.75' , '4 - 4.5', '3.75 - 4.25'], f_16:['6.75 - 8.25', '6.5 - 7.75', '6 - 7', '5.75 - 6.75', '5.5 - 6.5', '5.25 - 6', '5.25 - 6', '4.75 - 5.25', '4.75 - 5.25', '4.25 - 4.75', '4.25 - 4.75',  '4.25 - 4.75', '4 - 4.5', '3.75 - 4.25'], f_8:['7.25 - 8', '6.75 - 7.25', '6.25 - 6.75', '6 - 6.5', '5.75 - 6.25', '5.25 - 5.75', '5.25 - 5.75', '4.75 - 5.25', '4.75 - 5.25', '4.5 - 4.75', '4.4 - 4.6',  '4.4 - 4.6', '4.15 - 4.35', '3.9 - 4.1']},
+  {id:'29', name:'Wista Twin 130mm f/5.6 (BASE 43)', base:['BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43', 'BASE 43'], spacer:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'], bolts:['70mm', '70mm', '70mm', '70mm', '70mm', '70mm', '70mm', '70mm', '70mm', '70mm', '70mm', '70mm', '70mm', '70mm'], subj_dist:[200, 100, 75, 40, 35, 25, 20, 18, 14, 12, 11, 10, 9, 7], f_22:['43 - INF', '35.5 - INF', '31.75 - INF',  '23.25 - 146.5', '12.5 - 96', '17.25 - 45.5', '14.75 - 31.25', '13.5 - 26.5', '11.25 - 18.5', '10 - 15.25', '9.25 - 13.75', '8.5 - 12' , '7.75 - 10.75', '6.25 - 8'], f_16:['55.75 - INF', '43.5 - INF', '38 - 2372', '26.5 - 82.25', '24.25 - 63.5', '19 - 36.75', '16 - 26.75', '14.75 - 23.25', '12 - 17', '10.5 - 14', '9.75 - 12.75',  '9 - 11.5', '8 - 10', '6.5 - 7.75'], f_8:['87 - INF', '60.75 - 283', '50.5 - 145.5', '31.75 - 53.75', '28.5 - 45', '21.5 - 29.75', '17.75 - 23', '16.25 - 20.25', '13 - 15.5', '11.25 - 13', '10.25 - 11.75',  '9.5 - 10.75', '8.5 - 9.5', '6.75 - 7.25']},
+  {id:'30', name:'Wista Twin 130mm f/5.6 (FE40 + B8)', base:['FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8'], spacer:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'], bolts:['30', '30', '30/35W', '30/35W', '30/35W', '30/35W', '30/35W', '35W', '35W', '35W', '35W', '35W', '35W', '35W'], subj_dist:[7.5, 7, 6.5, 6.25, 6, 5.5, 5.5, 5, 5, 4.6, 4.5, 4.5, 4.25,4], f_22:['6.75 - 8.5', '6.25 - 8', '5.75 - 7.25',  '5.75 - 7', '5.5 - 6.75', '5 - 6', '5 - 6', '4.5 - 5.5', '4.5 - 5.5', '4.25 - 5', '4.25 - 4.75', '4.25 - 4.75' , '4 - 4.5', '3.75 - 4.25'], f_16:['6.75 - 8.25', '6.5 - 7.75', '6 - 7', '5.75 - 6.75', '5.5 - 6.5', '5.25 - 6', '5.25 - 6', '4.75 - 5.25', '4.75 - 5.25', '4.25 - 4.75', '4.25 - 4.75',  '4.25 - 4.75', '4 - 4.5', '3.75 - 4.25'], f_8:['7.25 - 8', '6.75 - 7.25', '6.25 - 6.75', '6 - 6.5', '5.75 - 6.25', '5.25 - 5.75', '5.25 - 5.75', '4.75 - 5.25', '4.75 - 5.25', '4.5 - 4.75', '4.4 - 4.6',  '4.4 - 4.6', '4.15 - 4.35', '3.9 - 4.1']},
 ];
 
 const initDOFScreenParams = ['Apo-Digitar 35mm f/5.6 XL', 'RS0, B6.4', 'none', 'W', 300, '4 - INF', '5.5 - INF', '11 -  INF']
@@ -114,8 +114,8 @@ var f16Response="";
 var f8Response="";
 
 
-var showResult = false;
-var dofTab = true;
+var showDOFResult = false;
+var showHyperfocalResult = false;
 
 
 const Stack = createNativeStackNavigator();
@@ -123,16 +123,25 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator 
+        initialRouteName="Home"
+        screenOptions={{
+          headerTitle: () => <HeaderLogo/>,
+          headerStyle: { 
+            backgroundColor: '#000000',
+            
+          }
+        }}
+      >
         <Stack.Screen 
           name="Home"  
           component={HomeScreen} 
-          options={{ headerShown: false}}
+          //options={{ headerShown: false}}
         />
         <Stack.Screen 
           name="DOFScreen"  
           component={DOFScreen}
-          options={{ headerShown: false}} 
+          //options={{ headerShown: false}} 
         /> 
 
         {/* can add more pages here as they're made */}
@@ -142,6 +151,15 @@ const App = () => {
   );
 }
 
+const HeaderLogo = () => {
+  return (
+    <Image
+      style={{ width: 45, height: 45}}
+      source={require('./images/mercuryLogoWhiteOnBlack.png')}
+    />
+  )
+}
+
 // Home screen of app
 const HomeScreen = ({navigation}) => {
   return(
@@ -149,7 +167,7 @@ const HomeScreen = ({navigation}) => {
       <Text style={homeStyle.text}>Welcome to Mercury Works!</Text>
       <View style={homeStyle.button}>
         <Button 
-          title= "Go to DOF calculator"
+          title= "Depth of field calculator"
           onPress={() => navigation.navigate("DOFScreen", {tab: 0, lensName: initDOFScreenParams[0], baseName: initDOFScreenParams[1], spacerName: initDOFScreenParams[2], DOFresults: false, boltResult: boltResponse, subjDistResult: subjectDistResponse, f22Result: f22Response, f16Result: f16Response, f8Result: f8Response, fStop: 'F-22'})}
         />
       </View>
@@ -169,13 +187,6 @@ const DOFScreen = ({route, navigation}) => {
   //callback function for segment control --> will be used to update state var
   const handleSingleIndexSelect = (index) => {
     setSelectedIndex(index);
-
-    if(selectedIndex != 0){
-      dofTab = true;
-    }
-    else{
-      dofTab = false;
-    }
   };
 
   //state for drop down lens selection 
@@ -248,7 +259,8 @@ const DOFScreen = ({route, navigation}) => {
 
   const calculateDOF = () =>{
     let spacerVal = selectedSpacer;
-    showResult = true;
+    showDOFResult = true;
+    showHyperfocalResult = false;
 
     if(spacerVal.localeCompare('none') != 0){
       for(let i = 0; i < spacerOptions.length; i++){
@@ -275,12 +287,63 @@ const DOFScreen = ({route, navigation}) => {
     f8Response = f8Array[overallIndex];
 
 
-    navigation.push("DOFScreen", {tab: selectedIndex, lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer, DOFresults: showResult, boltResult: boltResponse, subjDistResult: subjectDistResponse, f22Result: f22Response, f16Result: f16Response, f8Result: f8Response})
+    navigation.push("DOFScreen", {tab: selectedIndex, lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer, DOFResults: showDOFResult, boltResult: boltResponse, subjDistResult: subjectDistResponse, f22Result: f22Response, f16Result: f16Response, f8Result: f8Response})
 
   }
 
+
+  //KEEP WORKING HERE NEXT TIME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   const calculateHyperfocus = () =>{
-    
+    showHyperfocalResult = true;
+    showDOFResult = false;
+
+    let lensVal = selectedLens;
+    let fStopVal = selectedFStop;
+    let fStopArray = [];
+    let spacerArray = [];
+    let baseArray = [];
+
+    for(let i = 0; i < lensData.length; i++){
+      if(lensData[i].name.localeCompare(lensVal) == 0){
+
+        spacerArray = lensData[i].spacer;
+        base = lensData[i].base;
+
+        if(fStopVal.localeCompare('F-22')){
+          fStopArray = lensData[i].f_22;
+        }
+        else if(fStopVal.localeCompare('F-16')){
+          fStopArray = lensData[i].f_16; 
+        }
+        else {
+          fStopArray = lensData[i].f_8;
+        }
+      }
+    }
+
+    //console.log(fStopArray);
+
+    let minVal = 100000;
+    let hyperfocalSpacer = '';
+
+    for(let i = 0; i < fStopArray.length; i++){
+      if(fStopArray[i].includes('INF')){
+        //console.log(fStopArray[i]);
+
+        let focalRangeArray = fStopArray[i].split(' - ');
+        let focalMin = parseInt(focalRangeArray[0]);
+        //console.log(focalMin);
+
+        if(focalMin < minVal){
+          minVal = fStopArray[i];
+          hyperfocalSpacer = spacerArray[i];
+        }
+      }
+    }
+
+    //console.log(minVal + ' ' + hyperfocalSpacer);
+
+    navigation.push("DOFScreen", {tab: selectedIndex, lensName: selectedLens, baseName: selectedBase, hyperfocalResults: showHyperfocalResult, hyperfocalVal: minVal, hyperfocalSpacer: hyperfocalSpacer})
   }
 
   
@@ -288,11 +351,13 @@ const DOFScreen = ({route, navigation}) => {
     <SafeAreaView style={dofStyle.container}>
 
       {/*page title*/}
+      <Text></Text>
+      <Text></Text>
       <Text style={dofStyle.text}>DOF Calculator</Text>
 
       {/*Tabs for selecting what fields will be shown based on what the desired calculation is*/}
       <SegmentedControlTab
-        values={['Depth of Field', 'Hyperfocus']}
+        values={['Depth of Field', 'Hyperfocal']}
         selectedIndex={selectedIndex}
         onTabPress={handleSingleIndexSelect}
         tabsContainerStyle={{
@@ -329,8 +394,8 @@ const DOFScreen = ({route, navigation}) => {
       />
 
 {/*Dropdown menu for selecting which base is being used*/}
-      <Text style={dofStyle.text}>Select base:</Text>
-      <SelectList 
+      {selectedIndex==0 && (<Text style={dofStyle.text}>Select base:</Text>)}
+      {selectedIndex==0 && (<SelectList 
         setSelected={(val) => setSelectedBase(val)}
         data={baseOptions}
         //defaultOption={{key: route.params.baseID, value: route.params.baseName}}
@@ -338,11 +403,11 @@ const DOFScreen = ({route, navigation}) => {
         onSelect={handleSelections(selectedLens, selectedBase)}
         dropdownTextStyles={{color:'white'}}
         inputStyles={{color:'white'}}
-      />
+      />)}
 
   {/*Dropdown menu for selecting which spacer is being used*/}
-      {dofTab && (<Text style={dofStyle.text}>Select focal spacer:</Text>)}
-      {dofTab && (<SelectList
+      {selectedIndex==0 && (<Text style={dofStyle.text}>Select focal spacer:</Text>)}
+      {selectedIndex==0 && (<SelectList
         setSelected={(val) => setSelectedSpacer(val)}
         data={spacerOptions}
         save="value"
@@ -352,8 +417,8 @@ const DOFScreen = ({route, navigation}) => {
       />)}
 
   {/*Dropdown menu for selesting f-stop for hyperfocus*/}
-      {!dofTab && (<Text style={dofStyle.text}>Select f-stop:</Text>)}
-      {!dofTab && (<SelectList
+      {selectedIndex==1 && (<Text style={dofStyle.text}>Select f-stop:</Text>)}
+      {selectedIndex==1 && (<SelectList
         setSelected={(val) => setSelectedFStop(val)}
         data={fStops}
         save="value"
@@ -363,34 +428,34 @@ const DOFScreen = ({route, navigation}) => {
       />)}
 
 
-
-
-
-
-      {dofTab && (<View style={dofStyle.button}>
-        {dofTab && (<Button 
+      {selectedIndex==0 && (<View style={dofStyle.button}>
+        {selectedIndex==0 && (<Button 
           title= "Calculate DOF"
           //onPress={() => navigation.push("DOFScreen", {lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer})}
           onPress={() => calculateDOF()}
         />)}
       </View>)}
 
-      {!dofTab && (<View style={dofStyle.button}>
-        {!dofTab && (<Button 
-          title= "Calculate Hyperfocus"
+      {selectedIndex==1 && (<View style={dofStyle.button}>
+        {selectedIndex==1 && (<Button 
+          title= "Calculate Hyperfocal"
           //onPress={() => navigation.push("DOFScreen", {lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer})}
           onPress={() => calculateHyperfocus()}
         />)}
       </View>)}
 
       
-      {dofTab && route.params.DOFresults && (<Text style={dofStyle.text}></Text>)}
-      {dofTab && route.params.DOFresults && (<Text style={dofStyle.text}>Bolt: {route.params.boltResult}</Text>)}
-      {dofTab && route.params.DOFresults && (<Text style={dofStyle.text}>Subject Distance: {route.params.subjDistResult} feet</Text>)}
-      {dofTab && route.params.DOFresults && (<Text style={dofStyle.text}>F-22 DOF: {route.params.f22Result}</Text>)}
-      {dofTab && route.params.DOFresults && (<Text style={dofStyle.text}>F-16 DOF: {route.params.f16Result}</Text>)}
-      {dofTab && route.params.DOFresults && (<Text style={dofStyle.text}>F-8 DOF: {route.params.f8Result}</Text>)}
-      
+      {selectedIndex==0 && route.params.DOFResults && (<Text style={dofStyle.text}></Text>)}
+      {selectedIndex==0 && route.params.DOFResults && (<Text style={dofStyle.text}>Bolt: {route.params.boltResult}</Text>)}
+      {selectedIndex==0 && route.params.DOFResults && (<Text style={dofStyle.text}>Subject Distance: {route.params.subjDistResult} feet</Text>)}
+      {selectedIndex==0 && route.params.DOFResults && (<Text style={dofStyle.text}>F-22 DOF: {route.params.f22Result}</Text>)}
+      {selectedIndex==0 && route.params.DOFResults && (<Text style={dofStyle.text}>F-16 DOF: {route.params.f16Result}</Text>)}
+      {selectedIndex==0 && route.params.DOFResults && (<Text style={dofStyle.text}>F-8 DOF: {route.params.f8Result}</Text>)}
+
+
+      {selectedIndex==1 && route.params.hyperfocalResults && (<Text style={dofStyle.text}></Text>)}
+      {selectedIndex==1 && route.params.hyperfocalResults && (<Text style={dofStyle.text}>Hyperfocal Distance: {route.params.hyperfocalVal}</Text>)}
+      {selectedIndex==1 && route.params.hyperfocalResults && (<Text style={dofStyle.text}>Spacer: {route.params.hyperfocalSpacer}</Text>)}
 
 
       <View style={dofStyle.button}>
