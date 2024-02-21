@@ -194,7 +194,7 @@ const HomeScreen = ({navigation}) => {
       <View style={homeStyle.button}>
         <Button 
           title= "Reciprocity calculator"
-          onPress={() => navigation.navigate("ReciprocityScreen")}
+          onPress={() => navigation.navigate("ReciprocityScreen", {showResults: false, playTimer: false})}
         />
       </View>
 
