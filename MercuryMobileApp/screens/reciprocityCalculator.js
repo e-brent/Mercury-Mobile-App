@@ -114,26 +114,11 @@ const ReciprocityScreen = () => {
           </View>
             
 
-            {result && (<Text style={reciprocityStyle.text}>Reciprocity time: {reciprocityTime} seconds</Text>)}
-
-            {result && (<View style={reciprocityStyle.button}>
-              {result && (<Button
-                title="Show/hide timer"
-                onPress = {() => {
-                  if(timer == false){
-                    showTimer(true)
-                  }
-                  else {
-                    showTimer(false)
-                    setPlayTimer(false)
-                  }
-                  }}
-              />)}
-            </View>)}
+            {result && (<Text style={reciprocityStyle.timerText}>Reciprocity time: {reciprocityTime} seconds</Text>)}
 
 
             <View style = {reciprocityStyle.timer}>
-              { timer && (<CountdownCircleTimer
+              { result && (<CountdownCircleTimer
                 key = {key}
                 isPlaying = {playTimer}
                 duration = {timerTime}
@@ -141,10 +126,10 @@ const ReciprocityScreen = () => {
                 //colorsTime = {[ reciprocityTime, 0 ]}
                 trailColor = '#FF2D00'
               >
-                {({ remainingTime }) => <Text style={reciprocityStyle.timerText}>{remainingTime}</Text>}
+                {({ remainingTime }) => <Text style={reciprocityStyle.insideTimerText}>{remainingTime}</Text>}
               </CountdownCircleTimer>)}
 
-              {timer && (<Button
+              { result && (<Button
                 title="Start timer"
                 onPress = {() => {
                   setKey(prevKey => prevKey + 1);
@@ -166,6 +151,7 @@ const reciprocityStyle = StyleSheet.create({
     contentBlock: {
       flex: .2,
       flexDirection: 'row',
+      marginTop: 10,
     },
     textTitle: {
       color: 'white',
@@ -182,14 +168,21 @@ const reciprocityStyle = StyleSheet.create({
     },
     timerText: {
       color: 'white',
-      margin: 8,
-      marginTop: 13,
+      margin: 20,
+      marginTop: 40,
+      fontSize: 20,
+      alignSelf: 'center',
+    },
+    insideTimerText: {
+      color: 'white',
+      margin: 20,
       fontSize: 20,
       alignSelf: 'center',
     },
     timer: {
       alignSelf: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      margin: 10,
     },
     button: {
       backgroundColor: 'white',
