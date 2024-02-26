@@ -2,9 +2,6 @@ import * as React from 'react';
 import { StyleSheet, View , Text, SafeAreaView, TextInput, Button } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list'; 
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
-//import { useCountdown } from 'react-native-countdown-circle-timer';
-//import {NavigationContainer} from '@react-navigation/native';
-//import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const filmStock = [
     {key: '1', value: 'Color negative'}, 
@@ -21,16 +18,17 @@ const filmStock = [
 
 
 var reciprocityTime = 0;
-var playTimer = false;
+var timerTime = 0;
 
-const ReciprocityScreen = ({route, navigation}) => {
+const ReciprocityScreen = () => {
 
     const [selectedFilm, setSelectedFilm] = React.useState('');
     const [time, onChangeTime] = React.useState('');
     const [result, showResult] = React.useState(false);
     const [updateResult, setUpdateResult] = React.useState(0);
     const [timer, showTimer] = React.useState(false);
-    const [updateTimer, setUpdateTimer] = React.useState(0);
+    const [key, setKey] = React.useState(0);
+    const [playTimer, setPlayTimer] = React.useState(false);
 
     const calculateReciprocity = (film, seconds) => {
 
@@ -81,14 +79,12 @@ const ReciprocityScreen = ({route, navigation}) => {
       }
 
       reciprocityTime = reciprocityTime.toFixed(1);
-
+      timerTime = parseFloat(reciprocityTime);
     }
-
     
     return (
         <SafeAreaView style={reciprocityStyle.container}>
-            <Text></Text>
-            <Text style={reciprocityStyle.text}>Reciprocity Calculator</Text>
+            <Text style={reciprocityStyle.textTitle}>Reciprocity Calculator</Text>
 
 {/*Dropdown menu for selecting film stock to use in calculation*/}
             <Text style={reciprocityStyle.text}>Select film stock:</Text>
@@ -98,8 +94,10 @@ const ReciprocityScreen = ({route, navigation}) => {
               save="value"
               dropdownTextStyles={{color:'white'}}
               inputStyles={{color:'white'}}
+              boxStyles={{width: 200, margin: 5}}
             />
-
+            
+          <View style={reciprocityStyle.contentBlock}>
             <Text style={reciprocityStyle.text}>Enter time:</Text>
             <TextInput
               style={reciprocityStyle.input}
@@ -113,36 +111,47 @@ const ReciprocityScreen = ({route, navigation}) => {
               onSubmitEditing={() => calculateReciprocity(selectedFilm, time)}
             /> 
             <Text style={reciprocityStyle.text}> seconds</Text>
+          </View>
+            
 
             {result && (<Text style={reciprocityStyle.text}>Reciprocity time: {reciprocityTime} seconds</Text>)}
 
             {result && (<View style={reciprocityStyle.button}>
               {result && (<Button
                 title="Show/hide timer"
-                onPress = {() => 
-                  {if(timer == true){
-                    showTimer(false)
-                  }
-                  else{
+                onPress = {() => {
+                  if(timer == false){
                     showTimer(true)
-                  }}
                   }
+                  else {
+                    showTimer(false)
+                    setPlayTimer(false)
+                  }
+                  }}
               />)}
             </View>)}
 
-            { timer && (<CountdownCircleTimer
-              isPlaying = {false}
-              duration = {reciprocityTime}
-              colors = {['#FFFFFF','#FF2D00']}
-              colorsTime = {[ reciprocityTime, 0 ]}
-              trailColor = '#8A8A8A'
-              onComplete={() => {return { shouldRepeat: false }}}
-            >
-              {({ remainingTime }) => <Text style={reciprocityStyle.text}>{remainingTime}</Text>}
-            </CountdownCircleTimer>)}
 
-            {/*GET TIMER FUNCTIONING PROPERLY HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */}
+            <View style = {reciprocityStyle.timer}>
+              { timer && (<CountdownCircleTimer
+                key = {key}
+                isPlaying = {playTimer}
+                duration = {timerTime}
+                colors = {['#FFFFFF']}
+                //colorsTime = {[ reciprocityTime, 0 ]}
+                trailColor = '#FF2D00'
+              >
+                {({ remainingTime }) => <Text style={reciprocityStyle.timerText}>{remainingTime}</Text>}
+              </CountdownCircleTimer>)}
 
+              {timer && (<Button
+                title="Start timer"
+                onPress = {() => {
+                  setKey(prevKey => prevKey + 1);
+                  setPlayTimer(true);
+                }}
+              />)}
+            </View>            
         </SafeAreaView>
     )
 }
@@ -152,13 +161,35 @@ const reciprocityStyle = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: 'black',
-      alignItems: 'center',
-      justifyContent: 'tops',
+      justifyContent: 'top',
+    },
+    contentBlock: {
+      flex: .2,
+      flexDirection: 'row',
+    },
+    textTitle: {
+      color: 'white',
+      margin: 5,
+      fontSize: 40,
     },
     text: {
       color: 'white',
-      margin: 5,
+      margin: 8,
+      marginTop: 13,
       fontSize: 20,
+      textAlign: 'left',
+      alignSelf: 'flex-start',
+    },
+    timerText: {
+      color: 'white',
+      margin: 8,
+      marginTop: 13,
+      fontSize: 20,
+      alignSelf: 'center',
+    },
+    timer: {
+      alignSelf: 'center',
+      justifyContent: 'center'
     },
     button: {
       backgroundColor: 'white',
@@ -169,15 +200,15 @@ const reciprocityStyle = StyleSheet.create({
     input: {
       height: 40,
       width: 100,
-      margin: 12,
+      margin: 5,
       borderWidth: 1,
       padding: 10,
       borderColor: 'white',
       color: 'white',
       borderRadius: 10,
+      alignSelf: 'flex-start',
 
     },
   });
-
 
   export default ReciprocityScreen;
