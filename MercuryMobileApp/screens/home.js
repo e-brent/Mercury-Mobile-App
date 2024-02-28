@@ -9,11 +9,12 @@ import { StyleSheet, Text, View, Button, SafeAreaView, Image} from 'react-native
 const HomeScreen = ({navigation}) => {
     return(
       <SafeAreaView style={homeStyle.container}>
-        <Text style={homeStyle.text}>Welcome to Mercury Works!</Text>
+        <Text style={homeStyle.textTitle}>Welcome to Mercury Works!</Text>
         <View style={homeStyle.button}>
           <Button 
             title= "Depth of field calculator"
             onPress={() => navigation.navigate("DOFScreen", {tab: 0, lensName: 'Apo-Digitar 35mm f/5.6 XL', baseName: 'RS0, B6.4', spacerName: 'none', DOFResults: false})}
+            color="#000000"
           />
         </View>
   
@@ -21,6 +22,7 @@ const HomeScreen = ({navigation}) => {
           <Button 
             title= "Hyperfocal calculator"
             onPress={() => navigation.navigate("DOFScreen", {tab: 1, lensName: 'Apo-Digitar 35mm f/5.6 XL', hyperfocalResults: false, fStop: 'F-22'})}
+            color="#000000"
           />
         </View>
   
@@ -28,6 +30,7 @@ const HomeScreen = ({navigation}) => {
           <Button 
             title= "Reciprocity calculator"
             onPress={() => navigation.navigate("ReciprocityScreen", {showResults: false, playTimer: false})}
+            color="#000000"
           />
         </View>
   
@@ -43,19 +46,28 @@ const HomeScreen = ({navigation}) => {
     container: {
       flex: 1,
       backgroundColor: 'black',
-      alignItems: 'center',
       justifyContent: 'tops',
     },
+    textTitle: {
+        color: 'white',
+        margin: 5,
+        marginTop: 10,
+        fontSize: 30,
+        textAlign: 'center',
+      },
     text: {
       color: 'white',
-      margin: 50,
+      margin: 8,
+      marginTop: 13,
       fontSize: 20,
+      textAlign: 'left',
+      alignSelf: 'flex-start',
     },
     button: {
       backgroundColor: 'white',
       padding: 5,
       margin: 20,
-      borderRadius: 5,
+      borderRadius: 10,
     }
   });
 

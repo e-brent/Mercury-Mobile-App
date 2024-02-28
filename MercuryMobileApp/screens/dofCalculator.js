@@ -3,7 +3,7 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import { StyleSheet, View , Text, SafeAreaView, Button } from 'react-native';
+import { StyleSheet, View , Text, SafeAreaView, Button, ScrollView } from 'react-native';
 
 import { SelectList } from 'react-native-dropdown-select-list'; 
 import SegmentedControlTab from "react-native-segmented-control-tab";
@@ -85,16 +85,18 @@ const fStops = [
 ];
 
 
+// array of data based on lens selection -- used in further calculations for results
 var baseArray = [];
 var spacerArray = [];
 
+// array of data based on lens selection -- only used for displaying results
 var boltArray = [];
 var subjDistArray = [];
 var f22Array = [];
 var f16Array = [];
 var f8Array = [];
 
-
+// array of objects used for dropdown menus -- initialize within function so length is always reset to 0
 var baseOptions;
 var spacerOptions;
 
@@ -106,9 +108,9 @@ var f22Response="";
 var f16Response="";
 var f8Response="";
 
+var minVal = 0;
+var hyperfocalSpacer = "";
 
-var showDOFResult = false;
-var showHyperfocalResult = false;
 
 
 // DOF screen of app
@@ -116,6 +118,8 @@ const DOFScreen = ({route, navigation}) => {
     const [selectedIndex, setSelectedIndex] = React.useState(route.params.tab);
     const handleSingleIndexSelect = (index) => {
         setSelectedIndex(index);
+        setShowDOFResult(false);
+        setShowHyperfocalResult(false);
       };
 
     const [selectedLens, setSelectedLens] = React.useState(route.params.lensName);
@@ -123,7 +127,16 @@ const DOFScreen = ({route, navigation}) => {
     const [selectedSpacer, setSelectedSpacer] = React.useState(route.params.spacerName);
     const [selectedFStop, setSelectedFStop] = React.useState(route.params.fStop);
 
+    // Want to include these to get rid of the option to select a base/spacer when there's only one option, but as soon as I try to use these it infinitely re - renders :/
+    //const [showBase, setShowBase] = React.useState(true);
+    //const [showSpacer, setShowSpacer] = React.useState(true);
+
+    const [recalculateOptions, setRecalculateOptions] = React.useState(0);
+    const [showDOFResult, setShowDOFResult] = React.useState(false);
+    const [showHyperfocalResult, setShowHyperfocalResult] = React.useState(false);
+
     const handleSelections = (lensVal, baseVal) => {
+
         for(let i = 0; i < lensData.length; i++){
           if(lensData[i].name.localeCompare(lensVal) == 0){
     
@@ -141,19 +154,18 @@ const DOFScreen = ({route, navigation}) => {
     
             for(let j = 0; j < baseArray.length; j++){    //using base array becuase it's the one I made first, but all of the arrays should be the same length so the choice is arbitrary
     
-              //next key for base key/value pairs
+              //next key for base key/value object pairs for drop down menu
               let baseKey = baseOptions.length + 1;
               baseKey = baseKey.toString();
-              //console.log(baseKey);
     
-              //next key for spacer key/value pairs
+              //next key for spacer key/value object pairs for drop down menus 
               let spacerKey = spacerOptions.length + 1;
               spacerKey = spacerKey.toString();
-    
     
               let validBaseVal = true;
               let validSpacerVal = true;
     
+              //look through current menu of base options, if the current value from baseArray is already included, set valid to false so it isn't included twice
               for (let k = 0; k < baseOptions.length; k++){
                 if(baseOptions[k].value == baseArray[j]){
                   validBaseVal = false;
@@ -161,14 +173,17 @@ const DOFScreen = ({route, navigation}) => {
                 }
               }
     
+              //if the index currently being evaluated doesn't match the selected base, set valid to false so the only spacers included belong to the currently selected base
               if(baseArray[j].localeCompare(baseVal) != 0){
                 validSpacerVal = false;
               }
     
+              //add base at this index from master data to base options
               if(validBaseVal){
                 baseOptions.push({key: baseKey, value: baseArray[j]});
               }
     
+              //add spacer at this index to spacer options
               if(validSpacerVal){
                 spacerOptions.push({key: spacerKey, value: spacerArray[j]});
               }
@@ -177,15 +192,22 @@ const DOFScreen = ({route, navigation}) => {
     
           }
         }
-        
-      }
-    
+
+    }    
     
       const calculateDOF = () =>{
+
+        setShowDOFResult(true);
+        setShowHyperfocalResult(false);
+        setRecalculateOptions(recalculateOptions + 1);
+
+
         let spacerVal = selectedSpacer;
-        showDOFResult = true;
-        showHyperfocalResult = false;
-    
+        let baseVal = selectedBase;
+        
+        //have to find which index from master data has been selected to know which results to display
+
+        //if spacer is 'none'
         if(spacerVal.localeCompare('none') != 0){
           for(let i = 0; i < spacerOptions.length; i++){
             if(spacerOptions[i].value.localeCompare(spacerVal) == 0){
@@ -202,7 +224,6 @@ const DOFScreen = ({route, navigation}) => {
             }
           }
         }
-    
         
         boltResponse = boltArray[overallIndex];
         subjectDistResponse = subjDistArray[overallIndex];
@@ -210,21 +231,20 @@ const DOFScreen = ({route, navigation}) => {
         f16Response = f16Array[overallIndex];
         f8Response = f8Array[overallIndex];
     
-    
-        navigation.push("DOFScreen", {tab: selectedIndex, lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer, DOFResults: showDOFResult, boltResult: boltResponse, subjDistResult: subjectDistResponse, f22Result: f22Response, f16Result: f16Response, f8Result: f8Response})
-    
       }
     
     
       const calculateHyperfocal = () =>{
-        showHyperfocalResult = true;
-        showDOFResult = false;
+
+        setShowDOFResult(false);
+        setShowHyperfocalResult(true);
+        setRecalculateOptions(recalculateOptions + 1);
     
         let lensVal = selectedLens;
         let fStopVal = selectedFStop;
         let fStopArray = [];
         let spacerArray = [];
-        let baseArray = [];
+        //let baseArray = [];
     
         for(let i = 0; i < lensData.length; i++){
           if(lensData[i].name.localeCompare(lensVal) == 0){
@@ -244,149 +264,148 @@ const DOFScreen = ({route, navigation}) => {
           }
         }
     
-        //console.log(fStopArray);
-    
-        let minVal = 100000;
-        let hyperfocalSpacer = '';
+        let currMinVal = 100000;
+        hyperfocalSpacer = '';
     
         for(let i = 0; i < fStopArray.length; i++){
           if(fStopArray[i].includes('INF')){
             //console.log(fStopArray[i]);
     
             let focalRangeArray = fStopArray[i].split(' - ');
-            let focalMin = parseInt(focalRangeArray[0]);
-            //console.log(focalMin);
+            let focalMin = parseFloat(focalRangeArray[0]);
+            //console.log(minVal);
     
-            if(focalMin < minVal){
+            if(focalMin < currMinVal){
+              //console.log(focalMin + ' ' + minVal);
+              currMinVal = focalMin;
               minVal = fStopArray[i];
               hyperfocalSpacer = spacerArray[i];
             }
           }
         }
     
-        //console.log(minVal + ' ' + hyperfocalSpacer);
-    
-        navigation.push("DOFScreen", {tab: selectedIndex, lensName: selectedLens, baseName: selectedBase, hyperfocalResults: showHyperfocalResult, hyperfocalVal: minVal, hyperfocalSpacer: hyperfocalSpacer})
       }
     
       
       return(
         <SafeAreaView style={dofStyle.container}>
-    
-          {/*page title*/}
-          <Text></Text>
-          <Text></Text>
-          <Text style={dofStyle.text}>DOF Calculator</Text>
-    
-          {/*Tabs for selecting what fields will be shown based on what the desired calculation is*/}
-          <SegmentedControlTab
-            values={['Depth of Field', 'Hyperfocal']}
-            selectedIndex={selectedIndex}
-            onTabPress={handleSingleIndexSelect}
-            tabsContainerStyle={{
-              width: 300,
-              height: 40,
-            }}
-            tabStyle={{
-              backgroundColor: 'gray',
-              borderColor: 'black'
-            }}
-            tabTextStyle={{
-              color: 'white'
-            }}
-            activeTabStyle={{
-              backgroundColor: 'white',
-              borderColor: 'white'
-            
-            }}
-            activeTabTextStyle={{
-              color: 'black'
-            }}
-          />
-    
-    {/*Dropdown menu for selecting which lens is being used*/}
-          <Text style={dofStyle.text}>Select lens:</Text>
-          <SelectList 
-            setSelected={(val) => setSelectedLens(val)}
-            data={lensName}
-            //defaultOption={{key: route.params.lensID, value: route.params.lensName}}
-            save="value"
-            onSelect={handleSelections(selectedLens, selectedBase, selectedSpacer)}
-            dropdownTextStyles={{color:'white'}}
-            inputStyles={{color:'white'}}
-          />
-    
-    {/*Dropdown menu for selecting which base is being used*/}
-          {selectedIndex==0 && (<Text style={dofStyle.text}>Select base:</Text>)}
-          {selectedIndex==0 && (<SelectList 
-            setSelected={(val) => setSelectedBase(val)}
-            data={baseOptions}
-            //defaultOption={{key: route.params.baseID, value: route.params.baseName}}
-            save="value"
-            onSelect={handleSelections(selectedLens, selectedBase)}
-            dropdownTextStyles={{color:'white'}}
-            inputStyles={{color:'white'}}
-          />)}
-    
-      {/*Dropdown menu for selecting which spacer is being used*/}
-          {selectedIndex==0 && (<Text style={dofStyle.text}>Select focal spacer:</Text>)}
-          {selectedIndex==0 && (<SelectList
-            setSelected={(val) => setSelectedSpacer(val)}
-            data={spacerOptions}
-            save="value"
-            onSelect={handleSelections(selectedLens, selectedBase)}
-            dropdownTextStyles={{color:'white'}}
-            inputStyles={{color:'white'}}
-          />)}
-    
-      {/*Dropdown menu for selesting f-stop for hyperfocus*/}
-          {selectedIndex==1 && (<Text style={dofStyle.text}>Select f-stop:</Text>)}
-          {selectedIndex==1 && (<SelectList
-            setSelected={(val) => setSelectedFStop(val)}
-            data={fStops}
-            save="value"
-            onSelect={handleSelections(selectedLens, selectedBase)}
-            dropdownTextStyles={{color:'white'}}
-            inputStyles={{color:'white'}}
-          />)}
-    
-    
-          {selectedIndex==0 && (<View style={dofStyle.button}>
-            {selectedIndex==0 && (<Button 
-              title= "Calculate DOF"
-              //onPress={() => navigation.push("DOFScreen", {lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer})}
-              onPress={() => calculateDOF()}
-            />)}
-          </View>)}
-    
-          {selectedIndex==1 && (<View style={dofStyle.button}>
-            {selectedIndex==1 && (<Button 
-              title= "Calculate Hyperfocal"
-              //onPress={() => navigation.push("DOFScreen", {lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer})}
-              onPress={() => calculateHyperfocal()}
-            />)}
-          </View>)}
-    
-          
-          {selectedIndex==0 && route.params.DOFResults && (<Text style={dofStyle.text}></Text>)}
-          {selectedIndex==0 && route.params.DOFResults && (<Text style={dofStyle.text}>Bolt: {route.params.boltResult}</Text>)}
-          {selectedIndex==0 && route.params.DOFResults && (<Text style={dofStyle.text}>Subject Distance: {route.params.subjDistResult} feet</Text>)}
-          {selectedIndex==0 && route.params.DOFResults && (<Text style={dofStyle.text}>F-22 DOF: {route.params.f22Result}</Text>)}
-          {selectedIndex==0 && route.params.DOFResults && (<Text style={dofStyle.text}>F-16 DOF: {route.params.f16Result}</Text>)}
-          {selectedIndex==0 && route.params.DOFResults && (<Text style={dofStyle.text}>F-8 DOF: {route.params.f8Result}</Text>)}
-    
-    
-          {selectedIndex==1 && route.params.hyperfocalResults && (<Text style={dofStyle.text}></Text>)}
-          {selectedIndex==1 && route.params.hyperfocalResults && (<Text style={dofStyle.text}>Hyperfocal Distance: {route.params.hyperfocalVal}</Text>)}
-          {selectedIndex==1 && route.params.hyperfocalResults && (<Text style={dofStyle.text}>Spacer: {route.params.hyperfocalSpacer}</Text>)}
-    
-    
-          <View style={dofStyle.button}>
-            <Button 
-              title= "Back to Home"
-              onPress={() => navigation.navigate("Home")}
+          <ScrollView>
+            {/*page title*/}
+            {selectedIndex == 0 &&(<Text style={dofStyle.textTitle}>DOF Calculator</Text>)}
+            {selectedIndex == 1 &&(<Text style={dofStyle.textTitle}>Hyperfocal Calculator</Text>)}
+      
+            {/*Tabs for selecting what fields will be shown based on what the desired calculation is*/}
+            <SegmentedControlTab
+              values={['Depth of Field', 'Hyperfocal']}
+              selectedIndex={selectedIndex}
+              onTabPress={handleSingleIndexSelect}
+              tabsContainerStyle={{
+                margin: 10,
+                width: 300,
+                height: 40,
+                alignSelf: 'center',
+              }}
+              tabStyle={{
+                backgroundColor: 'gray',
+                borderColor: 'black',
+              }}
+              tabTextStyle={{
+                color: 'white'
+              }}
+              activeTabStyle={{
+                backgroundColor: 'white',
+                borderColor: 'white'
+              
+              }}
+              activeTabTextStyle={{
+                color: 'black'
+              }}
             />
-          </View>
+      
+      {/*Dropdown menu for selecting which lens is being used*/}
+            <Text style={dofStyle.text}>Select lens:</Text>
+            <SelectList 
+              setSelected={(val) => setSelectedLens(val)}
+              data= {lensName}
+              save="value"
+              onSelect={handleSelections(selectedLens, selectedBase)}
+              dropdownTextStyles={{color:'white'}}
+              inputStyles={{color:'white'}}
+            />
+      
+      {/*Dropdown menu for selecting which base is being used*/}
+            {selectedIndex==0 && (<Text style={dofStyle.text}>Select base:</Text>)}
+            {selectedIndex==0 && (<SelectList 
+              setSelected={(val) => setSelectedBase(val)}
+              data= {baseOptions}
+              save="value"
+              onSelect={handleSelections(selectedLens, selectedBase)}
+              dropdownTextStyles={{color:'white'}}
+              inputStyles={{color:'white'}}
+            />)}
+      
+        {/*Dropdown menu for selecting which spacer is being used*/}
+            {selectedIndex==0 && (<Text style={dofStyle.text}>Select focal spacer:</Text>)}
+            {selectedIndex==0 && (<SelectList
+              setSelected={(val) => setSelectedSpacer(val)}
+              data= {spacerOptions}
+              save="value"
+              onSelect={handleSelections(selectedLens, selectedBase)}
+              dropdownTextStyles={{color:'white'}}
+              inputStyles={{color:'white'}}
+            />)}
+      
+        {/*Dropdown menu for selesting f-stop for hyperfocus*/}
+            {selectedIndex==1 && (<Text style={dofStyle.text}>Select f-stop:</Text>)}
+            {selectedIndex==1 && (<SelectList
+              setSelected={(val) => setSelectedFStop(val)}
+              data={fStops}
+              save="value"
+              onSelect={handleSelections(selectedLens, selectedBase)}
+              dropdownTextStyles={{color:'white'}}
+              inputStyles={{color:'white'}}
+            />)}
+      
+      
+            {selectedIndex==0 && (<View style={dofStyle.button}>
+              {selectedIndex==0 && (<Button 
+                title= "Calculate DOF"
+                //onPress={() => navigation.push("DOFScreen", {lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer})}
+                onPress={() => calculateDOF()}
+                color="#000000"
+              />)}
+            </View>)}
+      
+            {selectedIndex==1 && (<View style={dofStyle.button}>
+              {selectedIndex==1 && (<Button 
+                title= "Calculate Hyperfocal"
+                //onPress={() => navigation.push("DOFScreen", {lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer})}
+                onPress={() => calculateHyperfocal()}
+                color="#000000"
+              />)}
+            </View>)}
+      
+            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>Bolts: {boltResponse}</Text>)}
+            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>Focal Distance: {subjectDistResponse} feet</Text>)}
+
+
+            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>F-22 DOF: {f22Response}</Text>)}
+            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>F-16 DOF: {f16Response}</Text>)}
+            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>F-8 DOF: {f8Response}</Text>)}
+      
+            {selectedIndex==1 && showHyperfocalResult && (<Text style={dofStyle.text}>Hyperfocal Distance: {minVal}</Text>)}
+            {selectedIndex==1 && showHyperfocalResult && (<Text style={dofStyle.text}>Spacer: {hyperfocalSpacer}</Text>)}
+      
+      
+            <View style={dofStyle.button}>
+              <Button 
+                title= "Back to Home"
+                onPress={() => navigation.navigate("Home")}
+                color="#000000"
+              />
+            </View>
+
+          </ScrollView>
         </SafeAreaView>
       )
     
@@ -399,19 +418,27 @@ const dofStyle = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: 'black',
-      alignItems: 'center',
       justifyContent: 'tops',
     },
+    textTitle: {
+        color: 'white',
+        margin: 5,
+        fontSize: 40,
+        textAlign: 'center',
+      },
     text: {
       color: 'white',
-      margin: 5,
+      margin: 8,
+      marginTop: 13,
       fontSize: 20,
+      textAlign: 'left',
+      alignSelf: 'flex-start',
     },
     button: {
       backgroundColor: 'white',
       padding: 5,
       margin: 20,
-      borderRadius: 5,
+      borderRadius: 10,
     }
   });
 

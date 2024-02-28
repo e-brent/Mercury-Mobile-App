@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, View , Text, SafeAreaView, TextInput, Button } from 'react-native';
+import { StyleSheet, View , Text, SafeAreaView, TextInput, Button, ScrollView } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list'; 
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
+import { Audio } from 'expo-av';
 
 const filmStock = [
     {key: '1', value: 'Color negative'}, 
@@ -26,14 +27,17 @@ const ReciprocityScreen = () => {
     const [time, onChangeTime] = React.useState('');
     const [result, showResult] = React.useState(false);
     const [updateResult, setUpdateResult] = React.useState(0);
-    const [timer, showTimer] = React.useState(false);
     const [key, setKey] = React.useState(0);
     const [playTimer, setPlayTimer] = React.useState(false);
-
+    const [timerEnd, setTimerEnd] = React.useState(false);
+    const [sound, setSound] = React.useState();
+    
     const calculateReciprocity = (film, seconds) => {
 
       showResult(true);
       setUpdateResult(updateResult + 1);
+      setPlayTimer(false);
+      setTimerEnd(false);
 
       seconds = parseFloat(seconds);
 
@@ -81,9 +85,35 @@ const ReciprocityScreen = () => {
       reciprocityTime = reciprocityTime.toFixed(1);
       timerTime = parseFloat(reciprocityTime);
     }
+
+    async function playSound() {
+      console.log('Loading Sound');
+      const { sound } = await Audio.Sound.createAsync( require('../audio/beep1.mp3')
+      );
+      setSound(sound);
+  
+      console.log('Playing Sound');
+      await sound.playAsync();
+    }
+  
+    React.useEffect(() => {
+      return sound
+        ? () => {
+            console.log('Unloading Sound');
+            sound.unloadAsync();
+          }
+        : undefined;
+    }, [sound]);
+
+    //KEEP WORKING HERE ON WEDNESDAY TO SORT OUT AUDIO -- react-native-audio-toolkit
+    const handleBackground = () => {
+      playSound();
+      setTimerEnd(true);
+    }
     
     return (
-        <SafeAreaView style={reciprocityStyle.container}>
+      <SafeAreaView style={[(timerEnd == false) ? reciprocityStyle.containerRegular : reciprocityStyle.containerTimerEnd]}>
+        <ScrollView>
             <Text style={reciprocityStyle.textTitle}>Reciprocity Calculator</Text>
 
 {/*Dropdown menu for selecting film stock to use in calculation*/}
@@ -94,7 +124,7 @@ const ReciprocityScreen = () => {
               save="value"
               dropdownTextStyles={{color:'white'}}
               inputStyles={{color:'white'}}
-              boxStyles={{width: 200, margin: 5}}
+              onSelect = {() => setTimerEnd(false)}
             />
             
           <View style={reciprocityStyle.contentBlock}>
@@ -123,40 +153,53 @@ const ReciprocityScreen = () => {
                 isPlaying = {playTimer}
                 duration = {timerTime}
                 colors = {['#FFFFFF']}
-                //colorsTime = {[ reciprocityTime, 0 ]}
-                trailColor = '#FF2D00'
+                trailColor = '#bd1004'
+                onComplete = {() => {handleBackground()}}
               >
                 {({ remainingTime }) => <Text style={reciprocityStyle.insideTimerText}>{remainingTime}</Text>}
               </CountdownCircleTimer>)}
 
-              { result && (<Button
+
+              { result && (<View style={reciprocityStyle.button}>
+                { result && (<Button
                 title="Start timer"
                 onPress = {() => {
                   setKey(prevKey => prevKey + 1);
                   setPlayTimer(true);
+                  setTimerEnd(false);
                 }}
-              />)}
-            </View>            
-        </SafeAreaView>
+                color="#000000"
+                />)}
+                </View>)}
+              
+            </View> 
+          </ScrollView>           
+      </SafeAreaView>
     )
 }
 
 
 const reciprocityStyle = StyleSheet.create({
-    container: {
+    containerRegular: {
       flex: 1,
       backgroundColor: 'black',
+      justifyContent: 'top',
+    },
+    containerTimerEnd: {
+      flex: 1,
+      backgroundColor: '#bd1004',
       justifyContent: 'top',
     },
     contentBlock: {
       flex: .2,
       flexDirection: 'row',
-      marginTop: 10,
+      marginTop: 20,
     },
     textTitle: {
       color: 'white',
       margin: 5,
       fontSize: 40,
+      textAlign: 'center',
     },
     text: {
       color: 'white',
@@ -188,7 +231,7 @@ const reciprocityStyle = StyleSheet.create({
       backgroundColor: 'white',
       padding: 5,
       margin: 20,
-      borderRadius: 5,
+      borderRadius: 10,
     },
     input: {
       height: 40,
