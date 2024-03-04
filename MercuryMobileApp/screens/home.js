@@ -33,6 +33,14 @@ const HomeScreen = ({navigation}) => {
             color="#000000"
           />
         </View>
+
+        <View style={homeStyle.button}>
+          <Button 
+            title= "Base calculator"
+            onPress={() => navigation.navigate("BaseScreen")}
+            color="#000000"
+          />
+        </View>
   
         {/*console.log("home screen rendered")*/}
   
