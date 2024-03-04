@@ -171,6 +171,11 @@ const ReciprocityScreen = () => {
                 color="#000000"
                 />)}
                 </View>)}
+
+              {result && (<Text style={reciprocityStyle.noteText}>Timer will reset automatically when started.</Text>)}  
+              {result && (<Text style={reciprocityStyle.noteText}>Ringer on or use headphones for sound.</Text>)}
+
+
               
             </View> 
           </ScrollView>           
@@ -222,6 +227,13 @@ const reciprocityStyle = StyleSheet.create({
       fontSize: 20,
       alignSelf: 'center',
     },
+    noteText: {
+      color: 'white',
+      margin: 10,
+      marginTop: 10,
+      fontSize: 12,
+      alignSelf: 'center',
+    },
     timer: {
       alignSelf: 'center',
       justifyContent: 'center',
@@ -243,7 +255,6 @@ const reciprocityStyle = StyleSheet.create({
       color: 'white',
       borderRadius: 10,
       alignSelf: 'flex-start',
-
     },
   });
 

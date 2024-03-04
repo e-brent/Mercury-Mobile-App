@@ -9,6 +9,7 @@ import SegmentedControlTab from "react-native-segmented-control-tab";
 import ReciprocityScreen from './screens/reciprocityCalculator';
 import DOFScreen from './screens/dofCalculator';
 import HomeScreen from './screens/home';
+import BaseScreen from './screens/baseCalculator';
 
 
 const Stack = createNativeStackNavigator();
@@ -37,6 +38,11 @@ const App = () => {
         <Stack.Screen
           name="ReciprocityScreen"
           component={ReciprocityScreen}
+        />
+
+        <Stack.Screen
+          name="BaseScreen"
+          component={BaseScreen}
         />
 
         {/* can add more pages here as they're made */}

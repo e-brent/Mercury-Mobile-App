@@ -1,8 +1,4 @@
 import * as React from 'react';
-
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
 import { StyleSheet, View , Text, SafeAreaView, Button, ScrollView } from 'react-native';
 
 import { SelectList } from 'react-native-dropdown-select-list'; 
@@ -388,6 +384,7 @@ const DOFScreen = ({route, navigation}) => {
             {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>Bolts: {boltResponse}</Text>)}
             {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>Focal Distance: {subjectDistResponse} feet</Text>)}
 
+            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>-------------------------------------</Text>)}
 
             {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>F-22 DOF: {f22Response}</Text>)}
             {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>F-16 DOF: {f16Response}</Text>)}
