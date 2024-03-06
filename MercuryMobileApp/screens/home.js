@@ -1,42 +1,42 @@
 import * as React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
 import { StyleSheet, Text, View, Button, SafeAreaView, Image} from 'react-native';
 
 
 // Home screen of app
 const HomeScreen = ({navigation}) => {
     return(
-      <SafeAreaView style={homeStyle.container}>
-        <Text style={homeStyle.textTitle}>Welcome to Mercury Works!</Text>
-        <View style={homeStyle.button}>
+      <SafeAreaView style={homeStyle.container} accessible={true} accessibilityLabel="Home page">
+        <Text style={homeStyle.textTitle}>Mercury Works</Text>
+        <Text style={homeStyle.textSubtitle}>The World's First Universal Camera</Text>
+
+
+        <View style={homeStyle.button} accessible={true} accessibilityLabel="Depth of field calculator" accessibilityHint="Navigates to the depth of field calculator screen">
           <Button 
             title= "Depth of field calculator"
-            onPress={() => navigation.navigate("DOFScreen", {tab: 0, lensName: 'Apo-Digitar 35mm f/5.6 XL', baseName: 'RS0, B6.4', spacerName: 'none', DOFResults: false})}
+            onPress={() => navigation.navigate("DOFScreen", {tab: 0})}
             color="#000000"
           />
         </View>
   
-        <View style={homeStyle.button}>
+        <View style={homeStyle.button} accessible={true} accessibilityLabel="Hyperfocal calculator" accessibilityHint="Navigates to the hyperfocal calculator screen">
           <Button 
             title= "Hyperfocal calculator"
-            onPress={() => navigation.navigate("DOFScreen", {tab: 1, lensName: 'Apo-Digitar 35mm f/5.6 XL', hyperfocalResults: false, fStop: 'F-22'})}
+            onPress={() => navigation.navigate("DOFScreen", {tab: 1})}
             color="#000000"
           />
         </View>
   
-        <View style={homeStyle.button}>
+        <View style={homeStyle.button} accessible={true} accessibilityLabel="Reciprocity calculator" accessibilityHint="Navigates to the reciprocity calculator screen">
           <Button 
             title= "Reciprocity calculator"
-            onPress={() => navigation.navigate("ReciprocityScreen", {showResults: false, playTimer: false})}
+            onPress={() => navigation.navigate("ReciprocityScreen")}
             color="#000000"
           />
         </View>
 
-        <View style={homeStyle.button}>
+        <View style={homeStyle.button} accessible={true} accessibilityLabel="base distance calculator" accessibilityHint="Navigates to the base distance calculator screen">
           <Button 
-            title= "Base calculator"
+            title= "Base distance calculator"
             onPress={() => navigation.navigate("BaseScreen")}
             color="#000000"
           />
@@ -58,9 +58,15 @@ const HomeScreen = ({navigation}) => {
     },
     textTitle: {
         color: 'white',
-        margin: 5,
         marginTop: 10,
         fontSize: 30,
+        textAlign: 'center',
+      },
+      textSubtitle: {
+        color: 'white',
+        margin: 5,
+        marginBottom: 15,
+        fontSize: 22,
         textAlign: 'center',
       },
     text: {

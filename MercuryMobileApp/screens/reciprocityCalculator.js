@@ -88,7 +88,7 @@ const ReciprocityScreen = () => {
 
     async function playSound() {
       console.log('Loading Sound');
-      const { sound } = await Audio.Sound.createAsync( require('../audio/beep1.mp3')
+      const { sound } = await Audio.Sound.createAsync( require('../assets/audio/beep1.mp3')
       );
       setSound(sound);
   
@@ -158,8 +158,9 @@ const ReciprocityScreen = () => {
               >
                 {({ remainingTime }) => <Text style={reciprocityStyle.insideTimerText}>{remainingTime}</Text>}
               </CountdownCircleTimer>)}
+            </View>
 
-
+            <View style = {reciprocityStyle.timer}>
               { result && (<View style={reciprocityStyle.button}>
                 { result && (<Button
                 title="Start timer"
@@ -174,10 +175,9 @@ const ReciprocityScreen = () => {
 
               {result && (<Text style={reciprocityStyle.noteText}>Timer will reset automatically when started.</Text>)}  
               {result && (<Text style={reciprocityStyle.noteText}>Ringer on or use headphones for sound.</Text>)}
-
-
-              
             </View> 
+
+
           </ScrollView>           
       </SafeAreaView>
     )
@@ -237,7 +237,6 @@ const reciprocityStyle = StyleSheet.create({
     timer: {
       alignSelf: 'center',
       justifyContent: 'center',
-      margin: 10,
     },
     button: {
       backgroundColor: 'white',

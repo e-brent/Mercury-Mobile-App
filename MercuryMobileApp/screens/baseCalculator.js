@@ -3,6 +3,8 @@ import { StyleSheet, View , Text, SafeAreaView, TextInput, Button, ScrollView } 
 
 import { SelectList } from 'react-native-dropdown-select-list'; 
 import RadioGroup from 'react-native-radio-buttons-group';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 
 //Dictionary for selecting a lens name from drop down menu
 const lensName = [
@@ -132,17 +134,9 @@ const BaseScreen = () => {
         let p = 3;
 
         let n = parseFloat(nearDist);
+        let lessThan12 = false;
 
         let l = 0;
-
-        let f = 0;
-        for (let i = 0; i < focalLength.length; i ++){
-            if(focalLength[i].lens.localeCompare(selectedLens) == 0){
-                f = parseInt(focalLength[i].focal);
-            }
-        }
-
-
         //far distance is either number or INF
         if(farDistIndex.localeCompare('1') == 0){
             l = 'INF';
@@ -151,31 +145,41 @@ const BaseScreen = () => {
             l = parseFloat(farDist);
         }
 
-        //convert distances to inches to use in calculations
-        if(units.localeCompare('feet') == 0){
-            n = n * 12;
-            if(!isNaN(l)){
-                l = l * 12;
-            }
-        }
-        else if (units.localeCompare('meters') == 0){
-            n = n * 39.37;
-            if(!isNaN(l)){
-                l = l * 39.37;
-            }
-        }
-        else if (units.localeCompare('millimeters') == 0){
-            n = n / 25.4;
-            if(!isNaN(l)){
-                l = l / 25.4;
+        let f = 0;
+        for (let i = 0; i < focalLength.length; i ++){
+            if(focalLength[i].lens.localeCompare(selectedLens) == 0){
+                f = parseInt(focalLength[i].focal);
             }
         }
 
-        //if n < 12 --> use Wattie and Bercovitz, return the smaller number
-        if(isNaN(l)){
-            baseDist = p * ((n / f) - 0.5);
+        //convert distances to millimeters to use in calculation
+        if(units.localeCompare('feet') == 0){
+            n = n * 304.8;
+            if(!isNaN(l)){
+                l = l * 304.8;
+            }
         }
-        else if (n < 12){
+        else if (units.localeCompare('meters') == 0){
+            n = n * 1000;
+            if(!isNaN(l)){
+                l = l * 1000;
+            }
+        }
+        else if (units.localeCompare('inches') == 0){
+            n = n * 25.4;
+            if(!isNaN(l)){
+                l = l * 25.4;
+            }
+        }
+
+        //check if n < 12 inches
+        if ( (n/25.4) < 12 ){
+            lessThan12 = true;
+        }
+
+
+        //if n < 12 --> use Wattie and Bercovitz, return the smaller number
+        if ((!isNaN(l)) && lessThan12){
             let wattieB = n * 0.9;
             let berkovitzB = p * ((l * n)/(l - n)) * ((1 / f) - ((l + n) / (2 * l * n)));
             if(wattieB < berkovitzB){
@@ -185,25 +189,32 @@ const BaseScreen = () => {
                 baseDist = berkovitzB;
             }
         }
-        else if (!isNaN(l) && (l < 2*n)){
-            baseDist = p * ((2 * (n ** 2))/ n) * ((1 / f) - ((3 * n) / (4 * (n ** 2)))); 
+        else if ((isNaN(l)) && (n < 12)){
+            baseDist = n * 0.9;
+        }
+        else if ((!isNaN(l)) && (l < 2*n)){
+            l = 2 * n;
+            baseDist = p * ((l * n)/(l - n)) * ((1 / f) - ((l + n) / (2 * l * n)));
+        }
+        else if (isNaN(l)){
+            baseDist = p * ((n / f) - 0.5);
         }
         else{
             baseDist =  p * ((l * n)/(l - n)) * ((1 / f) - ((l + n) / (2 * l * n)));
         }
+       
 
         //convert result back to desired units
-        //convert distances to inches to use in calculations
-        
         if(units.localeCompare('feet') == 0){
-            baseDist = baseDist / 12;
+            baseDist = baseDist / 304.8;
         }
         else if (units.localeCompare('meters') == 0){
-            baseDist = baseDist / 39.37;
+            baseDist = baseDist / 1000;
         }
-        else if (units.localeCompare('millimeters') == 0){
-            baseDist = baseDist * 25.4;
+        else if (units.localeCompare('inches') == 0){
+            baseDist = baseDist / 25.4;
         }
+
 
         baseDist = baseDist.toFixed(2);
 
@@ -211,7 +222,7 @@ const BaseScreen = () => {
 
     return (
         <SafeAreaView style={baseStyle.container}>
-            <ScrollView>
+            <KeyboardAwareScrollView>
                 <Text style={baseStyle.textTitle}>Base Calculator</Text>
                 <Text style={baseStyle.text}>This tool calculates the ideal base distance (distance between the stereo lenses) depending on the distance to your subject(s).  This is for medium format 6x6 photography.  Use it for very close and very distant subjects.</Text>
 
@@ -289,9 +300,9 @@ const BaseScreen = () => {
                     />
                 </View>
 
-                {showResults && (<Text style={baseStyle.text}>Stereo base: {baseDist} {units}</Text>)}
+                {showResults && (<Text style={baseStyle.textResult}>Stereo base: {baseDist} {units}</Text>)}
 
-            </ScrollView>
+            </KeyboardAwareScrollView>
         </SafeAreaView>
     )
 }
@@ -322,6 +333,13 @@ const baseStyle = StyleSheet.create({
       textAlign: 'left',
       alignSelf: 'flex-start',
     },
+    textResult: {
+        color: 'white',
+        margin: 8,
+        marginTop: 13,
+        fontSize: 20,
+        alignSelf: 'center',
+      },
     radioButton: {
         alignSelf: 'flex-start',
 

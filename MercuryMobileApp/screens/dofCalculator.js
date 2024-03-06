@@ -118,10 +118,10 @@ const DOFScreen = ({route, navigation}) => {
         setShowHyperfocalResult(false);
       };
 
-    const [selectedLens, setSelectedLens] = React.useState(route.params.lensName);
-    const [selectedBase, setSelectedBase] = React.useState(route.params.baseName); 
-    const [selectedSpacer, setSelectedSpacer] = React.useState(route.params.spacerName);
-    const [selectedFStop, setSelectedFStop] = React.useState(route.params.fStop);
+    const [selectedLens, setSelectedLens] = React.useState('Apo-Digitar 35mm f/5.6 XL');
+    const [selectedBase, setSelectedBase] = React.useState('RS0, B6.4'); 
+    const [selectedSpacer, setSelectedSpacer] = React.useState('none');
+    const [selectedFStop, setSelectedFStop] = React.useState('F-22');
 
     // Want to include these to get rid of the option to select a base/spacer when there's only one option, but as soon as I try to use these it infinitely re - renders :/
     //const [showBase, setShowBase] = React.useState(true);
