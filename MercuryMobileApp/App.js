@@ -10,6 +10,7 @@ import ReciprocityScreen from './screens/reciprocityCalculator';
 import DOFScreen from './screens/dofCalculator';
 import HomeScreen from './screens/home';
 import BaseScreen from './screens/baseCalculator';
+import UserGuideScreen from './screens/userGuide';
 
 
 const Stack = createNativeStackNavigator();
@@ -45,6 +46,11 @@ const App = () => {
           component={BaseScreen}
         />
 
+        <Stack.Screen
+          name="UserGuideScreen"
+          component={UserGuideScreen}
+        />
+
         {/* can add more pages here as they're made */}
 
       </Stack.Navigator>
@@ -56,7 +62,7 @@ const HeaderLogo = () => {
   return (
     <Image
       style={{ width: 45, height: 45}}
-      source={require('./images/mercuryLogoWhiteOnBlack.png')}
+      source={require('./assets/images/mercuryLogoWhiteOnBlack.png')}
     />
   )
 }
