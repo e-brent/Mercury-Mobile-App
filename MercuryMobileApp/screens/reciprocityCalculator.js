@@ -114,10 +114,10 @@ const ReciprocityScreen = () => {
     return (
       <SafeAreaView style={[(timerEnd == false) ? reciprocityStyle.containerRegular : reciprocityStyle.containerTimerEnd]}>
         <ScrollView>
-            <Text style={reciprocityStyle.textTitle}>Reciprocity Calculator</Text>
+            <Text style={reciprocityStyle.textTitle} accessible={true} accessibilityLabel="Reciprocity calculator" accessibilityRole="text">Reciprocity Calculator</Text>
 
 {/*Dropdown menu for selecting film stock to use in calculation*/}
-            <Text style={reciprocityStyle.text}>Select film stock:</Text>
+            <Text style={reciprocityStyle.text} accessible={true} accessibilityLabel="Select film stock" accessibilityRole="text">Select film stock:</Text>
             <SelectList
               setSelected={(val) => setSelectedFilm(val)}
               data={filmStock}
@@ -125,29 +125,35 @@ const ReciprocityScreen = () => {
               dropdownTextStyles={{color:'white'}}
               inputStyles={{color:'white'}}
               onSelect = {() => setTimerEnd(false)}
+              accessible={true}
+              accessibilityHint="A searchable drop down menu to select a film stock option"
             />
             
           <View style={reciprocityStyle.contentBlock}>
-            <Text style={reciprocityStyle.text}>Enter time:</Text>
+            <Text style={reciprocityStyle.text} accessible={true} accessibilityLabel="Enter time in seconds" accessibilityRole="text">Enter time:</Text>
             <TextInput
               style={reciprocityStyle.input}
               onChangeText={onChangeTime}
               value={time}
               placeholder='0'
+              defaultValue='0'
+              placeholderTextColor='#FFFFFF'
               inputMode='decimal'
               keyboardType='decimal-pad'
               enterKeyHint='done'
               returnKeyType='done'
               onSubmitEditing={() => calculateReciprocity(selectedFilm, time)}
+              accessible={true}
+              accessibilityLabel="Text entry box to enter a time in seconds"
             /> 
             <Text style={reciprocityStyle.text}> seconds</Text>
           </View>
             
 
-            {result && (<Text style={reciprocityStyle.timerText}>Reciprocity time: {reciprocityTime} seconds</Text>)}
+            {result && (<Text style={reciprocityStyle.timerText} accessible={true} accessibilityLabel="Calculated reciprocity time" accessibilityRole="text">Reciprocity time:  {reciprocityTime} seconds</Text>)}
 
 
-            <View style = {reciprocityStyle.timer}>
+            <View style = {reciprocityStyle.timer} accessible={true} accessibilityLabel="Countdown timer. Will sound when it reaches 0 if ringer is on">
               { result && (<CountdownCircleTimer
                 key = {key}
                 isPlaying = {playTimer}
@@ -156,11 +162,11 @@ const ReciprocityScreen = () => {
                 trailColor = '#bd1004'
                 onComplete = {() => {handleBackground()}}
               >
-                {({ remainingTime }) => <Text style={reciprocityStyle.insideTimerText}>{remainingTime}</Text>}
+                {({ remainingTime }) => <Text style={reciprocityStyle.insideTimerText} accessible={true} accessibilityRole="timer" accessibilityLiveRegion="assertive" importantForAccessibility="yes">{remainingTime}</Text>}
               </CountdownCircleTimer>)}
             </View>
 
-            <View style = {reciprocityStyle.timer}>
+            <View style = {reciprocityStyle.timer} accessible={true} accessibilityLabel="Start timer" accessibilityHint="Click here to start the countdown timer" accessibilityRole="button">
               { result && (<View style={reciprocityStyle.button}>
                 { result && (<Button
                 title="Start timer"
@@ -173,10 +179,9 @@ const ReciprocityScreen = () => {
                 />)}
                 </View>)}
 
-              {result && (<Text style={reciprocityStyle.noteText}>Timer will reset automatically when started.</Text>)}  
-              {result && (<Text style={reciprocityStyle.noteText}>Ringer on or use headphones for sound.</Text>)}
+              {result && (<Text style={reciprocityStyle.noteText} accessible={true} accessibilityLabel="The displayed time on the timer will reset automatically when the timer is started" accessibilityRole="text">The displayed time on the timer will reset automatically when the timer is started.</Text>)}  
+              {result && (<Text style={reciprocityStyle.noteText} accessible={true} accessibilityLabel="Turn ringer on or use headphones for sound" accessibilityRole="text">Turn ringer on or use headphones for sound.</Text>)}
             </View> 
-
 
           </ScrollView>           
       </SafeAreaView>
@@ -233,6 +238,7 @@ const reciprocityStyle = StyleSheet.create({
       marginTop: 10,
       fontSize: 12,
       alignSelf: 'center',
+      textAlign:'center',
     },
     timer: {
       alignSelf: 'center',

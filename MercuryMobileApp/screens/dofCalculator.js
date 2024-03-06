@@ -38,8 +38,6 @@ const lensData = [
     {id:'30', name:'Wista Twin 130mm f/5.6 (FE40 + B8)', base:['FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8'], spacer:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'], bolts:['30', '30', '30/35W', '30/35W', '30/35W', '30/35W', '30/35W', '35W', '35W', '35W', '35W', '35W', '35W', '35W'], subj_dist:[7.5, 7, 6.5, 6.25, 6, 5.5, 5.5, 5, 5, 4.6, 4.5, 4.5, 4.25,4], f_22:['6.75 - 8.5', '6.25 - 8', '5.75 - 7.25',  '5.75 - 7', '5.5 - 6.75', '5 - 6', '5 - 6', '4.5 - 5.5', '4.5 - 5.5', '4.25 - 5', '4.25 - 4.75', '4.25 - 4.75' , '4 - 4.5', '3.75 - 4.25'], f_16:['6.75 - 8.25', '6.5 - 7.75', '6 - 7', '5.75 - 6.75', '5.5 - 6.5', '5.25 - 6', '5.25 - 6', '4.75 - 5.25', '4.75 - 5.25', '4.25 - 4.75', '4.25 - 4.75',  '4.25 - 4.75', '4 - 4.5', '3.75 - 4.25'], f_8:['7.25 - 8', '6.75 - 7.25', '6.25 - 6.75', '6 - 6.5', '5.75 - 6.25', '5.25 - 5.75', '5.25 - 5.75', '4.75 - 5.25', '4.75 - 5.25', '4.5 - 4.75', '4.4 - 4.6',  '4.4 - 4.6', '4.15 - 4.35', '3.9 - 4.1']},
 ];
 
-const initDOFScreenParams = ['Apo-Digitar 35mm f/5.6 XL', 'RS0, B6.4', , 'W', 300, '4 - INF', '5.5 - INF', '11 -  INF']
-
 //Dictionary for selecting a lens name from drop down menu
 const lensName = [
     {key:'1', value:'Apo-Digitar 35mm f/5.6 XL'},
@@ -287,8 +285,8 @@ const DOFScreen = ({route, navigation}) => {
         <SafeAreaView style={dofStyle.container}>
           <ScrollView>
             {/*page title*/}
-            {selectedIndex == 0 &&(<Text style={dofStyle.textTitle}>DOF Calculator</Text>)}
-            {selectedIndex == 1 &&(<Text style={dofStyle.textTitle}>Hyperfocal Calculator</Text>)}
+            {selectedIndex == 0 &&(<Text style={dofStyle.textTitle} accessible={true} accessibilityLabel="Depth of field calculator" accessibilityRole="text">DOF Calculator</Text>)}
+            {selectedIndex == 1 &&(<Text style={dofStyle.textTitle} accessible={true} accessibilityLabel="Hyperfocal calculator" accessibilityRole="text">Hyperfocal Calculator</Text>)}
       
             {/*Tabs for selecting what fields will be shown based on what the desired calculation is*/}
             <SegmentedControlTab
@@ -316,10 +314,12 @@ const DOFScreen = ({route, navigation}) => {
               activeTabTextStyle={{
                 color: 'black'
               }}
+              accessible={true}
+              accessibilityLabels={['depth of field', 'hyperfocal']}
             />
       
       {/*Dropdown menu for selecting which lens is being used*/}
-            <Text style={dofStyle.text}>Select lens:</Text>
+            <Text style={dofStyle.text} accessible={true} accessibilityLabel="Select lens" accessibilityRole="text">Select lens:</Text>
             <SelectList 
               setSelected={(val) => setSelectedLens(val)}
               data= {lensName}
@@ -327,10 +327,12 @@ const DOFScreen = ({route, navigation}) => {
               onSelect={handleSelections(selectedLens, selectedBase)}
               dropdownTextStyles={{color:'white'}}
               inputStyles={{color:'white'}}
+              accessible={true}
+              accessibilityHint="A searchable drop down menu to select a lens option"
             />
       
       {/*Dropdown menu for selecting which base is being used*/}
-            {selectedIndex==0 && (<Text style={dofStyle.text}>Select base:</Text>)}
+            {selectedIndex==0 && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Select base" accessibilityRole="text">Select base:</Text>)}
             {selectedIndex==0 && (<SelectList 
               setSelected={(val) => setSelectedBase(val)}
               data= {baseOptions}
@@ -338,10 +340,12 @@ const DOFScreen = ({route, navigation}) => {
               onSelect={handleSelections(selectedLens, selectedBase)}
               dropdownTextStyles={{color:'white'}}
               inputStyles={{color:'white'}}
+              accessible={true}
+              accessibilityHint="A searchable drop down menu to select a base option"
             />)}
       
         {/*Dropdown menu for selecting which spacer is being used*/}
-            {selectedIndex==0 && (<Text style={dofStyle.text}>Select focal spacer:</Text>)}
+            {selectedIndex==0 && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Select focal spacer" accessibilityRole="text">Select focal spacer:</Text>)}
             {selectedIndex==0 && (<SelectList
               setSelected={(val) => setSelectedSpacer(val)}
               data= {spacerOptions}
@@ -349,10 +353,12 @@ const DOFScreen = ({route, navigation}) => {
               onSelect={handleSelections(selectedLens, selectedBase)}
               dropdownTextStyles={{color:'white'}}
               inputStyles={{color:'white'}}
+              accessible={true}
+              accessibilityHint="A searchable drop down menu to select a focal spacer option"
             />)}
       
         {/*Dropdown menu for selesting f-stop for hyperfocus*/}
-            {selectedIndex==1 && (<Text style={dofStyle.text}>Select f-stop:</Text>)}
+            {selectedIndex==1 && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Select f-stop" accessibilityRole="text">Select f-stop:</Text>)}
             {selectedIndex==1 && (<SelectList
               setSelected={(val) => setSelectedFStop(val)}
               data={fStops}
@@ -360,10 +366,12 @@ const DOFScreen = ({route, navigation}) => {
               onSelect={handleSelections(selectedLens, selectedBase)}
               dropdownTextStyles={{color:'white'}}
               inputStyles={{color:'white'}}
+              accessible={true}
+              accessibilityHint="A searchable drop down menu to select an F-stop option"
             />)}
       
       
-            {selectedIndex==0 && (<View style={dofStyle.button}>
+            {selectedIndex==0 && (<View style={dofStyle.button} accessible={true} accessibilityLabel="Calculate depth of field" accessibilityHint="Press to show the results of the DOF calculation, will not switch to a different screen" accessibilityRole="button">
               {selectedIndex==0 && (<Button 
                 title= "Calculate DOF"
                 //onPress={() => navigation.push("DOFScreen", {lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer})}
@@ -372,7 +380,7 @@ const DOFScreen = ({route, navigation}) => {
               />)}
             </View>)}
       
-            {selectedIndex==1 && (<View style={dofStyle.button}>
+            {selectedIndex==1 && (<View style={dofStyle.button} accessible={true} accessibilityLabel="Calculate hyperfocal" accessibilityHint="Press to show the results of the hyperfocal calculation, will not switch to a different screen" accessibilityRole="button">
               {selectedIndex==1 && (<Button 
                 title= "Calculate Hyperfocal"
                 //onPress={() => navigation.push("DOFScreen", {lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer})}
@@ -381,26 +389,17 @@ const DOFScreen = ({route, navigation}) => {
               />)}
             </View>)}
       
-            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>Bolts: {boltResponse}</Text>)}
-            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>Focal Distance: {subjectDistResponse} feet</Text>)}
+            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accesibilityLabel="Bolt result" accessibiltyRole="text">Bolts:  {boltResponse}</Text>)}
+            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Focal distance result" accessibilityRole="text">Focal Distance:  {subjectDistResponse} ft</Text>)}
 
             {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>-------------------------------------</Text>)}
 
-            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>F-22 DOF: {f22Response}</Text>)}
-            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>F-16 DOF: {f16Response}</Text>)}
-            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>F-8 DOF: {f8Response}</Text>)}
+            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="F-22 depth of field result" accessibilityRole="text">F-22 DOF:  {f22Response} ft</Text>)}
+            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="F-16 depth of field result" accessibilityRole="text">F-16 DOF:  {f16Response} ft</Text>)}
+            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="F-8 depth of field result" accessibilityRole="text">F-8 DOF:  {f8Response} ft</Text>)}
       
-            {selectedIndex==1 && showHyperfocalResult && (<Text style={dofStyle.text}>Hyperfocal Distance: {minVal}</Text>)}
-            {selectedIndex==1 && showHyperfocalResult && (<Text style={dofStyle.text}>Spacer: {hyperfocalSpacer}</Text>)}
-      
-      
-            <View style={dofStyle.button}>
-              <Button 
-                title= "Back to Home"
-                onPress={() => navigation.navigate("Home")}
-                color="#000000"
-              />
-            </View>
+            {selectedIndex==1 && showHyperfocalResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Hyperfocal distance result" accessibilityRole="text">Hyperfocal Distance:  {minVal} ft</Text>)}
+            {selectedIndex==1 && showHyperfocalResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Spacer result" accessibilityRole="text">Spacer:  {hyperfocalSpacer}</Text>)}
 
           </ScrollView>
         </SafeAreaView>

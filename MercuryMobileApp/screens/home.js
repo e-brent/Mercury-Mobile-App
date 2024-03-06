@@ -5,12 +5,12 @@ import { StyleSheet, Text, View, Button, SafeAreaView, Image} from 'react-native
 // Home screen of app
 const HomeScreen = ({navigation}) => {
     return(
-      <SafeAreaView style={homeStyle.container} accessible={true} accessibilityLabel="Home page">
-        <Text style={homeStyle.textTitle}>Mercury Works</Text>
-        <Text style={homeStyle.textSubtitle}>The World's First Universal Camera</Text>
+      <SafeAreaView style={homeStyle.container}>
+        <Text style={homeStyle.textTitle} accessible={true} accessibilityLabel="Mercury works" accessibilityRole="text">Mercury Works</Text>
+        <Text style={homeStyle.textSubtitle} accessible={true} accessibilityLabel="The world's first universal camera" accessibilityRole="text">The World's First Universal Camera</Text>
 
 
-        <View style={homeStyle.button} accessible={true} accessibilityLabel="Depth of field calculator" accessibilityHint="Navigates to the depth of field calculator screen">
+        <View style={homeStyle.button} accessible={true} accessibilityLabel="Depth of field calculator" accessibilityHint="Navigates to the depth of field calculator screen" accessibilityRole="button">
           <Button 
             title= "Depth of field calculator"
             onPress={() => navigation.navigate("DOFScreen", {tab: 0})}
@@ -18,7 +18,7 @@ const HomeScreen = ({navigation}) => {
           />
         </View>
   
-        <View style={homeStyle.button} accessible={true} accessibilityLabel="Hyperfocal calculator" accessibilityHint="Navigates to the hyperfocal calculator screen">
+        <View style={homeStyle.button} accessible={true} accessibilityLabel="Hyperfocal calculator" accessibilityHint="Navigates to the hyperfocal calculator screen" accessibilityRole="button">
           <Button 
             title= "Hyperfocal calculator"
             onPress={() => navigation.navigate("DOFScreen", {tab: 1})}
@@ -26,7 +26,7 @@ const HomeScreen = ({navigation}) => {
           />
         </View>
   
-        <View style={homeStyle.button} accessible={true} accessibilityLabel="Reciprocity calculator" accessibilityHint="Navigates to the reciprocity calculator screen">
+        <View style={homeStyle.button} accessible={true} accessibilityLabel="Reciprocity calculator" accessibilityHint="Navigates to the reciprocity calculator screen" accessibilityRole="button">
           <Button 
             title= "Reciprocity calculator"
             onPress={() => navigation.navigate("ReciprocityScreen")}
@@ -34,7 +34,7 @@ const HomeScreen = ({navigation}) => {
           />
         </View>
 
-        <View style={homeStyle.button} accessible={true} accessibilityLabel="base distance calculator" accessibilityHint="Navigates to the base distance calculator screen">
+        <View style={homeStyle.button} accessible={true} accessibilityLabel="base distance calculator" accessibilityHint="Navigates to the base distance calculator screen" accessibilityRole="button">
           <Button 
             title= "Base distance calculator"
             onPress={() => navigation.navigate("BaseScreen")}

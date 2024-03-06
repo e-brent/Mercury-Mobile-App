@@ -112,7 +112,10 @@ const BaseScreen = () => {
             value: 'INF',
             color: '#ffffff',
             labelStyle: {textAlign:'left', color: '#ffffff'},
-            containerStyle: {alignSelf: 'flex-start'}
+            containerStyle: {alignSelf: 'flex-start'},
+            accessible: true,
+            accessibilityLabel: 'INF',
+            accessibilityRole: 'radio'
         },
         {
             id: '2',
@@ -120,7 +123,10 @@ const BaseScreen = () => {
             value: '',
             color: '#ffffff',
             labelStyle: {textAlign:'left', color: '#ffffff'},
-            containerStyle: {alignSelf: 'flex-start'}
+            containerStyle: {alignSelf: 'flex-start'},
+            accessible: true,
+            accessibilityLabel: 'Custom distance',
+            accessibilityRole: 'radio'
         }
     ]), []);
 
@@ -223,31 +229,35 @@ const BaseScreen = () => {
     return (
         <SafeAreaView style={baseStyle.container}>
             <KeyboardAwareScrollView>
-                <Text style={baseStyle.textTitle}>Base Calculator</Text>
-                <Text style={baseStyle.text}>This tool calculates the ideal base distance (distance between the stereo lenses) depending on the distance to your subject(s).  This is for medium format 6x6 photography.  Use it for very close and very distant subjects.</Text>
+                <Text style={baseStyle.textTitle} accessible={true} accessibilityLabel="Base distance calculator" accessibilityRole="text">Base Distance Calculator</Text>
+                <Text style={baseStyle.text} accessible={true} accessibilityLabel="This tool calculates the ideal base distance (distance between the stereo lenses) depending on the distance to your subject(s).  This is for medium format 6x6 photography. Use it for very close and very distant subjects." accessibilityRole="text">
+                    This tool calculates the ideal base distance (distance between the stereo lenses) depending on the distance to your subject(s). This is for medium format 6x6 photography. Use it for very close and very distant subjects.
+                </Text>
 
-                <Text style={baseStyle.text}>Select lens:</Text>
+                <Text style={baseStyle.text} accessible={true} accessibilityLabel="Select lens" accessibilityRole="text">Select lens:</Text>
                 <SelectList 
                     setSelected={(val) => setSelectedLens(val)}
                     data= {lensName}
                     save="value"
-                    //onSelect={handleSelections(selectedLens, selectedBase)}
                     dropdownTextStyles={{color:'white'}}
                     inputStyles={{color:'white'}}
+                    accessible={true}
+                    accessibilityLabel="A searchable dropdown menu to select a lens to calculate the base distance for"
                 />
 
 
-                <Text style={baseStyle.text}>Select units:</Text>
+                <Text style={baseStyle.text} accessible={true} accesssibilityLabel="Select units" accessibilityRole="text">Select units:</Text>
                 <SelectList 
                     setSelected={(val) => setUnits(val)}
                     data= {unitList}
                     save="value"
-                    //onSelect={handleSelections(selectedLens, selectedBase)}
                     dropdownTextStyles={{color:'white'}}
                     inputStyles={{color:'white'}}
+                    accessible={true}
+                    accessibilityLabel="A searchable dropdown menu to select the units to enter distances in and display results"
                 />
 
-                <Text style={baseStyle.text}>Near subject distance:</Text>
+                <Text style={baseStyle.text} accessible={true} accessibilityLabel="Near subject distance" accessibilityRole="text">Near subject distance:</Text>
                 <View style={baseStyle.contentBlock}>
                     <TextInput
                         style={baseStyle.input}
@@ -258,21 +268,24 @@ const BaseScreen = () => {
                         keyboardType='decimal-pad'
                         enterKeyHint='done'
                         returnKeyType='done'
+                        accessible={true}
+                        accessibilityLabel="Text entry box to enter the near subject distance using the selected units"
                     />
                     <Text style={baseStyle.text}>{units}</Text>
                 </View>
                 
 
 
-                <Text style={baseStyle.text}>Far subject distance:</Text>  
+                <Text style={baseStyle.text} accessible={true} accessibilityLabel="Far subject distance" accessibilityRole="text">Far subject distance:</Text>  
 
                 <RadioGroup 
                     radioButtons={radioButtons} 
                     onPress={setFarDistIndex}
                     selectedId={farDistIndex}
                     containerStyle={baseStyle.radioButton}
-                    //labelStyle={baseStyle.text}
-                    //onPress={enableDistanceEdit}
+                    accessible={true}
+                    accessibilityRole="radiogroup"
+
                 />
 
                 <View style={baseStyle.contentBlock}>
@@ -285,14 +298,15 @@ const BaseScreen = () => {
                         keyboardType='decimal-pad'
                         enterKeyHint='done'
                         returnKeyType='done'
-                        //onSubmitEditing={() => calculateReciprocity(selectedFilm, time)}
                         editable={farDistIndex.localeCompare('2') == 0}
+                        accessible={true}
+                        accessibilityLabel="Text entry box to enter the far subject distance using the selected units"
                     />
                      <Text style={baseStyle.text}>{units}</Text>
                 </View>
             
 
-                <View style={baseStyle.button}>
+                <View style={baseStyle.button} accessible={true} accessibilityLabel="Click to show the calculated base distance results, will not change to a different screen" accessibilityRole="button">
                     <Button 
                         title= "Calculate Base Distance"
                         onPress={() => calculateBaseDist()}
@@ -300,7 +314,7 @@ const BaseScreen = () => {
                     />
                 </View>
 
-                {showResults && (<Text style={baseStyle.textResult}>Stereo base: {baseDist} {units}</Text>)}
+                {showResults && (<Text style={baseStyle.textResult} accessible={true} accessibilityLabel="stereo base results" accessibilityRole="text">Stereo base:  {baseDist} {units}</Text>)}
 
             </KeyboardAwareScrollView>
         </SafeAreaView>
