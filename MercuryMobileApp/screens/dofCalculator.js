@@ -72,6 +72,8 @@ const lensName = [
     {key:'30', value:'Wista Twin 130mm f/5.6 (FE40 + B8'},
 ];
 
+
+//Dictionary for the F-stop drop down menu
 const fStops = [
     {key:'1', value:'F-22'},
     {key:'2', value:'F-16'}, 
