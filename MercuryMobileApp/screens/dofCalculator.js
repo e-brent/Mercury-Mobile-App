@@ -1,10 +1,17 @@
+// See README.md for information about this file and how to make updates
+
+
+// NECESSARY UPDATES: INCLUDE OPTION FOR USERS TO SELECT WHETHER THEY WANT TO SEE RESULTS IN METERS OR FEET, AND CALCULATE THAT CONVERSION
+// ALSO HAVE CALRIFY ABOUT USING THE BASE DURING HYPERFOCAL CALCULATION FOR LENSES WITHOUT SPACERS
+
 import * as React from 'react';
 import { StyleSheet, View , Text, SafeAreaView, Button, ScrollView } from 'react-native';
 
+// Special imports for this file, see README for links with more information about them
 import { SelectList } from 'react-native-dropdown-select-list'; 
 import SegmentedControlTab from "react-native-segmented-control-tab";
 
-//All lens data
+//All lens data, sorted by focal length
 const lensData = [
     {id:'1', name:'Apo-Digitar 35mm f/5.6 XL', base:['RS0, B6.4', 'RS0, B7', 'RS0, B7.25', 'RS0, B7.5'], spacer:['none', 'none', 'none', 'none'], bolts:['W', 'W', 'none', 'none'], subj_dist:[300, 16, 9, 4.5], f_22:['4 - INF', '3.25 - INF', '3 - INF', '2.25 - INF'], f_16:['5.5 - INF', '4.25 - INF', '3.5 - INF', '2.5 - 21'], f_8:['11 -  INF', '7 - INF', '5 - 45', '3.2 - 7.5']},
     {id:'2', name:'SA 47mm f/5.6', base:['none', 'none', 'none', 'none'], spacer:['none', 'S1', 'S2', 'S3'], bolts:['10', '10', '10', '10'], subj_dist:['INF', 25, 12, 6.5], f_22:['7 - INF', '5.75 - INF', '4.5 - INF', '3.5 - 46'], f_16:['10 - INF', '6.5 - INF', '5.5 - INF', '4 - 12'], f_8:['20 -  INF', '12 - INF', '7.5 - 30', '5 - 9']},
@@ -38,7 +45,7 @@ const lensData = [
     {id:'30', name:'Wista Twin 130mm f/5.6 (FE40 + B8)', base:['FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8', 'FE40 + B8'], spacer:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'], bolts:['30', '30', '30/35W', '30/35W', '30/35W', '30/35W', '30/35W', '35W', '35W', '35W', '35W', '35W', '35W', '35W'], subj_dist:[7.5, 7, 6.5, 6.25, 6, 5.5, 5.5, 5, 5, 4.6, 4.5, 4.5, 4.25,4], f_22:['6.75 - 8.5', '6.25 - 8', '5.75 - 7.25',  '5.75 - 7', '5.5 - 6.75', '5 - 6', '5 - 6', '4.5 - 5.5', '4.5 - 5.5', '4.25 - 5', '4.25 - 4.75', '4.25 - 4.75' , '4 - 4.5', '3.75 - 4.25'], f_16:['6.75 - 8.25', '6.5 - 7.75', '6 - 7', '5.75 - 6.75', '5.5 - 6.5', '5.25 - 6', '5.25 - 6', '4.75 - 5.25', '4.75 - 5.25', '4.25 - 4.75', '4.25 - 4.75',  '4.25 - 4.75', '4 - 4.5', '3.75 - 4.25'], f_8:['7.25 - 8', '6.75 - 7.25', '6.25 - 6.75', '6 - 6.5', '5.75 - 6.25', '5.25 - 5.75', '5.25 - 5.75', '4.75 - 5.25', '4.75 - 5.25', '4.5 - 4.75', '4.4 - 4.6',  '4.4 - 4.6', '4.15 - 4.35', '3.9 - 4.1']},
 ];
 
-//Dictionary for selecting a lens name from drop down menu
+// Dictionary of key/value pairs for selecting a lens name from dropdown menu, sorted in order of focal length
 const lensName = [
     {key:'1', value:'Apo-Digitar 35mm f/5.6 XL'},
     {key:'2', value:'SA 47mm f/5.6'},
@@ -73,7 +80,7 @@ const lensName = [
 ];
 
 
-//Dictionary for the F-stop drop down menu
+// Dictionary of key/value pairs for the f-stop dropdown menu
 const fStops = [
     {key:'1', value:'F-22'},
     {key:'2', value:'F-16'}, 
@@ -81,61 +88,79 @@ const fStops = [
 ];
 
 
-// array of data based on lens selection -- used in further calculations for results
+// Arrays of data pulled from lensData based on the lens name that is selected -- used in further calculations for results.
 var baseArray = [];
 var spacerArray = [];
 
-// array of data based on lens selection -- only used for displaying results
+// Arrays of data pulled from lensData based on the lens name that is selected -- only used for displaying results.
 var boltArray = [];
 var subjDistArray = [];
 var f22Array = [];
 var f16Array = [];
 var f8Array = [];
 
-// array of objects used for dropdown menus -- initialize within function so length is always reset to 0
+// Array/dictionary of key/value pair objects used for dropdown menus. They're initialized within the function so length is always reset to 0 when the page re-renders.
 var baseOptions;
 var spacerOptions;
 
+// Used when calculating the DOF to know which results to display, getting the index from either the selected base or selected spacer, depending on the lens.
 var overallIndex = 0;
 
+// Default DOF results. The actual result will be selected using the overallIndex (line 103) and the arrays declared above (lines 88 - 96)
 var boltResponse= "";
 var subjectDistResponse="";
 var f22Response="";
 var f16Response="";
 var f8Response="";
 
+// Default hyperfocal results.
 var minVal = 0;
 var hyperfocalSpacer = "";
 
 
 
-// DOF screen of app
-const DOFScreen = ({route, navigation}) => {
-    const [selectedIndex, setSelectedIndex] = React.useState(route.params.tab);
+// DOF screen of app -- the return of this component is what is exported
+const DOFScreen = ({route}) => {
+
+  // State variables used for storing data 
+
+    // State variable controlled by the segmented-control-tab to toggle between the DOF calculator and the hyperfocal calculator
+    const [selectedIndex, setSelectedIndex] = React.useState(route.params.tab); // Default value is parameter passed in from navigation from the home screen to load the correct tab
     const handleSingleIndexSelect = (index) => {
         setSelectedIndex(index);
         setShowDOFResult(false);
         setShowHyperfocalResult(false);
       };
 
+
+    // State variables to hold the selections used for calculating the DOF and hyperfocal. I'm not sure the default values need to be set? But it doesn't hurt to have them
     const [selectedLens, setSelectedLens] = React.useState('Apo-Digitar 35mm f/5.6 XL');
     const [selectedBase, setSelectedBase] = React.useState('RS0, B6.4'); 
     const [selectedSpacer, setSelectedSpacer] = React.useState('none');
     const [selectedFStop, setSelectedFStop] = React.useState('F-22');
 
-    // Want to include these to get rid of the option to select a base/spacer when there's only one option, but as soon as I try to use these it infinitely re - renders :/
+    // Want to include these state variables to get rid of the option to select a base/spacer when there's only one option, but as soon as I try to use these it infinitely re - renders :/
     //const [showBase, setShowBase] = React.useState(true);
     //const [showSpacer, setShowSpacer] = React.useState(true);
 
+    // Because state variables are asynchronous, sometimes it gets an update behind. This variable is incremented each time we want to "force" the screen to re-render with the most up-to-date information
     const [recalculateOptions, setRecalculateOptions] = React.useState(0);
+
+    // Depending on which result is being calculated, these state variables will be toggled to determine which results to show.
     const [showDOFResult, setShowDOFResult] = React.useState(false);
     const [showHyperfocalResult, setShowHyperfocalResult] = React.useState(false);
 
+
+    // Function(?) executed each time a new value is selected from the lens, base, spacer, (or f-stop? might be able to remove it from that one) dropdown menus to determine what values should be in the key/value pairs that are displayed in the other menus
     const handleSelections = (lensVal, baseVal) => {
 
+        //loop through every lens in the lensData array
         for(let i = 0; i < lensData.length; i++){
+
+          //if the name of the selected lens matches this row of lensData
           if(lensData[i].name.localeCompare(lensVal) == 0){
     
+            //take the data from lensData for the selected lens and store it in the arrays
             baseArray = lensData[i].base;
             spacerArray = lensData[i].spacer;
     
@@ -145,23 +170,27 @@ const DOFScreen = ({route, navigation}) => {
             f16Array = lensData[i].f_16;
             f8Array = lensData[i].f_8;
     
+            // initialize the arrays that will be used to store the key/value pairs to be displayed in the base and spacer dropdown menus
             baseOptions = [];
             spacerOptions = [];
     
+            // loop through all of the options for this lens
             for(let j = 0; j < baseArray.length; j++){    //using base array becuase it's the one I made first, but all of the arrays should be the same length so the choice is arbitrary
     
-              //next key for base key/value object pairs for drop down menu
+              // next key for base dropdown menu based on the current length of the array
               let baseKey = baseOptions.length + 1;
               baseKey = baseKey.toString();
     
-              //next key for spacer key/value object pairs for drop down menus 
+              // next key for spacer dropdown menu based on the current length of the array
               let spacerKey = spacerOptions.length + 1;
               spacerKey = spacerKey.toString();
-    
+
+              // assume that the next value will be a valid addition to the key/value pairs
               let validBaseVal = true;
               let validSpacerVal = true;
     
-              //look through current menu of base options, if the current value from baseArray is already included, set valid to false so it isn't included twice
+
+              // look through current dropdown menu of base options. if the current value from baseArray is already included, set valid to false so it isn't included twice
               for (let k = 0; k < baseOptions.length; k++){
                 if(baseOptions[k].value == baseArray[j]){
                   validBaseVal = false;
@@ -169,243 +198,271 @@ const DOFScreen = ({route, navigation}) => {
                 }
               }
     
-              //if the index currently being evaluated doesn't match the selected base, set valid to false so the only spacers included belong to the currently selected base
+              // for a spacer to be valid, it must be listed with the currently selected base. if not, set valid to false
               if(baseArray[j].localeCompare(baseVal) != 0){
                 validSpacerVal = false;
               }
     
-              //add base at this index from master data to base options
+              // if the current base is valid, add the key/value pair to the array of options for the dropdown menu
               if(validBaseVal){
                 baseOptions.push({key: baseKey, value: baseArray[j]});
               }
     
-              //add spacer at this index to spacer options
+              // if the current spacer is valid, add the key/value pair to the array of options for the dropdown menu
               if(validSpacerVal){
                 spacerOptions.push({key: spacerKey, value: spacerArray[j]});
               }
     
             }
-    
+
+            // once we have found the selected lens, there is no need to check all of the other lenses in the for-loop
+            break;
           }
         }
 
     }    
     
-      const calculateDOF = () =>{
+    // Function (?) called when the user presses the button to calculate the DOF given their lens, base, and spacer selections
+    const calculateDOF = () =>{
 
-        setShowDOFResult(true);
-        setShowHyperfocalResult(false);
-        setRecalculateOptions(recalculateOptions + 1);
+      // Set the state variables so that the proper results will be displayed/updated
+      setShowDOFResult(true);
+      setShowHyperfocalResult(false);
+      setRecalculateOptions(recalculateOptions + 1);
 
 
-        let spacerVal = selectedSpacer;
-        let baseVal = selectedBase;
-        
-        //have to find which index from master data has been selected to know which results to display
+      // Local variables to use in the calculation because state variables are read-only so sometimes the code doesn't like you using them
+      let spacerVal = selectedSpacer;
+      let baseVal = selectedBase;
+      
+      // Have to find which index from lensData has been selected to know which results to display
+      // If there are multiple bases for a lens, the index will be based on the base selected. Otherwise, the index will be based on the spacer that is selected
 
-        //if spacer is 'none'
-        if(spacerVal.localeCompare('none') != 0){
-          for(let i = 0; i < spacerOptions.length; i++){
-            if(spacerOptions[i].value.localeCompare(spacerVal) == 0){
-              overallIndex = i;
-              break;
-            }
+
+      // if spacer isn't 'none' (which is most of the time), then the overall index will be whatever index was selected from the spacer options
+      if(spacerVal.localeCompare('none') != 0){
+        for(let i = 0; i < spacerOptions.length; i++){
+          if(spacerOptions[i].value.localeCompare(spacerVal) == 0){
+            overallIndex = i;
+            break;
           }
         }
-        else {
-          for(let i = 0; i < baseOptions.length; i++){
-            if(baseOptions[i].value.localeCompare(baseVal) == 0){
-              overallIndex = i;
-              break;
-            }
-          }
-        }
-        
-        boltResponse = boltArray[overallIndex];
-        subjectDistResponse = subjDistArray[overallIndex];
-        f22Response = f22Array[overallIndex];
-        f16Response = f16Array[overallIndex];
-        f8Response = f8Array[overallIndex];
-    
       }
-    
-    
-      const calculateHyperfocal = () =>{
-
-        setShowDOFResult(false);
-        setShowHyperfocalResult(true);
-        setRecalculateOptions(recalculateOptions + 1);
-    
-        let lensVal = selectedLens;
-        let fStopVal = selectedFStop;
-        let fStopArray = [];
-        let spacerArray = [];
-        //let baseArray = [];
-    
-        for(let i = 0; i < lensData.length; i++){
-          if(lensData[i].name.localeCompare(lensVal) == 0){
-    
-            spacerArray = lensData[i].spacer;
-            base = lensData[i].base;
-    
-            if(fStopVal.localeCompare('F-22')){
-              fStopArray = lensData[i].f_22;
-            }
-            else if(fStopVal.localeCompare('F-16')){
-              fStopArray = lensData[i].f_16; 
-            }
-            else {
-              fStopArray = lensData[i].f_8;
-            }
+      // if the spacer is 'none', then the overall index will be whatever index was selected from the base options
+      else {
+        for(let i = 0; i < baseOptions.length; i++){
+          if(baseOptions[i].value.localeCompare(baseVal) == 0){
+            overallIndex = i;
+            break;
           }
         }
-    
-        let currMinVal = 100000;
-        hyperfocalSpacer = '';
-    
-        for(let i = 0; i < fStopArray.length; i++){
-          if(fStopArray[i].includes('INF')){
-            //console.log(fStopArray[i]);
-    
-            let focalRangeArray = fStopArray[i].split(' - ');
-            let focalMin = parseFloat(focalRangeArray[0]);
-            //console.log(minVal);
-    
-            if(focalMin < currMinVal){
-              //console.log(focalMin + ' ' + minVal);
-              currMinVal = focalMin;
-              minVal = fStopArray[i];
-              hyperfocalSpacer = spacerArray[i];
-            }
-          }
-        }
-    
       }
+
+      // save the DOF results using the overallIndex to select the value from the array
+      boltResponse = boltArray[overallIndex];
+      subjectDistResponse = subjDistArray[overallIndex];
+      f22Response = f22Array[overallIndex];
+      f16Response = f16Array[overallIndex];
+      f8Response = f8Array[overallIndex];
+  
+    }
+  
+    // Function (?) called when the user presses the button to calculate the hyperfocal given their lens and f-stop selections
+    const calculateHyperfocal = () =>{
+
+      // Set the state variables so that the proper results will be displayed/updated
+      setShowDOFResult(false);
+      setShowHyperfocalResult(true);
+      setRecalculateOptions(recalculateOptions + 1);
+  
+      // Local variables for calculating results so that sate variables aren't being messed with 
+      let lensVal = selectedLens;
+      let fStopVal = selectedFStop;
+      let fStopArray = [];
+      let spacerArray = []; // I know spacer array already exists, but it's undefined within this scope so I know this exists for a reason, even if I can't remember why it works like this anymore
+
+
+      // Go through all of the lensData to find the data for the selected lens
+      for(let i = 0; i < lensData.length; i++){
+        if(lensData[i].name.localeCompare(lensVal) == 0){
+  
+          // Save the spacer data for the selected lens
+          // MAY WANT TO EDIT THIS TO INCLUDE THE BASE DATA AS WELL
+          spacerArray = lensData[i].spacer;
+  
+          // Save the correct array of DOF values for the selected f-stop
+          if(fStopVal.localeCompare('F-22') == 0){
+            fStopArray = lensData[i].f_22;
+          }
+          else if(fStopVal.localeCompare('F-16') == 0){
+            fStopArray = lensData[i].f_16; 
+          }
+          else {
+            fStopArray = lensData[i].f_8;
+          }
+
+          // Once the correct lens has been looked thorugh, there is no need to go through the rest of the for-loop
+          break;
+        }
+      }
+  
+      // Create a local variable to compare the f-stop values to in order to find the minimum near value
+      let currMinVal = 100000;
+      // Reset result spacer to an empty string
+      hyperfocalSpacer = '';
+  
+      // Go through array of DOFs for the selected f-stop to find the one with the smallest 'near' distance that has a 'far' distance of infinity (INF)
+      for(let i = 0; i < fStopArray.length; i++){
+
+        // Check if the current string includes 'INF'
+        if(fStopArray[i].includes('INF')){
+          //console.log(fStopArray[i]);
+  
+          // Split the string into an array to isolate the 'near' distance to compare
+          let focalRangeArray = fStopArray[i].split(' - ');
+          // Parse the 'near' distance as a float so it can be numerically compared
+          let focalMin = parseFloat(focalRangeArray[0]);
+          //console.log(minVal);
+  
+          // If the near vlue is less than the curerntly stored minimum value, update the minimum distance for comparison, and save the DOF and its associated spacer (OR BASE????) for the results
+          if(focalMin < currMinVal){
+            //console.log(focalMin + ' ' + minVal);
+            currMinVal = focalMin;
+            minVal = fStopArray[i];
+            hyperfocalSpacer = spacerArray[i];
+          }
+        }
+      }
+  
+    }
     
-      
-      return(
-        <SafeAreaView style={dofStyle.container}>
-          <ScrollView>
-            {/*page title*/}
-            {selectedIndex == 0 &&(<Text style={dofStyle.textTitle} accessible={true} accessibilityLabel="Depth of field calculator" accessibilityRole="text">DOF Calculator</Text>)}
-            {selectedIndex == 1 &&(<Text style={dofStyle.textTitle} accessible={true} accessibilityLabel="Hyperfocal calculator" accessibilityRole="text">Hyperfocal Calculator</Text>)}
-      
-            {/*Tabs for selecting what fields will be shown based on what the desired calculation is*/}
-            <SegmentedControlTab
-              values={['Depth of Field', 'Hyperfocal']}
-              selectedIndex={selectedIndex}
-              onTabPress={handleSingleIndexSelect}
-              tabsContainerStyle={{
-                margin: 10,
-                width: 300,
-                height: 40,
-                alignSelf: 'center',
-              }}
-              tabStyle={{
-                backgroundColor: 'gray',
-                borderColor: 'black',
-              }}
-              tabTextStyle={{
-                color: 'white'
-              }}
-              activeTabStyle={{
-                backgroundColor: 'white',
-                borderColor: 'white'
-              
-              }}
-              activeTabTextStyle={{
-                color: 'black'
-              }}
-              accessible={true}
-              accessibilityLabels={['depth of field', 'hyperfocal']}
-            />
-      
-      {/*Dropdown menu for selecting which lens is being used*/}
-            <Text style={dofStyle.text} accessible={true} accessibilityLabel="Select lens" accessibilityRole="text">Select lens:</Text>
-            <SelectList 
-              setSelected={(val) => setSelectedLens(val)}
-              data= {lensName}
-              save="value"
-              onSelect={handleSelections(selectedLens, selectedBase)}
-              dropdownTextStyles={{color:'white'}}
-              inputStyles={{color:'white'}}
-              accessible={true}
-              accessibilityHint="A searchable drop down menu to select a lens option"
-            />
-      
-      {/*Dropdown menu for selecting which base is being used*/}
-            {selectedIndex==0 && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Select base" accessibilityRole="text">Select base:</Text>)}
-            {selectedIndex==0 && (<SelectList 
-              setSelected={(val) => setSelectedBase(val)}
-              data= {baseOptions}
-              save="value"
-              onSelect={handleSelections(selectedLens, selectedBase)}
-              dropdownTextStyles={{color:'white'}}
-              inputStyles={{color:'white'}}
-              accessible={true}
-              accessibilityHint="A searchable drop down menu to select a base option"
-            />)}
-      
-        {/*Dropdown menu for selecting which spacer is being used*/}
-            {selectedIndex==0 && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Select focal spacer" accessibilityRole="text">Select focal spacer:</Text>)}
-            {selectedIndex==0 && (<SelectList
-              setSelected={(val) => setSelectedSpacer(val)}
-              data= {spacerOptions}
-              save="value"
-              onSelect={handleSelections(selectedLens, selectedBase)}
-              dropdownTextStyles={{color:'white'}}
-              inputStyles={{color:'white'}}
-              accessible={true}
-              accessibilityHint="A searchable drop down menu to select a focal spacer option"
-            />)}
-      
-        {/*Dropdown menu for selesting f-stop for hyperfocus*/}
-            {selectedIndex==1 && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Select f-stop" accessibilityRole="text">Select f-stop:</Text>)}
-            {selectedIndex==1 && (<SelectList
-              setSelected={(val) => setSelectedFStop(val)}
-              data={fStops}
-              save="value"
-              onSelect={handleSelections(selectedLens, selectedBase)}
-              dropdownTextStyles={{color:'white'}}
-              inputStyles={{color:'white'}}
-              accessible={true}
-              accessibilityHint="A searchable drop down menu to select an F-stop option"
-            />)}
-      
-      
-            {selectedIndex==0 && (<View style={dofStyle.button} accessible={true} accessibilityLabel="Calculate depth of field" accessibilityHint="Press to show the results of the DOF calculation, will not switch to a different screen" accessibilityRole="button">
-              {selectedIndex==0 && (<Button 
-                title= "Calculate DOF"
-                //onPress={() => navigation.push("DOFScreen", {lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer})}
-                onPress={() => calculateDOF()}
-                color="#000000"
-              />)}
-            </View>)}
-      
-            {selectedIndex==1 && (<View style={dofStyle.button} accessible={true} accessibilityLabel="Calculate hyperfocal" accessibilityHint="Press to show the results of the hyperfocal calculation, will not switch to a different screen" accessibilityRole="button">
-              {selectedIndex==1 && (<Button 
-                title= "Calculate Hyperfocal"
-                //onPress={() => navigation.push("DOFScreen", {lensName: selectedLens, baseName: selectedBase, spacerName: selectedSpacer})}
-                onPress={() => calculateHyperfocal()}
-                color="#000000"
-              />)}
-            </View>)}
-      
-            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accesibilityLabel="Bolt result" accessibiltyRole="text">Bolts:  {boltResponse}</Text>)}
-            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Focal distance result" accessibilityRole="text">Focal Distance:  {subjectDistResponse} ft</Text>)}
 
-            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>-------------------------------------</Text>)}
+    // The return statement contains the contents displayed on the screen that the user interacts with  
+    return(
+      <SafeAreaView style={dofStyle.container}>
+        <ScrollView>
+          {/*Page titles -- the one displayed depends on the value of the state variable controlled by the segmented control tab*/}
+          {selectedIndex == 0 &&(<Text style={dofStyle.textTitle} accessible={true} accessibilityLabel="Depth of field calculator" accessibilityRole="text">DOF Calculator</Text>)}
+          {selectedIndex == 1 &&(<Text style={dofStyle.textTitle} accessible={true} accessibilityLabel="Hyperfocal calculator" accessibilityRole="text">Hyperfocal Calculator</Text>)}
+    
+          {/*Segmented control tab for selecting what fields will be shown based on what the desired calculation is*/}
+          <SegmentedControlTab
+            values={['Depth of Field', 'Hyperfocal']}
+            selectedIndex={selectedIndex}
+            onTabPress={handleSingleIndexSelect}
+            tabsContainerStyle={{
+              margin: 10,
+              width: 300,
+              height: 40,
+              alignSelf: 'center',
+            }}
+            tabStyle={{
+              backgroundColor: 'gray',
+              borderColor: 'black',
+            }}
+            tabTextStyle={{
+              color: 'white'
+            }}
+            activeTabStyle={{
+              backgroundColor: 'white',
+              borderColor: 'white'
+            
+            }}
+            activeTabTextStyle={{
+              color: 'black'
+            }}
+            accessible={true}
+            accessibilityLabels={['depth of field', 'hyperfocal']}
+          />
+    
+    {/*Dropdown menu for selecting which lens is being used*/}
+          <Text style={dofStyle.text} accessible={true} accessibilityLabel="Select lens" accessibilityRole="text">Select lens:</Text>
+          <SelectList 
+            setSelected={(val) => setSelectedLens(val)} // update the state variable
+            data= {lensName}
+            save="value"
+            onSelect={handleSelections(selectedLens, selectedBase)} // update the values that should be displayed in the base and spacer dropdown menus
+            dropdownTextStyles={{color:'white'}}
+            inputStyles={{color:'white'}}
+            accessible={true}
+            accessibilityHint="A searchable drop down menu to select a lens option"
+          />
+    
+    {/*Dropdown menu for selecting which base is being used*/}
+          {selectedIndex==0 && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Select base" accessibilityRole="text">Select base:</Text>)}
+          {selectedIndex==0 && (<SelectList 
+            setSelected={(val) => setSelectedBase(val)} // update the state variable
+            data= {baseOptions}
+            save="value"
+            onSelect={handleSelections(selectedLens, selectedBase)} // update the values that should be displayed in the base and spacer dropdown menus
+            dropdownTextStyles={{color:'white'}}
+            inputStyles={{color:'white'}}
+            accessible={true}
+            accessibilityHint="A searchable drop down menu to select a base option"
+          />)}
+    
+      {/*Dropdown menu for selecting which spacer is being used*/}
+          {selectedIndex==0 && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Select focal spacer" accessibilityRole="text">Select focal spacer:</Text>)}
+          {selectedIndex==0 && (<SelectList
+            setSelected={(val) => setSelectedSpacer(val)} // update the state variable
+            data= {spacerOptions}
+            save="value"
+            dropdownTextStyles={{color:'white'}}
+            inputStyles={{color:'white'}}
+            accessible={true}
+            accessibilityHint="A searchable drop down menu to select a focal spacer option"
+          />)}
+    
+      {/*Dropdown menu for selesting f-stop for hyperfocal*/}
+          {selectedIndex==1 && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Select f-stop" accessibilityRole="text">Select f-stop:</Text>)}
+          {selectedIndex==1 && (<SelectList
+            setSelected={(val) => setSelectedFStop(val)} // update state variable 
+            data={fStops}
+            save="value"
+            dropdownTextStyles={{color:'white'}}
+            inputStyles={{color:'white'}}
+            accessible={true}
+            accessibilityHint="A searchable drop down menu to select an F-stop option"
+          />)}
+    
+    
+      {/*Button displayed when on the DOF tab, when pressed it executes the calculateDOF() function and displays the results*/}
+          {selectedIndex==0 && (<View style={dofStyle.button} accessible={true} accessibilityLabel="Calculate depth of field" accessibilityHint="Press to show the results of the DOF calculation, will not switch to a different screen" accessibilityRole="button">
+            {selectedIndex==0 && (<Button 
+              title= "Calculate DOF"
+              onPress={() => calculateDOF()}
+              color="#000000"
+            />)}
+          </View>)}
+    
+     {/*Button displayed when on the hyperfocal tab, when pressed it executes the calculateHyperfocal() function and displays the results*/}
+          {selectedIndex==1 && (<View style={dofStyle.button} accessible={true} accessibilityLabel="Calculate hyperfocal" accessibilityHint="Press to show the results of the hyperfocal calculation, will not switch to a different screen" accessibilityRole="button">
+            {selectedIndex==1 && (<Button 
+              title= "Calculate Hyperfocal"
+              onPress={() => calculateHyperfocal()}
+              color="#000000"
+            />)}
+          </View>)}
 
-            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="F-22 depth of field result" accessibilityRole="text">F-22 DOF:  {f22Response} ft</Text>)}
-            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="F-16 depth of field result" accessibilityRole="text">F-16 DOF:  {f16Response} ft</Text>)}
-            {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="F-8 depth of field result" accessibilityRole="text">F-8 DOF:  {f8Response} ft</Text>)}
-      
-            {selectedIndex==1 && showHyperfocalResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Hyperfocal distance result" accessibilityRole="text">Hyperfocal Distance:  {minVal} ft</Text>)}
-            {selectedIndex==1 && showHyperfocalResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Spacer result" accessibilityRole="text">Spacer:  {hyperfocalSpacer}</Text>)}
+      {/*Results for both DOF and Hyperfocal -- will be displayed when their respective tab has been selected and their respective showResults variable has been set to true.*/}
 
-          </ScrollView>
-        </SafeAreaView>
-      )
+          {/*DOF Results */}
+          {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accesibilityLabel="Bolt result" accessibiltyRole="text">Bolts:  {boltResponse}</Text>)}
+          {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Focal distance result" accessibilityRole="text">Focal Distance:  {subjectDistResponse} ft</Text>)}
+
+          {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>-------------------------------------</Text>)}
+
+          {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="F-22 depth of field result" accessibilityRole="text">F-22 DOF:  {f22Response} ft</Text>)}
+          {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="F-16 depth of field result" accessibilityRole="text">F-16 DOF:  {f16Response} ft</Text>)}
+          {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="F-8 depth of field result" accessibilityRole="text">F-8 DOF:  {f8Response} ft</Text>)}
+    
+          {/*Hyperfocal Results */}
+          {selectedIndex==1 && showHyperfocalResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Hyperfocal distance result" accessibilityRole="text">Hyperfocal Distance:  {minVal} ft</Text>)}
+          {selectedIndex==1 && showHyperfocalResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Spacer result" accessibilityRole="text">Spacer:  {hyperfocalSpacer}</Text>)}
+
+        </ScrollView>
+      </SafeAreaView>
+    )
     
 
 }
@@ -413,17 +470,20 @@ const DOFScreen = ({route, navigation}) => {
 
 //Style sheet for the depth of field calculator page
 const dofStyle = StyleSheet.create({
+    // Page background
     container: {
       flex: 1,
       backgroundColor: 'black',
       justifyContent: 'tops',
     },
+    // Title text of page
     textTitle: {
         color: 'white',
         margin: 5,
         fontSize: 40,
         textAlign: 'center',
       },
+    // Body text on page
     text: {
       color: 'white',
       margin: 8,
@@ -432,6 +492,7 @@ const dofStyle = StyleSheet.create({
       textAlign: 'left',
       alignSelf: 'flex-start',
     },
+    // Used to style the views around the buttons because buttons have very limited styling that can be done directly on them
     button: {
       backgroundColor: 'white',
       padding: 5,

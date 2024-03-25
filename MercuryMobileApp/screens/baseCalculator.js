@@ -1,12 +1,18 @@
+// See README.md for information about this file and how to make updates
+
+// NECESSARY UPDATES: CHANGE THE UNITS SELECTION TO SEPARATE THE INPUT AND DISPLAYING THE RESULTS. ALSO WANT TO MESS AROUND WITH SPACING/LAYOUT SO THAT RESULTS ARE NOT JUST OFF SCREEN
+
 import * as React from 'react';
 import { StyleSheet, View , Text, SafeAreaView, TextInput, Button, ScrollView } from 'react-native';
 
+// Special imports for this file, see README for links with more information about them
 import { SelectList } from 'react-native-dropdown-select-list'; 
 import RadioGroup from 'react-native-radio-buttons-group';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 
-//Dictionary for selecting a lens name from drop down menu
+// Dictionary for selecting a lens name from drop down menu, organized by focal length
+// NOTE: SOME OF THESE LENSES AND HOW THEY ARE REFERRED TO IS DIFFERENT FROM THE DOF CALCULATOR. DO NOT COPY AND PASTE BETWEEN THE TWO FILES
 const lensName = [
     {key:'1', value:'Super-Angulon 47mm f/5.6'},
     {key:'2', value:'Apo-Digitar 35mm f/5.6 XL'},
@@ -46,6 +52,7 @@ const lensName = [
     {key:'36', value:'Mamiya Selor 135mm f/3.5 (TLR)'},
 ];
 
+// Dictionary for selecting the units used to enter the distances (AND DISPLAY RESULTS -- MAY WANT TO MAKE THEM TWO SEPARATE CALCULATIONS)
 const unitList = [
     {key:'1', value:'feet'},
     {key:'2', value:'inches'},
@@ -53,6 +60,7 @@ const unitList = [
     {key:'4', value:'millimeters'},
 ];
 
+// Array of the lenses with their respective focal lengths (mm)
 const focalLength = [
     {lens:'Super-Angulon 47mm f/5.6', focal: 24},
     {lens:'Apo-Digitar 35mm f/5.6 XL', focal: 24},
@@ -92,19 +100,22 @@ const focalLength = [
     {lens:'Mamiya Selor 135mm f/3.5 (TLR)', focal: 80},
 ]
 
+// Default base distance value; used for results
 var baseDist = 0;
 
-
+// Exported component
 const BaseScreen = () => {
 
-    const [selectedLens, setSelectedLens] = React.useState('');
-    const [units, setUnits] = React.useState('feet');
-    const [nearDist, setNearDist] = React.useState('0');
-    const [farDistIndex, setFarDistIndex] = React.useState('0');
-    const [farDist, setFarDist] = React.useState('0');
-    const [showResults, setShowResults] = React.useState(false);
-    const [calculate, setCalculate] = React.useState(0);
+    // State variables for saving information and updating the screen
+    const [selectedLens, setSelectedLens] = React.useState('');     // Name of the selected lens
+    const [units, setUnits] = React.useState('feet');               // Selected units, default is feet
+    const [nearDist, setNearDist] = React.useState('0');            // Near subject distance, default is 0
+    const [farDistIndex, setFarDistIndex] = React.useState('0');    // Radio button index for the far subject distance; 0 is INF, 1 allows the user to enter a number
+    const [farDist, setFarDist] = React.useState('0');              // Numeric far subject distance, if the user selects to enter one
+    const [showResults, setShowResults] = React.useState(false);    // Controls whether or not to display results
+    const [calculate, setCalculate] = React.useState(0);            // Incremented to "force" the page to update/recalculate results whenever changes are made
 
+    // Creates the radio buttons where users select a far subject distance (INF or a custom numeric value)
     const radioButtons = React.useMemo(() => ([
         {
             id: '1', // acts as primary key, should be unique and non-empty string
@@ -130,20 +141,21 @@ const BaseScreen = () => {
         }
     ]), []);
 
+    // Function to calculate the base distance given the lens (determines focal length), near subject distance, and far subject distance
     const calculateBaseDist = () => {
 
-        //show results when calculated
+        // Set state variables to show/update results when calculated
         setShowResults(true);
         setCalculate(calculate + 1);
 
-        //assign variables for calculation
+        // Assign variables for calculation
         let p = 3;
 
-        let n = parseFloat(nearDist);
-        let lessThan12 = false;
+        let n = parseFloat(nearDist);   // Make variable numeric
+        let lessThan12 = false;     // Assume it is farther than 12in by default
 
-        let l = 0;
-        //far distance is either number or INF
+        let l = 0;  // Create variable for far subject distance
+        // The far subject distance is either a number or INF -- assign it accordingly
         if(farDistIndex.localeCompare('1') == 0){
             l = 'INF';
         }
@@ -151,14 +163,17 @@ const BaseScreen = () => {
             l = parseFloat(farDist);
         }
 
-        let f = 0;
+        let f = 0;      // Create focal distance variable
+        // Use the selected lens to assign the correct focal distance
         for (let i = 0; i < focalLength.length; i ++){
             if(focalLength[i].lens.localeCompare(selectedLens) == 0){
                 f = parseInt(focalLength[i].focal);
             }
         }
 
-        //convert distances to millimeters to use in calculation
+        // Convert distances to millimeters to use in calculation
+        /* I couldn't find anywhere that confirmed that this was the correct thing to do, but given that the focal length
+           is alwasy in mm it makes sense to me? And when I didn't do it, I would end up getting results with negative numbers, so... */
         if(units.localeCompare('feet') == 0){
             n = n * 304.8;
             if(!isNaN(l)){
@@ -178,13 +193,13 @@ const BaseScreen = () => {
             }
         }
 
-        //check if n < 12 inches
+        // Check if n < 12 inches, will be a factor in the chosen formula
         if ( (n/25.4) < 12 ){
             lessThan12 = true;
         }
 
 
-        //if n < 12 --> use Wattie and Bercovitz, return the smaller number
+        // If n < 12in and l is a number --> use Wattie and Bercovitz, return the smaller number
         if ((!isNaN(l)) && lessThan12){
             let wattieB = n * 0.9;
             let berkovitzB = p * ((l * n)/(l - n)) * ((1 / f) - ((l + n) / (2 * l * n)));
@@ -195,22 +210,26 @@ const BaseScreen = () => {
                 baseDist = berkovitzB;
             }
         }
+        // Else if n < 12in and l is not a number (INF) --> use Wattie
         else if ((isNaN(l)) && (n < 12)){
             baseDist = n * 0.9;
         }
+        // Else if l is a number, but it is less than 2*n
         else if ((!isNaN(l)) && (l < 2*n)){
             l = 2 * n;
             baseDist = p * ((l * n)/(l - n)) * ((1 / f) - ((l + n) / (2 * l * n)));
         }
+        // Else if l is INF
         else if (isNaN(l)){
             baseDist = p * ((n / f) - 0.5);
         }
+        // Every other case
         else{
             baseDist =  p * ((l * n)/(l - n)) * ((1 / f) - ((l + n) / (2 * l * n)));
         }
        
 
-        //convert result back to desired units
+        // Convert result back to desired units (MIGHT BE CHANGING THIS)
         if(units.localeCompare('feet') == 0){
             baseDist = baseDist / 304.8;
         }
@@ -221,19 +240,22 @@ const BaseScreen = () => {
             baseDist = baseDist / 25.4;
         }
 
-
+        // Round the results to 2 decimal places
         baseDist = baseDist.toFixed(2);
 
     }
 
     return (
         <SafeAreaView style={baseStyle.container}>
-            <KeyboardAwareScrollView>
+            <KeyboardAwareScrollView>   {/*Use KeyboardAware because there are some text inputs where the keyboard would otherwise cover the input */}
+
+                {/*Page title and instructions */}
                 <Text style={baseStyle.textTitle} accessible={true} accessibilityLabel="Base distance calculator" accessibilityRole="text">Base Distance Calculator</Text>
                 <Text style={baseStyle.text} accessible={true} accessibilityLabel="This tool calculates the ideal base distance (distance between the stereo lenses) depending on the distance to your subject(s).  This is for medium format 6x6 photography. Use it for very close and very distant subjects." accessibilityRole="text">
                     This tool calculates the ideal base distance (distance between the stereo lenses) depending on the distance to your subject(s). This is for medium format 6x6 photography. Use it for very close and very distant subjects.
                 </Text>
 
+                {/*Dropdown menu to select the lens (will determine the focal length for calculations*/}
                 <Text style={baseStyle.text} accessible={true} accessibilityLabel="Select lens" accessibilityRole="text">Select lens:</Text>
                 <SelectList 
                     setSelected={(val) => setSelectedLens(val)}
@@ -245,7 +267,7 @@ const BaseScreen = () => {
                     accessibilityLabel="A searchable dropdown menu to select a lens to calculate the base distance for"
                 />
 
-
+                {/*Dropdown menu to select the units that the user will use for their input and to display results*/}
                 <Text style={baseStyle.text} accessible={true} accesssibilityLabel="Select units" accessibilityRole="text">Select units:</Text>
                 <SelectList 
                     setSelected={(val) => setUnits(val)}
@@ -257,6 +279,7 @@ const BaseScreen = () => {
                     accessibilityLabel="A searchable dropdown menu to select the units to enter distances in and display results"
                 />
 
+                {/*A numeric-only text input for users to enter a custom near subject distance value*/}
                 <Text style={baseStyle.text} accessible={true} accessibilityLabel="Near subject distance" accessibilityRole="text">Near subject distance:</Text>
                 <View style={baseStyle.contentBlock}>
                     <TextInput
@@ -275,7 +298,7 @@ const BaseScreen = () => {
                 </View>
                 
 
-
+                {/*Radio buttons and a text input where users can select/enter their far subject distance value. If the INF radio button is selected, the text input is disabled.*/}
                 <Text style={baseStyle.text} accessible={true} accessibilityLabel="Far subject distance" accessibilityRole="text">Far subject distance:</Text>  
 
                 <RadioGroup 
@@ -305,7 +328,7 @@ const BaseScreen = () => {
                      <Text style={baseStyle.text}>{units}</Text>
                 </View>
             
-
+                {/*Button to click to calculate/show results*/}
                 <View style={baseStyle.button} accessible={true} accessibilityLabel="Click to show the calculated base distance results, will not change to a different screen" accessibilityRole="button">
                     <Button 
                         title= "Calculate Base Distance"
@@ -314,6 +337,7 @@ const BaseScreen = () => {
                     />
                 </View>
 
+                {/*Results -- currently they appear just off-screen when they are calculated, may want to update some spacing to make it more clear that a user must scroll to see them?*/}
                 {showResults && (<Text style={baseStyle.textResult} accessible={true} accessibilityLabel="stereo base results" accessibilityRole="text">Stereo base:  {baseDist} {units}</Text>)}
 
             </KeyboardAwareScrollView>
@@ -321,7 +345,7 @@ const BaseScreen = () => {
     )
 }
 
-
+// Stylesheet for the base calculator screen
 const baseStyle = StyleSheet.create({
     container: {
       flex: 1,

@@ -1,26 +1,32 @@
+// See README.md for information about this file and how to make updates
+
+// NECESSARY UPDATES: THIS FILE IS INCOMPLETE, AND THE USER GUIDE IS STILL IN THE PROCESS OF BEING UPDATED.
+
 import * as React from 'react';
 import { StyleSheet, View , Text, SafeAreaView, TextInput, Button, ScrollView, Modal, Image, Pressable} from 'react-native';
 
+// Special imports for this file, see README for links with more information about them
 import {wrapScrollView, useScrollIntoView,} from 'react-native-scroll-into-view';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-//NOTE: As this is a long document, the paragraphs and images have been numbered in comments below for ease of jumping to a specific paragraph to make updates.The numbers for the paragraphs reset with 
-//each heading in the table of contents. The image count is cumultive to keep it consistent with the variable names. 
+/*NOTE: As this is a long document, the paragraphs and images have been numbered in comments below for ease of jumping to a specific paragraph to make updates.
+        The numbers for the paragraphs reset with each heading in the table of contents. The image count is cumultive to keep it consistent with the variable names. */
 
 
+// Custom component which allows for referencing farther down the page with the table of contents and automatically scrolling to it
 const CustomScrollView = wrapScrollView(ScrollView);
 
 const UserGuideContent = () => {
-    const scrollIntoView = useScrollIntoView();
+    const scrollIntoView = useScrollIntoView(); // Function called when scrolling to specific spot of the page
 
-    //references for jumping down page from table of contents
+    // References for jumping down page from table of contents -- each reference is a section from the table of contents
     const introRef = React.useRef();
     const partIRef = React.useRef();
     const gettingToKnowRef = React.useRef();
     const lensOptionsRef = React.useRef();
     const electronicLensRef = React.useRef();
 
-    //image objects, created in the order they come up in the user guide
+    // Image objects, created in the order they come up in the User Guide
     const image1 = [{
         url: '',
         width: 300,
@@ -48,8 +54,8 @@ const UserGuideContent = () => {
         }
     }]
 
-    //state variable for Modals, which will be used to open and close the images
-    //default is false because the modals should start closed
+    // State variables for modals, which will be used to open and close the images; each image has its own modal 
+    // Default value is false because the modals should start closed
     const [modal1Visible, setModal1Visible] = React.useState(false);
     const [modal2Visible, setModal2Visible] = React.useState(false);
     const [modal3Visible, setModal3Visible] = React.useState(false);
