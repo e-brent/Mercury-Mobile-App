@@ -108,15 +108,15 @@ const BaseScreen = () => {
 
     // State variables for saving information and updating the screen
     const [selectedLens, setSelectedLens] = React.useState('');     // Name of the selected lens
-    const [units, setUnits] = React.useState('feet');               // Selected units, default is feet
+    const [units, setUnits] = React.useState('feet');               // id of selected radio button for units, used for claculations and updating display
     const [nearDist, setNearDist] = React.useState('0');            // Near subject distance, default is 0
-    const [farDistIndex, setFarDistIndex] = React.useState('0');    // Radio button index for the far subject distance; 0 is INF, 1 allows the user to enter a number
+    const [farDistIndex, setFarDistIndex] = React.useState('0');    // Radio button index for the far subject distance; 1 is INF, 2 allows the user to enter a number
     const [farDist, setFarDist] = React.useState('0');              // Numeric far subject distance, if the user selects to enter one
     const [showResults, setShowResults] = React.useState(false);    // Controls whether or not to display results
     const [calculate, setCalculate] = React.useState(0);            // Incremented to "force" the page to update/recalculate results whenever changes are made
 
     // Creates the radio buttons where users select a far subject distance (INF or a custom numeric value)
-    const radioButtons = React.useMemo(() => ([
+    const distRadioButtons = React.useMemo(() => ([
         {
             id: '1', // acts as primary key, should be unique and non-empty string
             label: 'INF',
@@ -141,8 +141,59 @@ const BaseScreen = () => {
         }
     ]), []);
 
+    // Creates the radio buttons where users select their desired units for entering subject distances
+    const unitsRadioButtons = React.useMemo(() => ([
+        {
+            id: 'feet', // acts as primary key, should be unique and non-empty string
+            label: 'feet',
+            value: 'feet',
+            color: '#ffffff',
+            labelStyle: {textAlign:'left', color: '#ffffff'},
+            containerStyle: {alignSelf: 'flex-start'},
+            accessible: true,
+            accessibilityLabel: 'feet',
+            accessibilityRole: 'radio',
+        },
+        {
+            id: 'inches', // acts as primary key, should be unique and non-empty string
+            label: 'inches',
+            value: 'inches',
+            color: '#ffffff',
+            labelStyle: {textAlign:'left', color: '#ffffff'},
+            containerStyle: {alignSelf: 'flex-start'},
+            accessible: true,
+            accessibilityLabel: 'inches',
+            accessibilityRole: 'radio'
+        },
+        {
+            id: 'meters', // acts as primary key, should be unique and non-empty string
+            label: 'meters',
+            value: 'meters',
+            color: '#ffffff',
+            labelStyle: {textAlign:'left', color: '#ffffff'},
+            containerStyle: {alignSelf: 'flex-start'},
+            accessible: true,
+            accessibilityLabel: 'meters',
+            accessibilityRole: 'radio'
+        },
+        {
+            id: 'millimeters', // acts as primary key, should be unique and non-empty string
+            label: 'millimeters',
+            value: 'millimeters',
+            color: '#ffffff',
+            labelStyle: {textAlign:'left', color: '#ffffff'},
+            containerStyle: {alignSelf: 'flex-start'},
+            accessible: true,
+            accessibilityLabel: 'millimeters',
+            accessibilityRole: 'radio'
+        },
+    ]), []);
+
+
     // Function to calculate the base distance given the lens (determines focal length), near subject distance, and far subject distance
     const calculateBaseDist = () => {
+
+        console.log(unitsIndex);
 
         // Set state variables to show/update results when calculated
         setShowResults(true);
@@ -228,18 +279,6 @@ const BaseScreen = () => {
             baseDist =  p * ((l * n)/(l - n)) * ((1 / f) - ((l + n) / (2 * l * n)));
         }
        
-
-        // Convert result back to desired units (MIGHT BE CHANGING THIS)
-        if(units.localeCompare('feet') == 0){
-            baseDist = baseDist / 304.8;
-        }
-        else if (units.localeCompare('meters') == 0){
-            baseDist = baseDist / 1000;
-        }
-        else if (units.localeCompare('inches') == 0){
-            baseDist = baseDist / 25.4;
-        }
-
         // Round the results to 2 decimal places
         baseDist = baseDist.toFixed(2);
 
@@ -247,7 +286,8 @@ const BaseScreen = () => {
 
     return (
         <SafeAreaView style={baseStyle.container}>
-            <KeyboardAwareScrollView>   {/*Use KeyboardAware because there are some text inputs where the keyboard would otherwise cover the input */}
+            {/*Use KeyboardAware because there are some text inputs where the keyboard would otherwise cover the input */}
+            <KeyboardAwareScrollView>   
 
                 {/*Page title and instructions */}
                 <Text style={baseStyle.textTitle} accessible={true} accessibilityLabel="Base distance calculator" accessibilityRole="text">Base Distance Calculator</Text>
@@ -267,16 +307,16 @@ const BaseScreen = () => {
                     accessibilityLabel="A searchable dropdown menu to select a lens to calculate the base distance for"
                 />
 
-                {/*Dropdown menu to select the units that the user will use for their input and to display results*/}
+                {/*Group of radio buttons to select the units that the user will use for their subject distance input */}
                 <Text style={baseStyle.text} accessible={true} accesssibilityLabel="Select units" accessibilityRole="text">Select units:</Text>
-                <SelectList 
-                    setSelected={(val) => setUnits(val)}
-                    data= {unitList}
-                    save="value"
-                    dropdownTextStyles={{color:'white'}}
-                    inputStyles={{color:'white'}}
+                <RadioGroup 
+                    radioButtons={unitsRadioButtons} 
+                    onPress={setUnits}
+                    selectedId={units}
+                    containerStyle={baseStyle.radioButton}
                     accessible={true}
-                    accessibilityLabel="A searchable dropdown menu to select the units to enter distances in and display results"
+                    accessibilityRole="radiogroup"
+
                 />
 
                 {/*A numeric-only text input for users to enter a custom near subject distance value*/}
@@ -302,7 +342,7 @@ const BaseScreen = () => {
                 <Text style={baseStyle.text} accessible={true} accessibilityLabel="Far subject distance" accessibilityRole="text">Far subject distance:</Text>  
 
                 <RadioGroup 
-                    radioButtons={radioButtons} 
+                    radioButtons={distRadioButtons} 
                     onPress={setFarDistIndex}
                     selectedId={farDistIndex}
                     containerStyle={baseStyle.radioButton}
@@ -338,7 +378,7 @@ const BaseScreen = () => {
                 </View>
 
                 {/*Results -- currently they appear just off-screen when they are calculated, may want to update some spacing to make it more clear that a user must scroll to see them?*/}
-                {showResults && (<Text style={baseStyle.textResult} accessible={true} accessibilityLabel="stereo base results" accessibilityRole="text">Stereo base:  {baseDist} {units}</Text>)}
+                {showResults && (<Text style={baseStyle.textResult} accessible={true} accessibilityLabel="stereo base results" accessibilityRole="text">Stereo base:  {baseDist} mm</Text>)}
 
             </KeyboardAwareScrollView>
         </SafeAreaView>
