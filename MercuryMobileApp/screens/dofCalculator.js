@@ -10,6 +10,7 @@ import { StyleSheet, View , Text, SafeAreaView, Button, ScrollView } from 'react
 // Special imports for this file, see README for links with more information about them
 import { SelectList } from 'react-native-dropdown-select-list'; 
 import SegmentedControlTab from "react-native-segmented-control-tab";
+import RadioGroup from 'react-native-radio-buttons-group';
 
 //All lens data, sorted by focal length
 const lensData = [
@@ -114,8 +115,12 @@ var f16Response="";
 var f8Response="";
 
 // Default hyperfocal results.
-var minVal = 0;
+var hyperfocal = 0;
 var hyperfocalSpacer = "";
+var hyperfocalBase = "";
+
+// Units to use when displaying the results, updates to match selection when results are calculated
+var displayUnits = "";
 
 
 
@@ -123,33 +128,103 @@ var hyperfocalSpacer = "";
 const DOFScreen = ({route}) => {
 
   // State variables used for storing data 
+    const [selectedIndex, setSelectedIndex] = React.useState(route.params.tab);     // Stores which segmented-control tab is selected to display DOF or hyperfocal. Default value is passed in from navigation from the home screen to load the correct tab
+    const [selectedLens, setSelectedLens] = React.useState('Apo-Digitar 35mm f/5.6 XL');    // Store the selected lens for both hyperfocal and DOF
+    const [selectedBase, setSelectedBase] = React.useState('RS0, B6.4');            // Store the selected base for DOF calculation
+    const [selectedSpacer, setSelectedSpacer] = React.useState('none');             // Store the selected spacer for DOF calculation
+    const [selectedFStop, setSelectedFStop] = React.useState('F-22');               // Store the selected f-stop value for hyperfocal calculation
+    //const [showBase, setShowBase] = React.useState(true);                         // Want to include this to get rid of the option to select a base when there's only one option, but as soon as I try to use it the page infinitely re - renders :/
+    //const [showSpacer, setShowSpacer] = React.useState(true);                     // Want to include this to get rid of the option to select a spacer when there's only one option, but as soon as I try to use it the page infinitely re - renders :/
+    const [selectedUnits, setSelectedUnits] = React.useState('feet');                               // Stores the selected units to display the results as the user chooses
+    const [recalculateOptions, setRecalculateOptions] = React.useState(0);          // Because state variables are asynchronous, sometimes it gets an update behind. This variable is incremented each time we want to "force" the screen to re-render with the most up-to-date information
+    const [showDOFResult, setShowDOFResult] = React.useState(false);                // If DOF is being calculated, this is set to true to display the correct result fields
+    const [showHyperfocalResult, setShowHyperfocalResult] = React.useState(false);  // If hyperfocal is being calculated, this is set to true to display the correct result fields
 
-    // State variable controlled by the segmented-control-tab to toggle between the DOF calculator and the hyperfocal calculator
-    const [selectedIndex, setSelectedIndex] = React.useState(route.params.tab); // Default value is parameter passed in from navigation from the home screen to load the correct tab
+    // Custom function to update which tab is being displayed and clear the results whenever the tab is switched
     const handleSingleIndexSelect = (index) => {
-        setSelectedIndex(index);
-        setShowDOFResult(false);
-        setShowHyperfocalResult(false);
-      };
+      setSelectedIndex(index);
+      setShowDOFResult(false);
+      setShowHyperfocalResult(false);
+    };
+
+    // Custom function to allow users to change what units are used to display their results without completely calculating results
+    // Realizing this means that EVERY combination of results needs to be accounted for, seems overly complicated tbh so gonna table this for now but I'll ask Zach and see what he says
+    /*
+    const handleUnits = (units) => {
+      setSelectedUnits(units);    // sets the state variable
+
+      let workingVal1;
+      let workingVal2;
+
+      if(selectedIndex == 0){     // if on the DOF screen/calculating DOF results
+
+        // separate the result strings to be able to access the values for conversion
+        let f22ResultArray = f22Response.split(' - ');
+        let f16ResultArray = f16Response.split(' - ');
+        let f8ResultArray = f8Response.split(' - ');
+
+        
+        // if they're still in 
+        if (units.localeCompare('feet') == 0){
+          return;
+        }
+        else if (units.localeCompare('inches') == 0){
+          workingVal1 = parseFloat(subjectDistResponse) * 12;
+          subjectDistResponse = toString(workingVal);
 
 
-    // State variables to hold the selections used for calculating the DOF and hyperfocal. I'm not sure the default values need to be set? But it doesn't hurt to have them
-    const [selectedLens, setSelectedLens] = React.useState('Apo-Digitar 35mm f/5.6 XL');
-    const [selectedBase, setSelectedBase] = React.useState('RS0, B6.4'); 
-    const [selectedSpacer, setSelectedSpacer] = React.useState('none');
-    const [selectedFStop, setSelectedFStop] = React.useState('F-22');
+        }
 
-    // Want to include these state variables to get rid of the option to select a base/spacer when there's only one option, but as soon as I try to use these it infinitely re - renders :/
-    //const [showBase, setShowBase] = React.useState(true);
-    //const [showSpacer, setShowSpacer] = React.useState(true);
+      }
+    }
+    */
 
-    // Because state variables are asynchronous, sometimes it gets an update behind. This variable is incremented each time we want to "force" the screen to re-render with the most up-to-date information
-    const [recalculateOptions, setRecalculateOptions] = React.useState(0);
-
-    // Depending on which result is being calculated, these state variables will be toggled to determine which results to show.
-    const [showDOFResult, setShowDOFResult] = React.useState(false);
-    const [showHyperfocalResult, setShowHyperfocalResult] = React.useState(false);
-
+    const unitsRadioButtons = React.useMemo(() => ([
+      {
+          id: 'feet', // acts as primary key, should be unique and non-empty string
+          label: 'feet',
+          value: 'feet',
+          color: '#ffffff',
+          labelStyle: {textAlign:'left', color: '#ffffff'},
+          containerStyle: {alignSelf: 'flex-start'},
+          accessible: true,
+          accessibilityLabel: 'feet',
+          accessibilityRole: 'radio',
+      },
+      {
+          id: 'inches', // acts as primary key, should be unique and non-empty string
+          label: 'inches',
+          value: 'inches',
+          color: '#ffffff',
+          labelStyle: {textAlign:'left', color: '#ffffff'},
+          containerStyle: {alignSelf: 'flex-start'},
+          accessible: true,
+          accessibilityLabel: 'inches',
+          accessibilityRole: 'radio'
+      },
+      {
+          id: 'meters', // acts as primary key, should be unique and non-empty string
+          label: 'meters',
+          value: 'meters',
+          color: '#ffffff',
+          labelStyle: {textAlign:'left', color: '#ffffff'},
+          containerStyle: {alignSelf: 'flex-start'},
+          accessible: true,
+          accessibilityLabel: 'meters',
+          accessibilityRole: 'radio'
+      },
+      {
+          id: 'millimeters', // acts as primary key, should be unique and non-empty string
+          label: 'millimeters',
+          value: 'millimeters',
+          color: '#ffffff',
+          labelStyle: {textAlign:'left', color: '#ffffff'},
+          containerStyle: {alignSelf: 'flex-start'},
+          accessible: true,
+          accessibilityLabel: 'millimeters',
+          accessibilityRole: 'radio'
+      },
+    ]), []);
 
     // Function(?) executed each time a new value is selected from the lens, base, spacer, (or f-stop? might be able to remove it from that one) dropdown menus to determine what values should be in the key/value pairs that are displayed in the other menus
     const handleSelections = (lensVal, baseVal) => {
@@ -215,8 +290,6 @@ const DOFScreen = ({route}) => {
     
             }
 
-            // once we have found the selected lens, there is no need to check all of the other lenses in the for-loop
-            break;
           }
         }
 
@@ -264,6 +337,184 @@ const DOFScreen = ({route}) => {
       f22Response = f22Array[overallIndex];
       f16Response = f16Array[overallIndex];
       f8Response = f8Array[overallIndex];
+
+      // Use the selected units to convert results before displaying them
+
+      // The data is in feet by default, so just set the display units
+      if (selectedUnits.localeCompare('feet') == 0){
+        displayUnits = "feet";
+      }
+      // If any other unit is selected, then the results need to be converted
+      else {
+
+        // Split the results into their individual values so they can be converted
+        let f22ResponseArray = f22Response.split(' - ');
+        let f16ResponseArray = f16Response.split(' - ');
+        let f8ResponseArray = f8Response.split(' - ');
+
+        // Create local variables to be reused throughout
+        let workingVal1;
+        let workingVal2;
+
+        // If the user has selected inches, each numeric value must be multiplied by 12
+        if (selectedUnits.localeCompare('inches') == 0){
+          displayUnits = "inches";      // Set the correct display unit
+
+          // If the focal distance is a number (not INF), multiply it by 12
+          if (!isNaN(subjectDistResponse)){
+            subjectDistResponse = parseFloat(subjectDistResponse) * 12;   // convert to inches
+            subjectDistResponse = subjectDistResponse.toFixed(1);         // round to 1 decimal
+          }
+
+          /* For the f-stop DOF ranges, the closer value will always be a number and can be converted directly. 
+             For the farther value, check if it is a number and if so then convert it. 
+             Then recombine the values into the response string.
+          */
+          
+          // f-22
+          workingVal1 = parseFloat(f22ResponseArray[0]) * 12;   // converting near distance
+          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
+          if (!isNaN(f22ResponseArray[1])){                     // checking far distance
+            workingVal2 = parseFloat(f22ResponseArray[1]) * 12; // converting far dist
+            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
+          }
+          else {
+            workingVal2 = f22ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
+          }
+          f22Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
+
+          // f-16
+          workingVal1 = parseFloat(f16ResponseArray[0]) * 12;   // converting near distance
+          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
+          if (!isNaN(f16ResponseArray[1])){                     // checking far distance
+            workingVal2 = parseFloat(f16ResponseArray[1]) * 12; // converting far dist
+            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
+          }
+          else {
+            workingVal2 = f16ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
+          }
+          f16Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
+
+          // f-8
+          workingVal1 = parseFloat(f8ResponseArray[0]) * 12;   // converting near distance
+          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
+          if (!isNaN(f8ResponseArray[1])){                     // checking far distance
+            workingVal2 = parseFloat(f8ResponseArray[1]) * 12; // converting far dist
+            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
+          }
+          else {
+            workingVal2 = f8ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
+          }
+          f8Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
+
+        }
+
+        // If the user has selected meters, each numeric value must be divided by 3.281
+        else if (selectedUnits.localeCompare('meters') == 0){
+          displayUnits = "meters";      // Set the correct display unit
+
+          // If the focal distance is a number (not INF), multiply it by 12
+          if (!isNaN(subjectDistResponse)){
+            subjectDistResponse = parseFloat(subjectDistResponse) / 3.281;   // convert to inches
+            subjectDistResponse = subjectDistResponse.toFixed(1);         // round to 1 decimal
+          }
+
+          /* For the f-stop DOF ranges, the closer value will always be a number and can be converted directly. 
+             For the farther value, check if it is a number and if so then convert it. 
+             Then recombine the values into the response string.
+          */
+          
+          // f-22
+          workingVal1 = parseFloat(f22ResponseArray[0]) / 3.281;   // converting near distance
+          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
+          if (!isNaN(f22ResponseArray[1])){                     // checking far distance
+            workingVal2 = parseFloat(f22ResponseArray[1]) / 3.281; // converting far dist
+            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
+          }
+          else {
+            workingVal2 = f22ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
+          }
+          f22Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
+
+          // f-16
+          workingVal1 = parseFloat(f16ResponseArray[0]) / 3.281;   // converting near distance
+          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
+          if (!isNaN(f16ResponseArray[1])){                     // checking far distance
+            workingVal2 = parseFloat(f16ResponseArray[1]) / 3.281; // converting far dist
+            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
+          }
+          else {
+            workingVal2 = f16ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
+          }
+          f16Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
+
+          // f-8
+          workingVal1 = parseFloat(f8ResponseArray[0]) / 3.281;   // converting near distance
+          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
+          if (!isNaN(f8ResponseArray[1])){                     // checking far distance
+            workingVal2 = parseFloat(f8ResponseArray[1]) / 3.281; // converting far dist
+            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
+          }
+          else {
+            workingVal2 = f8ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
+          }
+          f8Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
+
+        }
+
+        // If the user has selected millimeters, each numeric value must be multiplied by 304.8
+        else if (selectedUnits.localeCompare('millimeters') == 0){
+          displayUnits = "millimeters";      // Set the correct display unit
+
+          // If the focal distance is a number (not INF), multiply it by 12
+          if (!isNaN(subjectDistResponse)){
+            subjectDistResponse = parseFloat(subjectDistResponse) * 304.8;   // convert to inches
+            subjectDistResponse = subjectDistResponse.toFixed(1);         // round to 1 decimal
+          }
+
+          /* For the f-stop DOF ranges, the closer value will always be a number and can be converted directly. 
+             For the farther value, check if it is a number and if so then convert it. 
+             Then recombine the values into the response string.
+          */
+          
+          // f-22
+          workingVal1 = parseFloat(f22ResponseArray[0]) * 304.8;   // converting near distance
+          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
+          if (!isNaN(f22ResponseArray[1])){                     // checking far distance
+            workingVal2 = parseFloat(f22ResponseArray[1]) * 304.8; // converting far dist
+            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
+          }
+          else {
+            workingVal2 = f22ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
+          }
+          f22Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
+
+          // f-16
+          workingVal1 = parseFloat(f16ResponseArray[0]) * 304.8;   // converting near distance
+          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
+          if (!isNaN(f16ResponseArray[1])){                     // checking far distance
+            workingVal2 = parseFloat(f16ResponseArray[1]) * 304.8; // converting far dist
+            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
+          }
+          else {
+            workingVal2 = f16ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
+          }
+          f16Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
+
+          // f-8
+          workingVal1 = parseFloat(f8ResponseArray[0]) * 304.8;   // converting near distance
+          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
+          if (!isNaN(f8ResponseArray[1])){                     // checking far distance
+            workingVal2 = parseFloat(f8ResponseArray[1]) * 304.8; // converting far dist
+            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
+          }
+          else {
+            workingVal2 = f8ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
+          }
+          f8Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
+
+        }
+      }
   
     }
   
@@ -280,7 +531,7 @@ const DOFScreen = ({route}) => {
       let fStopVal = selectedFStop;
       let fStopArray = [];
       let spacerArray = []; // I know spacer array already exists, but it's undefined within this scope so I know this exists for a reason, even if I can't remember why it works like this anymore
-
+      let baseArray = [];   // Same thing as spacer array? idk? Also this is used when displaying results because some of the lenses have no spacers with different bases
 
       // Go through all of the lensData to find the data for the selected lens
       for(let i = 0; i < lensData.length; i++){
@@ -289,6 +540,7 @@ const DOFScreen = ({route}) => {
           // Save the spacer data for the selected lens
           // MAY WANT TO EDIT THIS TO INCLUDE THE BASE DATA AS WELL
           spacerArray = lensData[i].spacer;
+          baseArray = lensData[i].base;
   
           // Save the correct array of DOF values for the selected f-stop
           if(fStopVal.localeCompare('F-22') == 0){
@@ -300,14 +552,11 @@ const DOFScreen = ({route}) => {
           else {
             fStopArray = lensData[i].f_8;
           }
-
-          // Once the correct lens has been looked thorugh, there is no need to go through the rest of the for-loop
-          break;
         }
       }
   
       // Create a local variable to compare the f-stop values to in order to find the minimum near value
-      let currMinVal = 100000;
+      let currMinVal = 10000000;
       // Reset result spacer to an empty string
       hyperfocalSpacer = '';
   
@@ -318,18 +567,43 @@ const DOFScreen = ({route}) => {
         if(fStopArray[i].includes('INF')){
           //console.log(fStopArray[i]);
   
-          // Split the string into an array to isolate the 'near' distance to compare
-          let focalRangeArray = fStopArray[i].split(' - ');
-          // Parse the 'near' distance as a float so it can be numerically compared
-          let focalMin = parseFloat(focalRangeArray[0]);
-          //console.log(minVal);
+          let focalRangeArray = fStopArray[i].split(' - ');   // Split the string into an array to isolate the 'near' distance to compare
+          let focalMin = parseFloat(focalRangeArray[0]);      // Parse the 'near' distance as a float so it can be numerically compared
+
+          // convert the minimum value to the correct units
+          // The data is in feet by default, so just set the display units
+          if (selectedUnits.localeCompare('feet') == 0){
+            displayUnits = "feet";
+          }
+          // If the selected unit is inches, multiply focalMin by 12 and round to one decimal
+          else if (selectedUnits.localeCompare('inches') == 0) {
+            displayUnits = "inches";
+
+            focalMin = focalMin * 12;
+            focalMin = focalMin.toFixed(1);
+            console.log(focalMin);
+          }
+          // If the selected unit is meters, divide focalMin by 3.281 and round to one decimal
+          else if (selectedUnits.localeCompare('meters') == 0) {
+            displayUnits = "meters";
+
+            focalMin = focalMin / 3.281;
+            focalMin = focalMin.toFixed(1);
+          }
+          // If the selected unit is millimeters, multiply focalMin by 304.8 and round to one decimal
+          else {
+            displayUnits = "millimeters";
+
+            focalMin = focalMin * 304.8;
+            focalMin = focalMin.toFixed(1);
+          }
   
-          // If the near vlue is less than the curerntly stored minimum value, update the minimum distance for comparison, and save the DOF and its associated spacer (OR BASE????) for the results
+          // If the focalMin value is less than the currently stored minimum value (currMinVal), update currMinVal and save the associated DOF, spacer, and base for the results
           if(focalMin < currMinVal){
-            //console.log(focalMin + ' ' + minVal);
             currMinVal = focalMin;
-            minVal = fStopArray[i];
+            hyperfocal = focalMin + ' - INF';
             hyperfocalSpacer = spacerArray[i];
+            hyperfocalBase = baseArray[i];
           }
         }
       }
@@ -407,6 +681,7 @@ const DOFScreen = ({route}) => {
             setSelected={(val) => setSelectedSpacer(val)} // update the state variable
             data= {spacerOptions}
             save="value"
+            onSelect={handleSelections(selectedLens, selectedBase)} // update the values that should be displayed in the base and spacer dropdown menus
             dropdownTextStyles={{color:'white'}}
             inputStyles={{color:'white'}}
             accessible={true}
@@ -424,6 +699,19 @@ const DOFScreen = ({route}) => {
             accessible={true}
             accessibilityHint="A searchable drop down menu to select an F-stop option"
           />)}
+
+      {/*Group of radio buttons to select the units that the user will use for their subject distance input */}
+      <Text style={dofStyle.text} accessible={true} accesssibilityLabel="Select units" accessibilityRole="text">Select units:</Text>
+          <RadioGroup 
+              radioButtons={unitsRadioButtons} 
+              //onPress={handleUnits}
+              onPress={setSelectedUnits}
+              selectedId={selectedUnits}
+              containerStyle={dofStyle.radioButton}
+              accessible={true}
+              accessibilityRole="radiogroup"
+
+          />
     
     
       {/*Button displayed when on the DOF tab, when pressed it executes the calculateDOF() function and displays the results*/}
@@ -447,17 +735,18 @@ const DOFScreen = ({route}) => {
       {/*Results for both DOF and Hyperfocal -- will be displayed when their respective tab has been selected and their respective showResults variable has been set to true.*/}
 
           {/*DOF Results */}
-          {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accesibilityLabel="Bolt result" accessibiltyRole="text">Bolts:  {boltResponse}</Text>)}
-          {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Focal distance result" accessibilityRole="text">Focal Distance:  {subjectDistResponse} ft</Text>)}
+          {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accesibilityLabel="Bolt result" accessibiltyRole="text">Bolt:  {boltResponse}</Text>)}
+          {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Focal distance result" accessibilityRole="text">Focal Distance:  {subjectDistResponse} {displayUnits}</Text>)}
 
           {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text}>-------------------------------------</Text>)}
 
-          {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="F-22 depth of field result" accessibilityRole="text">F-22 DOF:  {f22Response} ft</Text>)}
-          {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="F-16 depth of field result" accessibilityRole="text">F-16 DOF:  {f16Response} ft</Text>)}
-          {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="F-8 depth of field result" accessibilityRole="text">F-8 DOF:  {f8Response} ft</Text>)}
+          {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="F-22 depth of field result" accessibilityRole="text">F-22 DOF:  {f22Response} {displayUnits}</Text>)}
+          {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="F-16 depth of field result" accessibilityRole="text">F-16 DOF:  {f16Response} {displayUnits}</Text>)}
+          {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="F-8 depth of field result" accessibilityRole="text">F-8 DOF:  {f8Response} {displayUnits}</Text>)}
     
           {/*Hyperfocal Results */}
-          {selectedIndex==1 && showHyperfocalResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Hyperfocal distance result" accessibilityRole="text">Hyperfocal Distance:  {minVal} ft</Text>)}
+          {selectedIndex==1 && showHyperfocalResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Hyperfocal distance result" accessibilityRole="text">Hyperfocal Distance:  {hyperfocal} {displayUnits}</Text>)}
+          {selectedIndex==1 && showHyperfocalResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Base result" accessibilityRole="text">Base:  {hyperfocalBase}</Text>)}
           {selectedIndex==1 && showHyperfocalResult && (<Text style={dofStyle.text} accessible={true} accessibilityLabel="Spacer result" accessibilityRole="text">Spacer:  {hyperfocalSpacer}</Text>)}
 
         </ScrollView>
@@ -498,7 +787,11 @@ const dofStyle = StyleSheet.create({
       padding: 5,
       margin: 20,
       borderRadius: 10,
-    }
+    },
+    radioButton: {
+      alignSelf: 'flex-start',
+
+    },
   });
 
 export default DOFScreen;
