@@ -9,6 +9,15 @@ import { StyleSheet, View , Text, SafeAreaView, TextInput, Button, ScrollView, M
 import {wrapScrollView, useScrollIntoView,} from 'react-native-scroll-into-view';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
+// options is used in the scrollIntoView() function to customize where items are scrolled to on the page
+const options ={
+    align:'top',
+    insets: {
+        top: 5,
+    },
+}
+
+
 /*NOTE: As this is a long document, the paragraphs and images have been numbered in comments below for ease of jumping to a specific paragraph to make updates.
         The numbers for the paragraphs reset with each heading in the table of contents. The image count is cumultive to keep it consistent with the variable names. */
 
@@ -71,23 +80,23 @@ const UserGuideContent = () => {
             <Text style={guideStyle.textSubtitle} accessible={true} accessibilityLabel="Table of contents" accessibilityRole="text">Table of Contents</Text>
             
     {/*Table of contents links to further down the page. onPress function will bring the labeled reference into view.*/}
-            <Pressable onPress={() => scrollIntoView(introRef.current)} style={guideStyle.button} accessible={true} accessibilityLabel="Introduction to Medium Format Stereo Photography" accessibilityHint="Jump to the introduction section" accessibilityRole="button">
+            <Pressable onPress={() => scrollIntoView(introRef.current, options)} style={guideStyle.button} accessible={true} accessibilityLabel="Introduction to Medium Format Stereo Photography" accessibilityHint="Jump to the introduction section" accessibilityRole="button">
                 <Text style={guideStyle.buttonText}>Introduction to Medium Format Stereo Photography</Text>
             </Pressable>
 
-            <Pressable onPress={() => scrollIntoView(partIRef.current)} style={guideStyle.button} accessible={true} accessibilityLabel="PART I: CAMERA BASICS" accessibilityHint="Jump to PART I: CAMERA BASICS" accessibilityRole="button">
+            <Pressable onPress={() => scrollIntoView(partIRef.current, options)} style={guideStyle.button} accessible={true} accessibilityLabel="PART I: CAMERA BASICS" accessibilityHint="Jump to PART I: CAMERA BASICS" accessibilityRole="button">
                 <Text style={guideStyle.buttonText}>PART I: CAMERA BASICS</Text>
             </Pressable>
 
-            <Pressable onPress={() => scrollIntoView(gettingToKnowRef.current)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Getting to Know Your Camera" accessibilityHint="Jump to Getting to Know Your Camera in Part I" accessibilityRole="button">
+            <Pressable onPress={() => scrollIntoView(gettingToKnowRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Getting to Know Your Camera" accessibilityHint="Jump to Getting to Know Your Camera in Part I" accessibilityRole="button">
                 <Text style={guideStyle.buttonText}>Getting to Know Your Camera</Text>
             </Pressable>
 
-            <Pressable onPress={() => scrollIntoView(lensOptionsRef.current)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Lens Options" accessibilityHint="Jump to Lens Options in Part I" accessibilityRole="button">
+            <Pressable onPress={() => scrollIntoView(lensOptionsRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Lens Options" accessibilityHint="Jump to Lens Options in Part I" accessibilityRole="button">
                 <Text style={guideStyle.buttonText}>Lens Options</Text>
             </Pressable>
 
-            <Pressable onPress={() => scrollIntoView(electronicLensRef.current)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Electronic Lensboards" accessibilityHint="Jump to Electronic Lensboards in Lens Options in Part I" accessibilityRole="button">
+            <Pressable onPress={() => scrollIntoView(electronicLensRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Electronic Lensboards" accessibilityHint="Jump to Electronic Lensboards in Lens Options in Part I" accessibilityRole="button">
                 <Text style={guideStyle.buttonText}>Electronic Lensboards</Text>
             </Pressable>
 
