@@ -148,11 +148,10 @@ const DOFScreen = ({route}) => {
     };
 
     // Custom function to allow users to change what units are used to display their results without completely calculating results
-    // Realizing this means that EVERY combination of results needs to be accounted for, seems overly complicated tbh so gonna table this for now but I'll ask Zach and see what he says
-    /*
     const handleUnits = (units) => {
       setSelectedUnits(units);    // sets the state variable
 
+      // use as temporary local variables to reset the units
       let workingVal1;
       let workingVal2;
 
@@ -162,22 +161,151 @@ const DOFScreen = ({route}) => {
         let f22ResultArray = f22Response.split(' - ');
         let f16ResultArray = f16Response.split(' - ');
         let f8ResultArray = f8Response.split(' - ');
-
         
-        // if they're still in 
-        if (units.localeCompare('feet') == 0){
-          return;
+        // if the results are in meters and the selected units is feet
+        if (units.localeCompare('feet') == 0 && selectedUnits.localeCompare('meters') == 0){
+          displayUnits = "feet";
+
+          // If subject distance is not INF, convert to feet and round to one decimal place
+          if (!isNaN(subjectDistResponse)){
+            workingVal1 = parseFloat(subjectDistResponse) * 3.281;
+            subjectDistResponse = workingVal1.toFixed(1);
+          }
+
+          /* For the f-stop DOF ranges, the closer value will always be a number and can be converted directly. 
+             For the farther value, check if it is a number and if so then convert it. 
+             Then recombine the values into the response string.
+          */
+
+          // convert the near and far f-22 values to feet and round to one decimal place, then recombine the segments into the response string
+          workingVal1 = parseFloat(f22ResultArray[0]) * 3.281;
+          workingVal1 = workingVal1.toFixed(1);
+
+          if (!isNaN(f22ResultArray[1])){
+            workingVal2 = parseFloat(f22ResultArray[1]) * 3.281;
+            workingVal2 = workingVal2.toFixed(1);
+
+            f22Response = workingVal1 + ' - ' + workingVal2;
+          }
+          else {
+            f22Response = workingVal1 + ' - INF';
+          }
+
+          // convert the near and far f-16 values to feet and round to one decimal place, then recombine the segments into the response string
+          workingVal1 = parseFloat(f16ResultArray[0]) * 3.281;
+          workingVal1 = workingVal1.toFixed(1);
+
+          if(!isNaN(f16ResultArray[1])){
+            workingVal2 = parseFloat(f16ResultArray[1]) * 3.281;
+            workingVal2 = workingVal2.toFixed(1);
+  
+            f16Response = workingVal1 + ' - ' + workingVal2;
+          }
+          else {
+            f16Response = workingVal1 + ' - INF';
+          }
+          
+
+          // convert the near and far f-8 values to feet and round to one decimal place, then recombine the segments into the response string
+          workingVal1 = parseFloat(f8ResultArray[0]) * 3.281;
+          workingVal1 = workingVal1.toFixed(1);
+          if(!isNaN(f8ResultArray[1])){
+            workingVal2 = parseFloat(f8ResultArray[1]) * 3.281;
+            workingVal2 = workingVal2.toFixed(1);
+  
+            f8Response = workingVal1 + ' - ' + workingVal2;
+          }
+          else {
+            f8Response = workingVal1 + ' - INF';
+          }
         }
-        else if (units.localeCompare('inches') == 0){
-          workingVal1 = parseFloat(subjectDistResponse) * 12;
-          subjectDistResponse = toString(workingVal);
+        // results are in feet and the new unit is meters
+        else if (units.localeCompare('meters') == 0 && selectedUnits.localeCompare('feet') == 0){
+          displayUnits = "meters";
 
+          // if the subject distance is not INF, convert to meters and round to one decimal place
+          if(!isNaN(subjectDistResponse)){
+            workingVal1 = parseFloat(subjectDistResponse) / 3.281;
+            subjectDistResponse = workingVal1.toFixed(1);  
+          }
+          
+          /* For the f-stop DOF ranges, the closer value will always be a number and can be converted directly. 
+             For the farther value, check if it is a number and if so then convert it. 
+             Then recombine the values into the response string.
+          */
 
+          // convert the near and far f-22 values to meters and round to one decimal place, then recombine the segments into the response string
+          workingVal1 = parseFloat(f22ResultArray[0]) / 3.281;
+          workingVal1 = workingVal1.toFixed(1);
+
+          if(!isNaN(f22ResultArray[1])){
+            workingVal2 = parseFloat(f22ResultArray[1]) / 3.281;
+            workingVal2 = workingVal2.toFixed(1);
+
+            f22Response = workingVal1 + ' - ' + workingVal2;
+          }
+          else {
+            f22Response = workingVal1 + ' - INF';
+          }
+          
+
+          // convert the near and far f-16 values to meters and round to one decimal place, then recombine the segments into the response string
+          workingVal1 = parseFloat(f16ResultArray[0]) / 3.281;
+          workingVal1 = workingVal1.toFixed(1);
+
+          if(!isNaN(f16ResultArray[1])){
+            workingVal2 = parseFloat(f16ResultArray[1]) / 3.281;
+            workingVal2 = workingVal2.toFixed(1);
+  
+            f16Response = workingVal1 + ' - ' + workingVal2;
+          }
+          else {
+            f16Response = workingVal1 + ' - INF';
+          }
+          
+
+          // convert the near and far f-8 values to meters and round to one decimal place, then recombine the segments into the response string
+          workingVal1 = parseFloat(f8ResultArray[0]) / 3.281;
+          workingVal1 = workingVal1.toFixed(1);
+
+          if(!isNaN(f8ResultArray[1])){
+            workingVal2 = parseFloat(f8ResultArray[1]) / 3.281;
+            workingVal2 = workingVal2.toFixed(1);
+  
+            f8Response = workingVal1 + ' - ' + workingVal2;
+          }
+          else {
+            f8Response = workingVal1 + ' - INF';
+          }
+          
+        }
+      }
+      else {  // selectedIndex == 1
+        let hyperfocalArray = hyperfocal.split(' - ');
+
+        // if the results are in meters and the selected units is feet
+        if (units.localeCompare('feet') == 0 && selectedUnits.localeCompare('meters') == 0){
+          displayUnits = "feet";
+
+           // convert the near hyperfocal distance to feet and round to one decimal place, then recombine string in hyperfocal response
+           workingVal1 = parseFloat(hyperfocalArray[0]) * 3.281;
+           workingVal1 = workingVal1.toFixed(1);
+
+           hyperfocal = workingVal1 + ' - INF';
+        }
+        // results are in feet and the new unit is meters
+        else if (units.localeCompare('meters') == 0 && selectedUnits.localeCompare('feet') == 0){
+          displayUnits = "meters";
+
+          // convert the near hyperfocal distance to meters and round to one decimal place, then recombine string in hyperfocal response
+          workingVal1 = parseFloat(hyperfocalArray[0]) / 3.281;
+          workingVal1 = workingVal1.toFixed(1);
+
+          hyperfocal = workingVal1 + ' - INF';
         }
 
       }
     }
-    */
 
     const unitsRadioButtons = React.useMemo(() => ([
       {
@@ -192,17 +320,6 @@ const DOFScreen = ({route}) => {
           accessibilityRole: 'radio',
       },
       {
-          id: 'inches', // acts as primary key, should be unique and non-empty string
-          label: 'inches',
-          value: 'inches',
-          color: '#ffffff',
-          labelStyle: {textAlign:'left', color: '#ffffff'},
-          containerStyle: {alignSelf: 'flex-start'},
-          accessible: true,
-          accessibilityLabel: 'inches',
-          accessibilityRole: 'radio'
-      },
-      {
           id: 'meters', // acts as primary key, should be unique and non-empty string
           label: 'meters',
           value: 'meters',
@@ -211,17 +328,6 @@ const DOFScreen = ({route}) => {
           containerStyle: {alignSelf: 'flex-start'},
           accessible: true,
           accessibilityLabel: 'meters',
-          accessibilityRole: 'radio'
-      },
-      {
-          id: 'millimeters', // acts as primary key, should be unique and non-empty string
-          label: 'millimeters',
-          value: 'millimeters',
-          color: '#ffffff',
-          labelStyle: {textAlign:'left', color: '#ffffff'},
-          containerStyle: {alignSelf: 'flex-start'},
-          accessible: true,
-          accessibilityLabel: 'millimeters',
           accessibilityRole: 'radio'
       },
     ]), []);
@@ -302,6 +408,8 @@ const DOFScreen = ({route}) => {
       setShowDOFResult(true);
       setShowHyperfocalResult(false);
       setRecalculateOptions(recalculateOptions + 1);
+      setSelectedUnits("feet");
+      displayUnits = "feet";
 
 
       // Local variables to use in the calculation because state variables are read-only so sometimes the code doesn't like you using them
@@ -337,184 +445,6 @@ const DOFScreen = ({route}) => {
       f22Response = f22Array[overallIndex];
       f16Response = f16Array[overallIndex];
       f8Response = f8Array[overallIndex];
-
-      // Use the selected units to convert results before displaying them
-
-      // The data is in feet by default, so just set the display units
-      if (selectedUnits.localeCompare('feet') == 0){
-        displayUnits = "feet";
-      }
-      // If any other unit is selected, then the results need to be converted
-      else {
-
-        // Split the results into their individual values so they can be converted
-        let f22ResponseArray = f22Response.split(' - ');
-        let f16ResponseArray = f16Response.split(' - ');
-        let f8ResponseArray = f8Response.split(' - ');
-
-        // Create local variables to be reused throughout
-        let workingVal1;
-        let workingVal2;
-
-        // If the user has selected inches, each numeric value must be multiplied by 12
-        if (selectedUnits.localeCompare('inches') == 0){
-          displayUnits = "inches";      // Set the correct display unit
-
-          // If the focal distance is a number (not INF), multiply it by 12
-          if (!isNaN(subjectDistResponse)){
-            subjectDistResponse = parseFloat(subjectDistResponse) * 12;   // convert to inches
-            subjectDistResponse = subjectDistResponse.toFixed(1);         // round to 1 decimal
-          }
-
-          /* For the f-stop DOF ranges, the closer value will always be a number and can be converted directly. 
-             For the farther value, check if it is a number and if so then convert it. 
-             Then recombine the values into the response string.
-          */
-          
-          // f-22
-          workingVal1 = parseFloat(f22ResponseArray[0]) * 12;   // converting near distance
-          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
-          if (!isNaN(f22ResponseArray[1])){                     // checking far distance
-            workingVal2 = parseFloat(f22ResponseArray[1]) * 12; // converting far dist
-            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
-          }
-          else {
-            workingVal2 = f22ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
-          }
-          f22Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
-
-          // f-16
-          workingVal1 = parseFloat(f16ResponseArray[0]) * 12;   // converting near distance
-          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
-          if (!isNaN(f16ResponseArray[1])){                     // checking far distance
-            workingVal2 = parseFloat(f16ResponseArray[1]) * 12; // converting far dist
-            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
-          }
-          else {
-            workingVal2 = f16ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
-          }
-          f16Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
-
-          // f-8
-          workingVal1 = parseFloat(f8ResponseArray[0]) * 12;   // converting near distance
-          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
-          if (!isNaN(f8ResponseArray[1])){                     // checking far distance
-            workingVal2 = parseFloat(f8ResponseArray[1]) * 12; // converting far dist
-            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
-          }
-          else {
-            workingVal2 = f8ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
-          }
-          f8Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
-
-        }
-
-        // If the user has selected meters, each numeric value must be divided by 3.281
-        else if (selectedUnits.localeCompare('meters') == 0){
-          displayUnits = "meters";      // Set the correct display unit
-
-          // If the focal distance is a number (not INF), multiply it by 12
-          if (!isNaN(subjectDistResponse)){
-            subjectDistResponse = parseFloat(subjectDistResponse) / 3.281;   // convert to inches
-            subjectDistResponse = subjectDistResponse.toFixed(1);         // round to 1 decimal
-          }
-
-          /* For the f-stop DOF ranges, the closer value will always be a number and can be converted directly. 
-             For the farther value, check if it is a number and if so then convert it. 
-             Then recombine the values into the response string.
-          */
-          
-          // f-22
-          workingVal1 = parseFloat(f22ResponseArray[0]) / 3.281;   // converting near distance
-          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
-          if (!isNaN(f22ResponseArray[1])){                     // checking far distance
-            workingVal2 = parseFloat(f22ResponseArray[1]) / 3.281; // converting far dist
-            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
-          }
-          else {
-            workingVal2 = f22ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
-          }
-          f22Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
-
-          // f-16
-          workingVal1 = parseFloat(f16ResponseArray[0]) / 3.281;   // converting near distance
-          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
-          if (!isNaN(f16ResponseArray[1])){                     // checking far distance
-            workingVal2 = parseFloat(f16ResponseArray[1]) / 3.281; // converting far dist
-            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
-          }
-          else {
-            workingVal2 = f16ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
-          }
-          f16Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
-
-          // f-8
-          workingVal1 = parseFloat(f8ResponseArray[0]) / 3.281;   // converting near distance
-          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
-          if (!isNaN(f8ResponseArray[1])){                     // checking far distance
-            workingVal2 = parseFloat(f8ResponseArray[1]) / 3.281; // converting far dist
-            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
-          }
-          else {
-            workingVal2 = f8ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
-          }
-          f8Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
-
-        }
-
-        // If the user has selected millimeters, each numeric value must be multiplied by 304.8
-        else if (selectedUnits.localeCompare('millimeters') == 0){
-          displayUnits = "millimeters";      // Set the correct display unit
-
-          // If the focal distance is a number (not INF), multiply it by 12
-          if (!isNaN(subjectDistResponse)){
-            subjectDistResponse = parseFloat(subjectDistResponse) * 304.8;   // convert to inches
-            subjectDistResponse = subjectDistResponse.toFixed(1);         // round to 1 decimal
-          }
-
-          /* For the f-stop DOF ranges, the closer value will always be a number and can be converted directly. 
-             For the farther value, check if it is a number and if so then convert it. 
-             Then recombine the values into the response string.
-          */
-          
-          // f-22
-          workingVal1 = parseFloat(f22ResponseArray[0]) * 304.8;   // converting near distance
-          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
-          if (!isNaN(f22ResponseArray[1])){                     // checking far distance
-            workingVal2 = parseFloat(f22ResponseArray[1]) * 304.8; // converting far dist
-            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
-          }
-          else {
-            workingVal2 = f22ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
-          }
-          f22Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
-
-          // f-16
-          workingVal1 = parseFloat(f16ResponseArray[0]) * 304.8;   // converting near distance
-          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
-          if (!isNaN(f16ResponseArray[1])){                     // checking far distance
-            workingVal2 = parseFloat(f16ResponseArray[1]) * 304.8; // converting far dist
-            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
-          }
-          else {
-            workingVal2 = f16ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
-          }
-          f16Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
-
-          // f-8
-          workingVal1 = parseFloat(f8ResponseArray[0]) * 304.8;   // converting near distance
-          workingVal1 = workingVal1.toFixed(1);                 // round to 1 decimal
-          if (!isNaN(f8ResponseArray[1])){                     // checking far distance
-            workingVal2 = parseFloat(f8ResponseArray[1]) * 304.8; // converting far dist
-            workingVal2 = workingVal2.toFixed(1);               // rounding far dist
-          }
-          else {
-            workingVal2 = f8ResponseArray[1];                  // if far dist is INF, just assign to workingVal2 for consistency so it is easy to recombine the string
-          }
-          f8Response = workingVal1 + ' - ' + workingVal2;      // recombining response string
-
-        }
-      }
   
     }
   
@@ -525,6 +455,8 @@ const DOFScreen = ({route}) => {
       setShowDOFResult(false);
       setShowHyperfocalResult(true);
       setRecalculateOptions(recalculateOptions + 1);
+      setSelectedUnits("feet");
+      displayUnits = "feet";
   
       // Local variables for calculating results so that sate variables aren't being messed with 
       let lensVal = selectedLens;
@@ -569,34 +501,6 @@ const DOFScreen = ({route}) => {
   
           let focalRangeArray = fStopArray[i].split(' - ');   // Split the string into an array to isolate the 'near' distance to compare
           let focalMin = parseFloat(focalRangeArray[0]);      // Parse the 'near' distance as a float so it can be numerically compared
-
-          // convert the minimum value to the correct units
-          // The data is in feet by default, so just set the display units
-          if (selectedUnits.localeCompare('feet') == 0){
-            displayUnits = "feet";
-          }
-          // If the selected unit is inches, multiply focalMin by 12 and round to one decimal
-          else if (selectedUnits.localeCompare('inches') == 0) {
-            displayUnits = "inches";
-
-            focalMin = focalMin * 12;
-            focalMin = focalMin.toFixed(1);
-            console.log(focalMin);
-          }
-          // If the selected unit is meters, divide focalMin by 3.281 and round to one decimal
-          else if (selectedUnits.localeCompare('meters') == 0) {
-            displayUnits = "meters";
-
-            focalMin = focalMin / 3.281;
-            focalMin = focalMin.toFixed(1);
-          }
-          // If the selected unit is millimeters, multiply focalMin by 304.8 and round to one decimal
-          else {
-            displayUnits = "millimeters";
-
-            focalMin = focalMin * 304.8;
-            focalMin = focalMin.toFixed(1);
-          }
   
           // If the focalMin value is less than the currently stored minimum value (currMinVal), update currMinVal and save the associated DOF, spacer, and base for the results
           if(focalMin < currMinVal){
@@ -656,6 +560,7 @@ const DOFScreen = ({route}) => {
             data= {lensName}
             save="value"
             onSelect={handleSelections(selectedLens, selectedBase)} // update the values that should be displayed in the base and spacer dropdown menus
+            boxStyles={{marginBottom:12}}
             dropdownTextStyles={{color:'white'}}
             inputStyles={{color:'white'}}
             accessible={true}
@@ -669,6 +574,7 @@ const DOFScreen = ({route}) => {
             data= {baseOptions}
             save="value"
             onSelect={handleSelections(selectedLens, selectedBase)} // update the values that should be displayed in the base and spacer dropdown menus
+            boxStyles={{marginBottom:12}}
             dropdownTextStyles={{color:'white'}}
             inputStyles={{color:'white'}}
             accessible={true}
@@ -682,6 +588,7 @@ const DOFScreen = ({route}) => {
             data= {spacerOptions}
             save="value"
             onSelect={handleSelections(selectedLens, selectedBase)} // update the values that should be displayed in the base and spacer dropdown menus
+            boxStyles={{marginBottom:12}}
             dropdownTextStyles={{color:'white'}}
             inputStyles={{color:'white'}}
             accessible={true}
@@ -694,24 +601,12 @@ const DOFScreen = ({route}) => {
             setSelected={(val) => setSelectedFStop(val)} // update state variable 
             data={fStops}
             save="value"
+            boxStyles={{marginBottom:12}}
             dropdownTextStyles={{color:'white'}}
             inputStyles={{color:'white'}}
             accessible={true}
             accessibilityHint="A searchable drop down menu to select an F-stop option"
           />)}
-
-      {/*Group of radio buttons to select the units that the user will use for their subject distance input */}
-      <Text style={dofStyle.text} accessible={true} accesssibilityLabel="Select units" accessibilityRole="text">Select units:</Text>
-          <RadioGroup 
-              radioButtons={unitsRadioButtons} 
-              //onPress={handleUnits}
-              onPress={setSelectedUnits}
-              selectedId={selectedUnits}
-              containerStyle={dofStyle.radioButton}
-              accessible={true}
-              accessibilityRole="radiogroup"
-
-          />
     
     
       {/*Button displayed when on the DOF tab, when pressed it executes the calculateDOF() function and displays the results*/}
@@ -733,6 +628,19 @@ const DOFScreen = ({route}) => {
           </View>)}
 
       {/*Results for both DOF and Hyperfocal -- will be displayed when their respective tab has been selected and their respective showResults variable has been set to true.*/}
+
+          {/*Group of radio buttons to select the units that results will be displayed in */}
+          {(showDOFResult || showHyperfocalResult) && (<Text style={dofStyle.text} accessible={true} accesssibilityLabel="Select units" accessibilityRole="text">Select units:</Text>)}
+          {(showDOFResult || showHyperfocalResult) && (<RadioGroup 
+              radioButtons={unitsRadioButtons} 
+              onPress={handleUnits}
+              //onPress={setSelectedUnits}
+              selectedId={selectedUnits}
+              containerStyle={dofStyle.radioButton}
+              accessible={true}
+              accessibilityRole="radiogroup"
+              layout="row"
+          />)}
 
           {/*DOF Results */}
           {selectedIndex==0 && showDOFResult && (<Text style={dofStyle.text} accessible={true} accesibilityLabel="Bolt result" accessibiltyRole="text">Bolt:  {boltResponse}</Text>)}
@@ -790,7 +698,7 @@ const dofStyle = StyleSheet.create({
     },
     radioButton: {
       alignSelf: 'flex-start',
-
+      marginBottom: 12,
     },
   });
 

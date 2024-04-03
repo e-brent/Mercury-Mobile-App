@@ -193,8 +193,6 @@ const BaseScreen = () => {
     // Function to calculate the base distance given the lens (determines focal length), near subject distance, and far subject distance
     const calculateBaseDist = () => {
 
-        console.log(unitsIndex);
-
         // Set state variables to show/update results when calculated
         setShowResults(true);
         setCalculate(calculate + 1);
@@ -301,6 +299,7 @@ const BaseScreen = () => {
                     setSelected={(val) => setSelectedLens(val)}
                     data= {lensName}
                     save="value"
+                    boxStyles={{marginBottom:12}}
                     dropdownTextStyles={{color:'white'}}
                     inputStyles={{color:'white'}}
                     accessible={true}
@@ -406,7 +405,8 @@ const baseStyle = StyleSheet.create({
     text: {
       color: 'white',
       margin: 8,
-      marginTop: 13,
+      marginTop: 12,
+      marginBottom: 6,
       fontSize: 20,
       textAlign: 'left',
       alignSelf: 'flex-start',
@@ -420,7 +420,7 @@ const baseStyle = StyleSheet.create({
       },
     radioButton: {
         alignSelf: 'flex-start',
-
+        marginBottom: 12,
     },
     noteText: {
       color: 'white',
@@ -439,6 +439,7 @@ const baseStyle = StyleSheet.create({
       height: 40,
       width: 100,
       marginLeft: 20,
+      marginBottom: 12,
       borderWidth: 1,
       padding: 10,
       borderColor: 'white',
