@@ -2,19 +2,16 @@
 A mobile app for Mercury Works camera company, containing calculators and the user guide for the stereo camera system.
 
 ## Directory Guide
->**README.md** - Contains documentation for the ease of use and information for future updates to this project.
->
->**MercuryMobileApp** - Directory containing the app files.
->>**App.js** - The navigation stack for the app and the shared header for the other pages.
->>
->>**assets** - Directory containing the audio effects and images used throughout the app.
->>
->>**screens** - Directory containing the screens that the app will render.
->>>**home.js** - The home screen and initial render of the app. Contains buttons for navigating to all other screens.  
->>>**dofCalculator.js** - Contains the Depth of Field and Hyperfocal calculators, which can be toggled between.  
->>>**reciprocityCalculator.js** - A calculator for the reciprocity of different film types.  
->>>**baseCalculator.js** - Contains the calculator for the distance between two lens bases for stereo photography.  
->>>**userGuide.js** - The stereo system user guide.  
+* **README.md** - Contains documentation for the ease of use and information for future updates to this project.
+* **MercuryMobileApp** - Directory containing the app files.
+  * **App.js** - The navigation stack for the app and the shared header for the other pages.
+  * **assets** - Directory containing the audio effects and images used throughout the app.
+  * **screens** - Directory containing the screens that the app will render.
+    * **home.js** - The home screen and initial render of the app. Contains buttons for navigating to all other screens.
+    * **dofCalculator.js** - Contains the Depth of Field and Hyperfocal calculators, which can be toggled between.
+    * **reciprocityCalculator.js** - A calculator for the reciprocity of different film types.
+    * **baseCalculator.js** - Contains the calculator for the distance between two lens bases for stereo photography.
+    * **userGuide.js** - The stereo system user guide.  
 
 ## Updating the app
 
@@ -22,13 +19,15 @@ A mobile app for Mercury Works camera company, containing calculators and the us
 Each screen is its own file in the 'screens' directory (with the exception of the Depth of Field Calculator and Hyperfocal Calculator, which are kept in the same file as they are very closely related and share variables).  
 
 To create a new screen: 
-* Create a JavaScript file in the 'screens' directory with a name describing its functionality.
-* Add import statements for React and 'react-native' components to the top of the file.
-* Create a function or const that will contain the content of the screen. For consistency, I named all of these ____Screen (e.g. ```const DOFScreen = ({route}) => {}``` or ```function DOFScreen(route){}```)
-* In the return() of this fucntion, add a <Text></Text> component with the name of the screen (e.g. ```<Text>DOF Screen</Text>```). This will be a temporary statement, but it will be useful for debugging to ensure that the correct screen is being navigated to.
-* Finally, at the bottom of the file, add an export statement (e.g. ```export default DOFScreen;```) using the name of the function. This will ensure that the component can be used throughout the app.
+1.  Create a JavaScript file in the 'screens' directory with a name describing its functionality.
+2.  Add import statements for React and 'react-native' components to the top of the file.
+3.  Create a function or const that will contain the content of the screen. For consistency, I named all of these ____Screen (e.g. ```const DOFScreen = ({route}) => {}``` or ```function DOFScreen(route){}```)
+4.  In the return() of this fucntion, add a <Text></Text> component with the name of the screen (e.g. ```<Text>DOF Screen</Text>```). This will be a temporary statement, but it will be useful for debugging to ensure that the correct screen is being navigated to.
+5.  Finally, at the bottom of the file, add an export statement (e.g. ```export default DOFScreen;```) using the name of the function. This will ensure that the component can be used throughout the app.
 
-See below for how to add your new screen to the navigation of the app, and navigate to it from other screens. 
+See below for how to add your new screen to the navigation of the app (App.js), and navigate to it from other screens (home.js). 
+
+Update instructions and explanations are organized by screen/file below. This section also contains explanations of the existing code and functions in each file, so that future contributors can have an in-depth understanding of how the app currecntly functions, updates to be made more efficiently.  
 
 
 ### App.js
