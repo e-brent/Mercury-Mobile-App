@@ -141,6 +141,7 @@ const ReciprocityScreen = () => {
               setSelected={(val) => setSelectedFilm(val)} // updates state variable
               data={filmStock}
               save="value"
+              boxStyles={{marginBottom:12}}
               dropdownTextStyles={{color:'white'}}
               inputStyles={{color:'white'}}
               onSelect = {() => setTimerEnd(false)}
