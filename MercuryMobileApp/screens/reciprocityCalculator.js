@@ -183,7 +183,7 @@ const ReciprocityScreen = () => {
                 trailColor = '#bd1004'
                 onComplete = {() => {handleBackground()}} // when the timer ends, play the sound and turn the screen red to indicate
               >
-                {({ remainingTime }) => <Text style={reciprocityStyle.insideTimerText} accessible={true} accessibilityRole="timer" accessibilityLiveRegion="assertive" importantForAccessibility="yes">{remainingTime}</Text>} {/*Text that is shown inside the timer */}
+                {({ remainingTime }) => <Text style={reciprocityStyle.insideTimerText} accessible={true} accessibilityRole="timer" accessibilityLiveRegion="assertive" importantForAccessibility="yes">{remainingTime}</Text>}
               </CountdownCircleTimer>)}
             </View>
 

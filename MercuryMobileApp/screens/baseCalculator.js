@@ -1,7 +1,5 @@
 // See README.md for information about this file and how to make updates
 
-// NECESSARY UPDATES: CHANGE THE UNITS SELECTION TO SEPARATE THE INPUT AND DISPLAYING THE RESULTS. ALSO WANT TO MESS AROUND WITH SPACING/LAYOUT SO THAT RESULTS ARE NOT JUST OFF SCREEN
-
 import * as React from 'react';
 import { StyleSheet, View , Text, SafeAreaView, TextInput, Button, ScrollView } from 'react-native';
 
