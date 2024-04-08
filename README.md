@@ -54,7 +54,7 @@ To add a new button to the home screen:
 * Update the 'onPress' function of the button to navigate to the new screen. *(Note: It is helpful to do this after creating the file and adding the screen to the stack in App.js so that you can check whether the button functions properly right away.)*
 
 ### dofCalculator.js
-This file contains both the Depth of Field (DOF) Calculator, which is used to display the depth of field for a given lens, base, and spacer for different F-stops, as well as the Hyperfocal Calculator, which will find the hyperfocal for a given lens, base, and F-stop. The main updates to this file will be if the data needs to be expanded on, but an explanation of the file will also be provided incase in-depth updates are required in the future.  
+This file contains both the Depth of Field (DOF) Calculator, which is used to display the depth of field for a given lens, base, and spacer for different f-stops, as well as the Hyperfocal Calculator, which will find the hyperfocal for a given lens, base, and f-stop. The main updates to this file will be if the data needs to be expanded on, but an explanation of the file will also be provided incase in-depth updates are required in the future.  
 
 To add additional data: 
 * The lens data for these screens is all in global variables at the top of the file, so that it can be used in the calculations for both DOF and hyperfocal calculations.
@@ -69,13 +69,20 @@ The main organization of this screen is provided by the two tabs at the top labe
 **Visible screen components**  
 On the DOF tab, there are three dropdown menus which allow users to select the lens, base, and spacer they are using. These menus can also be searched, to narrow results. The data for the lens menu is stored in the `lensname` array, and the data for base and spacer menus are calculated by the `handleSelections()` function.  
   
-On the Hyperfocal tab, there are only two dropdown menus which are used to select a lens and f-stop. Data for these menus is stored in the `lensName` and `fStop` arrays, respectively.  
+On the Hyperfocal tab, there are only two dropdown menus which are used to select a lens and f-stop. Data for these menus is stored in the `lensName` and `fStop` arrays, respectively.    
 
-*(Note: This will be changing)* On both tabs, there is then a set of radio buttons, allowing a user to select the units they desire to see the results displayed in. Current options include feet (default), inches, meters, and millimeters.  
+At the bottom of each tab, there is a button to 'Calculate DOF' or 'Calculate hyperfocal.' When pressed, these will run the functions `calculateDOF()` or `calculateHyperfocal()` respectively, which will use the user entered data above and display the results.
 
-At the bottom of each tab, there is a button to 'Calculate DOF' or 'Calculate hyperfocal.' When pressed, these will run the functions `calculateDOF()` or `calculateHyperfocal()` respectively, which will use the user entered data above and display the results.  
+When results are displayed, there will also be a pair of radio buttons which appears, giving users the option to select 'feet' or 'meters' as the units to use to display their results. The conversion is done using the function `handleUnits()`.
 
 **Functions**
+* `handleUnits()` -- This function takes one string argument, the units that the user has just selected, which will be used to set the selectedUnits state variable and perform the correct conversion on the results.
+  * Two local variables (workingVal1 and workingVal2) will be used for temporary storage when performing the conversions.
+  * The function uses if-statements to determine whether a user is on the DOF tab or the Hyperfocal tab of the screen.
+  * Within those statements, there are then if statements used to determine if the units have been changed from meters --> feet or feet --> meters.
+  * Then, all of the results are converted. The results variables (e.g., f22Response) are split into arrays to isolate the numeric values, then the conversion is performed and the new values are re-combined into the result variable as a string.
+  * Some of the values can be either numeric or "INF", so for these values, first check if the value is numeric before attempting to perform the conversion.
+  
 * `handleSelections()` -- This function takes 2 string arguments, lensVal and baseVal, which will be used to compare with the data in `lensData` to fill in the other dropdown menus and the result candidate data.
   * lensVal and baseVal are passed in by the "Select lens" and "Select base" dropdown menus, which call the function when an option is selected on them. In the current implementation, they pass in the values of the state variables `selectedLens` and `selectedBase` respectively.
   * A for-loop compares lensVal to the names in the lensData array, and when the correct row is found, the data associated with that lens is stored in global array variables.
@@ -84,7 +91,7 @@ At the bottom of each tab, there is a button to 'Calculate DOF' or 'Calculate hy
 * `calculateDOF()` -- This function takes no arguments, and uses the state variables from user input, as well as the global variables, to select the correct results.
   * First, the state variables are set to display the correct results, and a state variable is incremented to "force" the screen to re-render when necessary.
   * Typically, the index of the selected spacer in `lensData` will be used as the index to select the results. However, as some of the lenses do not use spacers, if the spacer value is "none", then the index of the selected base will be used as the index to pull data from `lensData `.
-  * *(Note: THIS WILL BE CHANGING) The results are then changed to match the selected units.*
+   
 * `calculateHyperfocal()` -- This function takes no arguments, and uses the state variables from user input, as well as the global variables, to select the correct results.
   * First, the state variables are set to display the correct results, and a state variable is incremented to "force" the screen to re-render when necessary.
   * A for-loop is used to search through `lensData` to find the selected lens and pull the correct f-stop data, based on the selected f-stop.
@@ -94,12 +101,19 @@ For more information, refer to these links:
 * [React Native Dropdown Select List](https://www.npmjs.com/package/react-native-dropdown-select-list)
 * [React Native Segmented Control Tab](https://www.npmjs.com/package/react-native-segmented-control-tab)
 
-Updates to be made to this file: 
-* Add capabilities for the user to choose whether results are displayed in meters or feet, and recalculate results accordingly. (Right now it has feet, inches, meters, and millimeters, but that seems a little overkill haha. Also I may want to change where it's implemented
-
-*This section of the README is still in progress, thank you for your patience*
-
 ### reciprocityCalculator.js
+This file contains the screen components and calculations for film reciprocity, which takes user input for the film stock and time, then outputs the reciprocity time and a countdown timer. The main updates to this file will be if the film data needs to be expanded on, but an explanation of the file will also be provided incase in-depth updates are required in the future.  
+
+Adding additional film data: 
+* The types of film that this calculator can use are stored in the global variable `filmStock` near the top of the file. Additional film types can be added here.
+* To add the reciprocity calculation for the new film to the file, the `calculateReciprocity()` function will have to be updated with the required formulas. To do this, simply add a new else if{} statement to the function with the new film's name, and assign the results of the calculation to the variable `reciprocityTime`.
+
+How this screen is organized: 
+**Visible Screen Components**  
+When a user arrives on the screen, there is a single seachable dropdown menu, which a user uses to select the film stock they would like to find the reciprocity time for. There is also a text entry box which allows a user to enter a numeric value for the time they would like to caluclate the reciprocity on. When the user presses 'Done' on the keyboard when they enter a time, the `calculateReciprocity()` function will execute (see section below for details about this function).  
+
+Once a user presses 'Done', results will be displayed. The reciprocity time will be displayed, along with a countdown timer with a button to start it. When a user starts the timer, 
+
 
 *This section of the README is still in progress, thank you for your patience*
 
