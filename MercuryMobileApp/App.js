@@ -14,6 +14,7 @@ import ReciprocityScreen from './screens/reciprocityCalculator';
 import DOFScreen from './screens/dofCalculator';
 import HomeScreen from './screens/home';
 import BaseScreen from './screens/baseCalculator';
+import CloseFocusScreen from './screens/closeFocusCalculator';
 import UserGuideScreen from './screens/userGuide';
 
 
@@ -59,6 +60,11 @@ const App = () => {
         <Stack.Screen
           name="BaseScreen"
           component={BaseScreen}
+        />
+
+        <Stack.Screen
+          name="CloseFocusScreen"
+          component={CloseFocusScreen}
         />
 
         <Stack.Screen
