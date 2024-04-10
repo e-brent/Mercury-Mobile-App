@@ -16,6 +16,7 @@ import HomeScreen from './screens/home';
 import BaseScreen from './screens/baseCalculator';
 import CloseFocusScreen from './screens/closeFocusCalculator';
 import UserGuideScreen from './screens/userGuide';
+//import UserGuideScreen from './screens/userGuide2';   // alternate user guide screen where I was testing stuff out
 
 
 const Stack = createNativeStackNavigator();

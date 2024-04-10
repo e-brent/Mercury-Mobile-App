@@ -3,7 +3,7 @@
 // NECESSARY UPDATES: THIS FILE IS INCOMPLETE, AND THE USER GUIDE IS STILL IN THE PROCESS OF BEING UPDATED.
 
 import * as React from 'react';
-import { StyleSheet, View , Text, SafeAreaView, TextInput, Button, ScrollView, Modal, Image, Pressable} from 'react-native';
+import { StyleSheet, View , Text, SafeAreaView, TextInput, Button, ScrollView, Modal, Image, Pressable, FlatList} from 'react-native';
 
 // Special imports for this file, see README for links with more information about them
 import {wrapScrollView, useScrollIntoView,} from 'react-native-scroll-into-view';
@@ -16,7 +16,6 @@ const options ={
         top: 5,
     },
 }
-
 
 /*NOTE: As this is a long document, the paragraphs and images have been numbered in comments below for ease of jumping to a specific paragraph to make updates.
         The numbers for the paragraphs reset with each heading in the table of contents. The image count is cumultive to keep it consistent with the variable names. */
@@ -34,6 +33,7 @@ const UserGuideContent = () => {
     const gettingToKnowRef = React.useRef();
     const lensOptionsRef = React.useRef();
     const electronicLensRef = React.useRef();
+    const manualLensRef = React.useRef();
 
     // Image objects, created in the order they come up in the User Guide
     const image1 = [{
@@ -98,6 +98,10 @@ const UserGuideContent = () => {
 
             <Pressable onPress={() => scrollIntoView(electronicLensRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Electronic Lensboards" accessibilityHint="Jump to Electronic Lensboards in Lens Options in Part I" accessibilityRole="button">
                 <Text style={guideStyle.buttonText}>Electronic Lensboards</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(manualLensRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Manual Lensboards" accessibilityHint="Jump to Manual Lensboards in Lens Options in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Manual Lensboards</Text>
             </Pressable>
 
     {/*Introduction to Medium Format Stereo Photography*/}
@@ -747,6 +751,264 @@ const UserGuideContent = () => {
                 The following electronic lensboards are available for the Stereo 12. Each features a 3.5mm electrical port to connect to the camera body (using the short cable provided with the camera, or any standard 3.5mm Male-Male stereo audio cable).
             </Text>
 
+        {/*Paragraph 2*/}
+            <Text 
+                style={guideStyle.textSubSubtitle}
+                accessible={true} 
+                accessibilityLabel="Mamiya TLR: " 
+                accessibilityRole="text"
+            >
+                Mamiya TLR:
+            </Text>
+            <Text 
+                style={guideStyle.textBody}
+                accessible={true} 
+                accessibilityLabel="This popular lensboard accepts two Mamiya TLR shutters from Mamiya Twin Lens Reflex lensboards. The lensboard includes a shutter preview option not available on the original lensboard. To activate it, set one or both shutters to “B” mode, then pull the actuator shaft on the lensboard to fire the shutter (no need to use the electronic actuation). While keeping the shaft pulled, screw a preview screw down into the threads, just enough so that it prevents the shaft from returning to its unfired position. The lens will now remain open until you loosen the screw. When you aren’t using preview mode, you can store the preview screws inside the lensboard via the threads on the backside." 
+                accessibilityRole="text"
+            >
+                This popular lensboard accepts two Mamiya TLR shutters from Mamiya Twin Lens Reflex lensboards. The lensboard includes a shutter preview option not available on the original lensboard. To activate it, set one or both shutters to “B” mode, then pull the actuator shaft on the lensboard to fire the shutter (no need to use the electronic actuation). While keeping the shaft pulled, screw a preview screw down into the threads, just enough so that it prevents the shaft from returning to its unfired position. The lens will now remain open until you loosen the screw. When you aren’t using preview mode, you can store the preview screws inside the lensboard via the threads on the backside.
+            </Text>
+
+        {/*Paragraph 3*/}
+            <Text 
+                style={guideStyle.textSubSubtitle}
+                accessible={true} 
+                accessibilityLabel="Copal 0: " 
+                accessibilityRole="text"
+            >
+                Copal 0: 
+            </Text>
+            <Text 
+                style={guideStyle.textBody}
+                accessible={true} 
+                accessibilityLabel="This popular lensboard accepts two set-and-release (not “press” style) Copal 0 shutters, of any era and style." 
+                accessibilityRole="text"
+            >
+                This popular lensboard accepts two set-and-release (not “press” style) Copal 0 shutters, of any era and style.
+            </Text>
+
+        {/*Paragraph 4*/}
+            <Text 
+                style={guideStyle.textSubSubtitle}
+                accessible={true} 
+                accessibilityLabel="Generic 0: " 
+                accessibilityRole="text"
+            >
+                Generic 0: 
+            </Text>
+            <Text 
+                style={guideStyle.textBody}
+                accessible={true} 
+                accessibilityLabel="This lensboard accepts all other brands of “0” size set-and-release shutters: Seiko 0 (Fujinon), Compur 0, and Seiko SLV (Horseman/Topcor)." 
+                accessibilityRole="text"
+            >
+                This lensboard accepts all other brands of “0” size set-and-release shutters: Seiko 0 (Fujinon), Compur 0, and Seiko SLV (Horseman/Topcor).
+            </Text>
+
+        {/*Paragraph 5*/}
+            <Text 
+                style={guideStyle.textSubSubtitle}
+                accessible={true} 
+                accessibilityLabel="Compur 00, Base 62: " 
+                accessibilityRole="text"
+            >
+                Compur 00, Base 62: 
+            </Text>
+            <Text 
+                style={guideStyle.textBody}
+                accessible={true} 
+                accessibilityLabel="This lensboard accepts Compur 00 shutters, placing the lenses at the standard 62mm stereo base to match the human interpupillary distance." 
+                accessibilityRole="text"
+            >
+                This lensboard accepts Compur 00 shutters, placing the lenses at the standard 62mm stereo base to match the human interpupillary distance.
+            </Text>
+
+        {/*Paragraph 6*/}
+            <Text 
+                style={guideStyle.textSubSubtitle}
+                accessible={true} 
+                accessibilityLabel="Compur 00, Base 57: " 
+                accessibilityRole="text"
+            >
+                Compur 00, Base 57: 
+            </Text>
+            <Text 
+                style={guideStyle.textBody}
+                accessible={true} 
+                accessibilityLabel="This lensboard accepts two Compur 00 shutters, placing them slightly closer together. This has the advantage of enabling you to shoot subjects closer to the camera without causing viewers eyestrain, and also producing larger slides that require less horizontal masking when mounting stereo views. The tradeoff is that less depth will be rendered for farther-away objects." 
+                accessibilityRole="text"
+            >
+                This lensboard accepts two Compur 00 shutters, placing them slightly closer together. This has the advantage of enabling you to shoot subjects closer to the camera without causing viewers eyestrain, and also producing larger slides that require less horizontal masking when mounting stereo views. The tradeoff is that less depth will be rendered for farther-away objects.
+            </Text>
+
+        {/*Paragraph 7*/}
+            <Text 
+                style={guideStyle.textSubSubtitle}
+                accessible={true} 
+                accessibilityLabel="Graflar 1: " 
+                accessibilityRole="text"
+            >
+                Graflar 1: 
+            </Text>
+            <Text 
+                style={guideStyle.textBody}
+                accessible={true} 
+                accessibilityLabel="This specialty board accepts Graflar #1 shutters, such as the one used in the Optar 65mm lens." 
+                accessibilityRole="text"
+            >
+                This specialty board accepts Graflar #1 shutters, such as the one used in the Optar 65mm lens.
+            </Text>
+
+    {/*Manual Lensboards*/}
+            <View ref={manualLensRef}>
+                <Text 
+                    style={guideStyle.textSubtitle}
+                    accessible={true} 
+                    accessibilityLabel="Manual Lensboards" 
+                    accessibilityRole="text"
+                >
+                    Manual Lensboards
+                </Text>
+            </View>
+
+        {/*Paragraph 1*/}
+            <Text 
+                style={guideStyle.textBody}
+                accessible={true} 
+                accessibilityLabel="The Stereo 12 also accepts non-electronic lensboards, including the following:" 
+                accessibilityRole="text"
+            >
+                The Stereo 12 also accepts non-electronic lensboards, including the following:
+            </Text>
+
+        {/*Paragraph 2*/}
+            <Text 
+                style={guideStyle.textSubSubtitle}
+                accessible={true} 
+                accessibilityLabel="Pinhole 50mm: " 
+                accessibilityRole="text"
+            >
+                Pinhole 50mm: 
+            </Text>
+            <Text 
+                style={guideStyle.textBody}
+                accessible={true} 
+                accessibilityLabel="This lensboard includes two 0.3mm pinholes instead of lenses. Mount it to the camera with no front spacers to produce a 50mm equivalent field of view. Exposure is accomplished by manually lifting the dual shutter plate and then dropping it back in place when the exposure is finished. (Typical exposures are 5 to 15 seconds, so this is easy to do.)" 
+                accessibilityRole="text"
+            >
+                This lensboard includes two 0.3mm pinholes instead of lenses. Mount it to the camera with no front spacers to produce a 50mm equivalent field of view. Exposure is accomplished by manually lifting the dual shutter plate and then dropping it back in place when the exposure is finished. (Typical exposures are 5 to 15 seconds, so this is easy to do.)
+            </Text>
+
+        {/*Paragraph 3*/}
+            <Text 
+                style={guideStyle.textSubSubtitle}
+                accessible={true} 
+                accessibilityLabel="Pinhole 65mm: " 
+                accessibilityRole="text"
+            >
+                Pinhole 65mm: 
+            </Text>
+            <Text 
+                style={guideStyle.textBody}
+                accessible={true} 
+                accessibilityLabel="This lensboard operates like the 50mm version, but provides a narrower field of view via two 0.35mm pinholes. Mount to the camera using a Base 19 spacer, or whatever you have that is close." 
+                accessibilityRole="text"
+            >
+                This lensboard operates like the 50mm version, but provides a narrower field of view via two 0.35mm pinholes. Mount to the camera using a Base 19 spacer, or whatever you have that is close.
+            </Text>
+
+        {/*Paragraph 4*/}
+            <Text 
+                style={guideStyle.textSubSubtitle}
+                accessible={true} 
+                accessibilityLabel="Century: " 
+                accessibilityRole="text"
+            >
+                Century: 
+            </Text>
+            <Text 
+                style={guideStyle.textBody}
+                accessible={true} 
+                accessibilityLabel="This lensboard accepts two Trioptar 103mm shutters/lenses. This is a readily available, inexpensive lens. They must be actuated via two cable releases. Because they are “press” shutters, they do not need to be cocked before actuation." 
+                accessibilityRole="text"
+            >
+                This lensboard accepts two Trioptar 103mm shutters/lenses. This is a readily available, inexpensive lens. They must be actuated via two cable releases. Because they are “press” shutters, they do not need to be cocked before actuation.
+            </Text>
+
+        {/*Paragraph 5*/}
+            <Text 
+                style={guideStyle.textSubSubtitle}
+                accessible={true} 
+                accessibilityLabel="Ilex 00: " 
+                accessibilityRole="text"
+            >
+                Ilex 00: 
+            </Text>
+            <Text 
+                style={guideStyle.textBody}
+                accessible={true} 
+                accessibilityLabel="This accepts two Ilex 00 sized manual shutters (very rare)." 
+                accessibilityRole="text"
+            >
+                This accepts two Ilex 00 sized manual shutters (very rare).
+            </Text>
+
+        {/*Paragraph 6*/}
+            <Text 
+                style={guideStyle.textSubSubtitle}
+                accessible={true} 
+                accessibilityLabel="0 Manual: " 
+                accessibilityRole="text"
+            >
+                0 Manual: 
+            </Text>
+            <Text 
+                style={guideStyle.textBody}
+                accessible={true} 
+                accessibilityLabel="This accepts two “0” sized shutters of any kind. They must be actuated via two cable releases. This is especially useful for “press” shutters, which do not need to be cocked before actuation." 
+                accessibilityRole="text"
+            >
+                This accepts two “0” sized shutters of any kind. They must be actuated via two cable releases. This is especially useful for “press” shutters, which do not need to be cocked before actuation.
+            </Text>
+
+        {/*Paragraph 7*/}
+            <Text 
+                style={guideStyle.textSubSubtitle}
+                accessible={true} 
+                accessibilityLabel="00 Manual: " 
+                accessibilityRole="text"
+            >
+                00 Manual: 
+            </Text>
+            <Text 
+                style={guideStyle.textBody}
+                accessible={true} 
+                accessibilityLabel="This accepts two “00” sized shutters of any kind. They must be actuated via two cable releases." 
+                accessibilityRole="text"
+            >
+                This accepts two “00” sized shutters of any kind. They must be actuated via two cable releases.
+            </Text>
+
+        {/*Paragraph 8*/}
+            <Text 
+                style={guideStyle.textSubSubtitle}
+                accessible={true} 
+                accessibilityLabel="Mamiya Manual: " 
+                accessibilityRole="text"
+            >
+                Mamiya Manual:  
+            </Text>
+            <Text 
+                style={guideStyle.textBody}
+                accessible={true} 
+                accessibilityLabel="This accepts two Mamiya TLR shutters. They must be actuated via two cable releases. Unlike the Stereo 12 Electronic version of this lensboard, no aperture preview method is build-in to this lensboard. Instead, a set of spacers are provided for ground glass use." 
+                accessibilityRole="text"
+            >
+                This accepts two Mamiya TLR shutters. They must be actuated via two cable releases. Unlike the Stereo 12 Electronic version of this lensboard, no aperture preview method is build-in to this lensboard. Instead, a set of spacers are provided for ground glass use.
+            </Text>
+        
+{/*FINISHED MANUAL LENSBOARD SECTION, READY TO START ON COMPATIBLE LENSES */}
+
         </SafeAreaView>
     )
 };
@@ -816,6 +1078,15 @@ const guideStyle = StyleSheet.create({
         textAlign: 'center',
         alignSelf: 'center',
     },
+    textSubSubtitle: {
+        color: 'white',
+        margin: 8,
+        marginLeft: 15,
+        fontSize: 14,
+        textAlign: 'left',
+        alignSelf: 'flex-start',
+        fontWeight: 'bold',
+    },
     textBody: {
         color: 'white',
         margin: 8,
@@ -827,7 +1098,7 @@ const guideStyle = StyleSheet.create({
     textImageLabel: {
         color: 'red',
         margin: 8,
-        marginLeft: 25,
+        marginLeft: 15,
         fontSize: 14,
         fontWeight: 'bold',
         textAlign: 'left',
