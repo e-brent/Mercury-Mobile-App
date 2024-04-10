@@ -44,20 +44,20 @@ const HomeScreen = ({navigation}) => {
         </View>
 
 
-        {/*Button to navigate to the Close Focus Calculator screen*/}
-        <View style={homeStyle.button} accessible={true} accessibilityLabel="close focus calculator" accessibilityHint="Navigates to the close focus calculator screen" accessibilityRole="button">
-          <Button 
-            title= "Close focus calculator"
-            onPress={() => navigation.navigate("CloseFocusScreen")}
-            color="#000000"
-          />
-        </View>
-
         {/*Button to navigate to the Base Distance Calculator screen*/}
         <View style={homeStyle.button} accessible={true} accessibilityLabel="base distance calculator" accessibilityHint="Navigates to the base distance calculator screen" accessibilityRole="button">
           <Button 
             title= "Base distance calculator"
             onPress={() => navigation.navigate("BaseScreen")}
+            color="#000000"
+          />
+        </View>
+
+        {/*Button to navigate to the Close Focus Calculator screen*/}
+        <View style={homeStyle.button} accessible={true} accessibilityLabel="close focus calculator" accessibilityHint="Navigates to the close focus calculator screen" accessibilityRole="button">
+          <Button 
+            title= "Close focus calculator"
+            onPress={() => navigation.navigate("CloseFocusScreen")}
             color="#000000"
           />
         </View>

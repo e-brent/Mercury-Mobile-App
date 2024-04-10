@@ -49,14 +49,6 @@ const lensName = [
     {key:'36', value:'Mamiya Selor 135mm f/3.5 (TLR)'},
 ];
 
-// Dictionary for selecting the units used to enter the distances (AND DISPLAY RESULTS -- MAY WANT TO MAKE THEM TWO SEPARATE CALCULATIONS)
-const unitList = [
-    {key:'1', value:'feet'},
-    {key:'2', value:'inches'},
-    {key:'3', value:'meters'},
-    {key:'4', value:'millimeters'},
-];
-
 // Array of the lenses with their respective focal lengths (mm)
 const focalLength = [
     {lens:'Super-Angulon 47mm f/5.6', focal: 24},
@@ -97,14 +89,156 @@ const focalLength = [
     {lens:'Mamiya Selor 135mm f/3.5 (TLR)', focal: 80},
 ]
 
+let closeFocus = 0;     // will be used for the results of the calculations
+let displayUnits = "";  // will be used to display the units of the results so they don't accidentally get changed without recalculating the results
+
 const CloseFocusScreen = () => {
+
+    // State variables for saving information and updating the screen
+    const [selectedLens, setSelectedLens] = React.useState('');     // Name of the selected lens
+    const [farDist, setFarDist] = React.useState('0');              // Numeric far subject distance
+    const [units, setUnits] = React.useState('feet');               // id of selected radio button for units, used for claculations and updating display
+    const [showResults, setShowResults] = React.useState(false);    // Controls whether or not to display results
+    const [calculate, setCalculate] = React.useState(0);            // Incremented to "force" the page to update/recalculate results whenever changes are made
+
+    // Creates the radio buttons where users select their desired units for entering subject distances
+    const unitsRadioButtons = React.useMemo(() => ([
+        {
+            id: 'feet', // acts as primary key, should be unique and non-empty string
+            label: 'feet',
+            value: 'feet',
+            color: '#ffffff',
+            labelStyle: {textAlign:'left', color: '#ffffff'},
+            containerStyle: {alignSelf: 'flex-start'},
+            accessible: true,
+            accessibilityLabel: 'feet',
+            accessibilityRole: 'radio',
+        },
+        {
+            id: 'meters', // acts as primary key, should be unique and non-empty string
+            label: 'meters',
+            value: 'meters',
+            color: '#ffffff',
+            labelStyle: {textAlign:'left', color: '#ffffff'},
+            containerStyle: {alignSelf: 'flex-start'},
+            accessible: true,
+            accessibilityLabel: 'meters',
+            accessibilityRole: 'radio'
+        },
+    ]), []);
+
+
+    // Function to calculate the close focus distance given the lens (determines focal length) and far subject distance
+    const calculateCloseFocus = () => {
+        // Set state variables to show/update results when calculated
+        setShowResults(true);
+        setCalculate(calculate + 1);
+
+
+        // Assign variables for calculations
+
+        let fc = 0;      // Create focal length variable
+        // Use the selected lens to assign the correct focal distance
+        for (let i = 0; i < focalLength.length; i ++){
+            if(focalLength[i].lens.localeCompare(selectedLens) == 0){
+                fc = parseInt(focalLength[i].focal);
+            }
+        }
+
+        let b = 62.5    // Stereo base variable; constant value in mm given in spreadsheet 
+        let d = 3       // Deviation variable; constant value in mm given in spreadsheet
+        let coc = 0.05  // Max acceptable diameter for the circle of confusion; constant value in mm given in spreadsheet
+
+        let sof = parseFloat(farDist);    // far object distance variable
+
+        // convert sof into mm for calculations
+        if (units.localeCompare("feet") == 0 ){
+            sof = sof * 304.8;
+        }
+        else {
+            sof = sof * 1000;
+        }
+
+        let sif = ((1 / fc) - (1 / sof)) ** (-1)    // far image distance; intermediate value used to calculate the close focus distance
+
+        let sin = (fc * sif * sof * (d + (2 * b))) / ((2 * b * sif * sof) - (2 * b * fc * sif) - (d * fc * sof));   // near image distance; intermediate value used to calculate close focus distance
+
+        let son = (fc * sif * sof * (d + (2 * b))) / ((fc * d * sof) + (d * sof * sif) + (2 * b * fc * sif));       // near object distance in mm
+
+        // convert results back to selected distance for results
+        if (units.localeCompare("feet") == 0 ){
+            closeFocus = son / 304.8;
+        }
+        else {
+            closeFocus = son / 1000;
+        }
+
+        closeFocus = closeFocus.toFixed(1);
+        displayUnits = units;
+    }
+
+
     return (
         <SafeAreaView style={closeFocusStyle.container}>
             {/*Use KeyboardAware because there are some text inputs where the keyboard would otherwise cover the input */}
             <KeyboardAwareScrollView>   
 
-                {/*Page title and instructions */}
+                {/*Page title*/}
                 <Text style={closeFocusStyle.textTitle} accessible={true} accessibilityLabel="Close focus calculator" accessibilityRole="text">Close Focus Calculator</Text>
+
+
+                {/*Dropdown menu to select the lens (will determine the focal length for calculations*/}
+                <Text style={closeFocusStyle.text} accessible={true} accessibilityLabel="Select lens" accessibilityRole="text">Select lens:</Text>
+                <SelectList 
+                    setSelected={(val) => setSelectedLens(val)}
+                    data= {lensName}
+                    save="value"
+                    boxStyles={{marginBottom:12}}
+                    dropdownTextStyles={{color:'white'}}
+                    inputStyles={{color:'white'}}
+                    accessible={true}
+                    accessibilityLabel="A searchable dropdown menu to select a lens to calculate the close focus distance for"
+                />
+
+                {/*Text input where users can enter their far subject distance value.*/}
+                <Text style={closeFocusStyle.text} accessible={true} accessibilityLabel="Far subject distance" accessibilityRole="text">Far subject distance:</Text>  
+                <View style={closeFocusStyle.contentBlock}>
+                    <TextInput
+                        style={closeFocusStyle.input}
+                        onChangeText={setFarDist}
+                        value={farDist}
+                        placeholder='0'
+                        inputMode='decimal'
+                        keyboardType='decimal-pad'
+                        enterKeyHint='done'
+                        returnKeyType='done'
+                        accessible={true}
+                        accessibilityLabel="Text entry box to enter the far subject distance using the selected units"
+                    />
+                    {/*Group of radio buttons to select the units that the user will use for their subject distance input */}
+                    <RadioGroup 
+                        radioButtons={unitsRadioButtons} 
+                        onPress={setUnits}
+                        selectedId={units}
+                        containerStyle={closeFocusStyle.radioButton}
+                        layout="row"
+                        accessible={true}
+                        accessibilityRole="radiogroup"
+                    />
+                </View>
+
+                {/*Button to click to calculate/show results*/}
+                <View style={closeFocusStyle.button} accessible={true} accessibilityLabel="Click to show the calculated close focus results, will not change to a different screen" accessibilityRole="button">
+                    <Button 
+                        title= "Calculate Close Focus"
+                        onPress={() => calculateCloseFocus()}
+                        color="#000000"
+                    />
+                </View>
+
+                {/*Results*/}
+                {showResults && (<Text style={closeFocusStyle.text}>Close focus distance: {closeFocus} {displayUnits}</Text>)}
+        
             </KeyboardAwareScrollView>
         </SafeAreaView>    
     )
