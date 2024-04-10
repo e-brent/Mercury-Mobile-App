@@ -50,14 +50,6 @@ const lensName = [
     {key:'36', value:'Mamiya Selor 135mm f/3.5 (TLR)'},
 ];
 
-// Dictionary for selecting the units used to enter the distances (AND DISPLAY RESULTS -- MAY WANT TO MAKE THEM TWO SEPARATE CALCULATIONS)
-const unitList = [
-    {key:'1', value:'feet'},
-    {key:'2', value:'inches'},
-    {key:'3', value:'meters'},
-    {key:'4', value:'millimeters'},
-];
-
 // Array of the lenses with their respective focal lengths (mm)
 const focalLength = [
     {lens:'Super-Angulon 47mm f/5.6', focal: 24},
