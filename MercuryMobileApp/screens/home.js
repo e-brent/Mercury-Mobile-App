@@ -1,7 +1,7 @@
 // See README.md for information about this file and how to make updates
 
 import * as React from 'react';
-import { StyleSheet, Text, View, Button, SafeAreaView, Image} from 'react-native';
+import { StyleSheet, Text, View, Button, SafeAreaView, Image, Pressable} from 'react-native';
 
 
 // Home screen of app
@@ -10,66 +10,51 @@ const HomeScreen = ({navigation}) => {
       <SafeAreaView style={homeStyle.container}>
 
         {/*Title of the app*/}
-        <Text style={homeStyle.textTitle} accessible={true} accessibilityLabel="Mercury works" accessibilityRole="text">Mercury Works</Text>
-        <Text style={homeStyle.textSubtitle} accessible={true} accessibilityLabel="The world's first universal camera" accessibilityRole="text">The World's First Universal Camera</Text>
-
-        {/*Maybe add more explanation/about here? Not sure if any text is required. Also not sure if this should go before or after the navigation buttons?*/}
-
-        {/*Button to navigate to the DOF tab on the DOF screen*/}
-        <View style={homeStyle.button} accessible={true} accessibilityLabel="Depth of field calculator" accessibilityHint="Navigates to the depth of field calculator screen" accessibilityRole="button">
-          <Button 
-            title= "Depth of field calculator"
-            onPress={() => navigation.navigate("DOFScreen", {tab: 0})} // {tab: 0} is a parameter passed to DOFScreen so that it has the correct initial tab open
-            color="#000000" // changes the color of the text in the buttons to black
-          />
-        </View>
-  
+        <Text style={homeStyle.textTitle} accessible={true} accessibilityLabel="Mercury Stereo Toolkit" accessibilityRole="text">Mercury Stereo Toolkit</Text>
+        
         {/*Button to navigate to the Hyperfocal tab on the DOF screen*/}
-        <View style={homeStyle.button} accessible={true} accessibilityLabel="Hyperfocal calculator" accessibilityHint="Navigates to the hyperfocal calculator screen" accessibilityRole="button">
-          <Button 
-            title= "Hyperfocal calculator"
-            onPress={() => navigation.navigate("DOFScreen", {tab: 1})} // {tab: 1} is a parameter passed to DOFScreen so that it has the correct initial tab open
-            color="#000000"
+        <Pressable onPress={() => navigation.navigate("DOFScreen", {tab: 0})} style={homeStyle.button} accessible={true} accessibilityLabel="Hyperfocal" accessibilityHint="Navigates to the hyperfocal calculator screen" accessibilityRole="button">
+          <Image
+            style={{ width: 25, height: 25, alignSelf: 'center', marginRight: 8}}
+            source={require('../assets/images/mercuryLogoBlackOnWhite.png')}
           />
-        </View>
+          <Text style={homeStyle.buttonText}>HYPERFOCAL</Text>
+        </Pressable>
+        
+        {/*Button to navigate to the DOF tab on the DOF screen*/}
+        <Pressable onPress={() => navigation.navigate("DOFScreen", {tab: 1})} style={homeStyle.button} accessible={true} accessibilityLabel="Depth of field" accessibilityHint="Navigates to the depth of field calculator screen" accessibilityRole="button">
+          <Image
+            style={{ width: 25, height: 25, alignSelf: 'center', marginRight: 8}}
+            source={require('../assets/images/mercuryLogoBlackOnWhite.png')}
+          />
+          <Text style={homeStyle.buttonText}>DEPTH OF FIELD</Text>
+        </Pressable>
+
+        {/*Button to navigate to the Close Focus Calculator screen*/}
+        <Pressable onPress={() => navigation.navigate("CloseFocusScreen")} style={homeStyle.button} accessible={true} accessibilityLabel="Depth range (close up)" accessibilityHint="Navigates to the close focus calculator screen" accessibilityRole="button">
+          <Text style={homeStyle.buttonText}>DEPTH RANGE (CLOSE UP)</Text>
+        </Pressable>
+
+        {/*Button to navigate to the Base Distance Calculator screen*/}
+        <Pressable onPress={() => navigation.navigate("BaseScreen")}style={homeStyle.button} accessible={true} accessibilityLabel="Base distance (hypo/hyper)" accessibilityHint="Navigates to the base distance calculator screen" accessibilityRole="button">
+          <Text style={homeStyle.buttonText}>BASE DISTANCE (HYPO/HYPER)</Text>
+        </Pressable>
   
 
         {/*Button to navigate to the Reciprocity Calculator screen*/}
-        <View style={homeStyle.button} accessible={true} accessibilityLabel="Reciprocity calculator" accessibilityHint="Navigates to the reciprocity calculator screen" accessibilityRole="button">
-          <Button 
-            title= "Reciprocity calculator"
-            onPress={() => navigation.navigate("ReciprocityScreen")}
-            color="#000000"
-          />
-        </View>
+        <Pressable onPress={() => navigation.navigate("ReciprocityScreen")} style={homeStyle.button} accessible={true} accessibilityLabel="Reciprocity (long exposures)" accessibilityHint="Navigates to the reciprocity calculator screen" accessibilityRole="button">
+          <Text style={homeStyle.buttonText}>RECIPROCITY (LONG EXPOSURES)</Text>
+        </Pressable>
 
-
-        {/*Button to navigate to the Base Distance Calculator screen*/}
-        <View style={homeStyle.button} accessible={true} accessibilityLabel="base distance calculator" accessibilityHint="Navigates to the base distance calculator screen" accessibilityRole="button">
-          <Button 
-            title= "Base distance calculator"
-            onPress={() => navigation.navigate("BaseScreen")}
-            color="#000000"
-          />
-        </View>
-
-        {/*Button to navigate to the Close Focus Calculator screen*/}
-        <View style={homeStyle.button} accessible={true} accessibilityLabel="close focus calculator" accessibilityHint="Navigates to the close focus calculator screen" accessibilityRole="button">
-          <Button 
-            title= "Close focus calculator"
-            onPress={() => navigation.navigate("CloseFocusScreen")}
-            color="#000000"
-          />
-        </View>
 
         {/*Button to navigate to the Stereo System User Guide screen*/}
-        <View style={homeStyle.button} accessible={true} accessibilityLabel="stereo system user guide" accessibilityHint="Navigates to the stereo system user guide screen" accessibilityRole="button">
-          <Button 
-            title= "Stereo system user guide"
-            onPress={() => navigation.navigate("UserGuideScreen")}
-            color="#000000"
+        <Pressable onPress={() => navigation.navigate("UserGuideScreen")} style={homeStyle.button} accessible={true} accessibilityLabel="Mercury Stereo user guide" accessibilityHint="Navigates to the stereo system user guide screen" accessibilityRole="button">
+          <Image
+            style={{ width: 25, height: 25, alignSelf: 'center', marginRight: 8}}
+            source={require('../assets/images/mercuryLogoBlackOnWhite.png')}
           />
-        </View>
+          <Text style={homeStyle.buttonText}>MERCURY STEREO USER GUIDE</Text>
+        </Pressable>
 
         {/*Add new buttons here as new screens are created!*/}
 
@@ -117,7 +102,19 @@ const HomeScreen = ({navigation}) => {
       padding: 5,
       margin: 20,
       borderRadius: 10,
-    }
+      height: 50,
+      width: '90%',
+      alignSelf: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      flex: 1,
+      flexDirection: 'row',
+    
+    }, 
+    buttonText: {
+      alignSelf: 'center',
+      fontSize: 18,
+    },
   });
 
 
