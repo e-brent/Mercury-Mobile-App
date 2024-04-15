@@ -7,7 +7,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 // not using most of these but I'm scared to get rid of them
-import { StyleSheet, Text, View, Button, SafeAreaView, Image} from 'react-native';
+import { StyleSheet, Text, View, Button, SafeAreaView, Image, Pressable} from 'react-native';
 
 // screen imports
 import ReciprocityScreen from './screens/reciprocityCalculator';
@@ -25,7 +25,7 @@ const Stack = createNativeStackNavigator();
 const HeaderLogo = () => {
   return (
     <Image
-      style={{ width: 45, height: 45}}
+      style={{ width: 60, height: 60, alignSelf: 'center'}}
       source={require('./assets/images/mercuryLogoWhiteOnBlack.png')}
     />
   )
@@ -38,10 +38,17 @@ const App = () => {
       <Stack.Navigator 
         initialRouteName="Home" // will load the home screen (from home.js) as the initial screen
         screenOptions={{
-          headerTitle: () => <HeaderLogo/>,
-          headerStyle: { 
-            backgroundColor: '#000000',
-          }
+          //headerTitle: () => <HeaderLogo/>,
+          //headerStyle: { 
+          //  backgroundColor: '#000000'
+          //}
+          header: ({navigation}) => (
+            <SafeAreaView style={{backgroundColor:'black', height: 100, width:'100%', alignSelf: 'center' }}>
+              <Pressable onPress={() => navigation.navigate("Home")}>
+                <HeaderLogo/>
+              </Pressable>
+            </SafeAreaView>
+          )
         }}
       >
         <Stack.Screen 

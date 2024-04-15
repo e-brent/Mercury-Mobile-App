@@ -30,6 +30,9 @@ var timerTime = 0;
 // Screen component
 const ReciprocityScreen = () => {
 
+  // Reference to use to automatically scroll down to see results
+    const endRef = React.useRef();
+
   // State variables for saving data and updating the screen
     const [selectedFilm, setSelectedFilm] = React.useState(''); // Selected film stock
     const [time, onChangeTime] = React.useState('');            // The time entered by users in the textbox
@@ -131,9 +134,14 @@ const ReciprocityScreen = () => {
 
     return (
       <SafeAreaView style={[(timerEnd == false) ? reciprocityStyle.containerRegular : reciprocityStyle.containerTimerEnd]}>
-        <ScrollView>
+        <ScrollView ref={endRef} onContentSizeChange={() => endRef.current.scrollToEnd({ animated: true })}>
           {/*Page title */}
-            <Text style={reciprocityStyle.textTitle} accessible={true} accessibilityLabel="Reciprocity calculator" accessibilityRole="text">Reciprocity Calculator</Text>
+            <Text style={reciprocityStyle.textTitle} accessible={true} accessibilityLabel="Reciprocity (Long Exposures)" accessibilityRole="text">RECIPROCITY (LONG EXPOSURES)</Text>
+
+          {/*Instructions*/}
+          <Text style={reciprocityStyle.text} accessible={true} accessibilityLabel="When shooting long exposures (over 1 second), use this calculator to convert your metered exposure to the actual exposure time required by your film stock." accessibilityRole="text">
+            When shooting long exposures (over 1 second), use this calculator to convert your metered exposure to the actual exposure time required by your film stock.
+          </Text>
 
           {/*Dropdown menu for selecting film stock to use in calculation*/}
             <Text style={reciprocityStyle.text} accessible={true} accessibilityLabel="Select film stock" accessibilityRole="text">Select film stock:</Text>

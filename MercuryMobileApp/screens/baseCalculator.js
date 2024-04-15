@@ -16,11 +16,11 @@ const lensName = [
     {key:'2', value:'Apo-Digitar 35mm f/5.6 XL'},
     {key:'3', value:'Pinhole 50mm (0.3mm)'},
     {key:'4', value:'Bronica 50mm f/2.8 MC (ETRS)'},
-    {key:'5', value:'Mamiya Sekor 55mm f/4.5 (LTR)'},
+    {key:'5', value:'Mamiya Sekor 55mm f/4.5 (TLR)'},
     {key:'6', value:'Apo-Digitar 60mm f/4'},
     {key:'7', value:'Ilex 60mm f/16'},
     {key:'8', value:'Pinhole 65mm (0.35mm)'},
-    {key:'9', value:'Mamiya Sekor 65mm f/3.5 (LTR)'},
+    {key:'9', value:'Mamiya Sekor 65mm f/3.5 (TLR)'},
     {key:'10', value:'Grandagon 65mm f/4.5'},
     {key:'11', value:'Angulon 65mm f/6.8'},
     {key:'12', value:'Super-Angulon 65mm f/8'},
@@ -42,12 +42,12 @@ const lensName = [
     {key:'28', value:'Apo-Digitar 100mm f/5.6'},
     {key:'29', value:'Sironar-N 100mm f/5.6'},
     {key:'30', value:'Symmar-S 100mm f/5.6'},
-    {key:'31', value:'APO Symmar 100mm f/5.6'},
+    {key:'31', value:'APO-Symmar 100mm f/5.6'},
     {key:'32', value:'Trioptar 103mm f/4.5'},
     {key:'33', value:'Mamiya Sekor 105mm f/3.5 (TLR)'},
     {key:'34', value:'APO-Symmar 120mm f/5.6'},
     {key:'35', value:'Wista ID 130mm f/5.6'},
-    {key:'36', value:'Mamiya Selor 135mm f/3.5 (TLR)'},
+    {key:'36', value:'Mamiya Sekor 135mm f/3.5 (TLR)'},
 ];
 
 // Array of the lenses with their respective focal lengths (mm)
@@ -56,11 +56,11 @@ const focalLength = [
     {lens:'Apo-Digitar 35mm f/5.6 XL', focal: 24},
     {lens:'Pinhole 50mm (0.3mm)', focal: 25},
     {lens:'Bronica 50mm f/2.8 MC (ETRS)', focal: 25},
-    {lens:'Mamiya Sekor 55mm f/4.5 (LTR)', focal: 28},
+    {lens:'Mamiya Sekor 55mm f/4.5 (TLR)', focal: 28},
     {lens:'Apo-Digitar 60mm f/4', focal: 30},
     {lens:'Ilex 60mm f/16', focal: 30},
     {lens:'Pinhole 65mm (0.35mm)', focal: 35},
-    {lens:'Mamiya Sekor 65mm f/3.5 (LTR)', focal: 35},
+    {lens:'Mamiya Sekor 65mm f/3.5 (TLR)', focal: 35},
     {lens:'Grandagon 65mm f/4.5', focal: 35},
     {lens:'Angulon 65mm f/6.8', focal: 35},
     {lens:'Super-Angulon 65mm f/8', focal: 35},
@@ -82,19 +82,25 @@ const focalLength = [
     {lens:'Apo-Digitar 100mm f/5.6', focal: 60},
     {lens:'Sironar-N 100mm f/5.6', focal: 60},
     {lens:'Symmar-S 100mm f/5.6', focal: 60},
-    {lens:'APO Symmar 100mm f/5.6', focal: 60},
+    {lens:'APO-Symmar 100mm f/5.6', focal: 60},
     {lens:'Trioptar 103mm f/4.5', focal: 60},
     {lens:'Mamiya Sekor 105mm f/3.5 (TLR)', focal: 60},
     {lens:'APO-Symmar 120mm f/5.6', focal: 70},
     {lens:'Wista ID 130mm f/5.6', focal: 75},
-    {lens:'Mamiya Selor 135mm f/3.5 (TLR)', focal: 80},
+    {lens:'Mamiya Sekor 135mm f/3.5 (TLR)', focal: 80},
 ]
 
 // Default base distance value; used for results
 var baseDist = 0;
 
+// Units used to display results-- default is mm, but if the results are > 100mm, they will be converted to meters.
+var displayUnits = "mm";
+
 // Exported component
 const BaseScreen = () => {
+
+    // Reference to use to automatically scroll down to see results
+    const endRef = React.useRef();
 
     // State variables for saving information and updating the screen
     const [selectedLens, setSelectedLens] = React.useState('');     // Name of the selected lens
@@ -270,15 +276,24 @@ const BaseScreen = () => {
         // Round the results to 2 decimal places
         baseDist = baseDist.toFixed(2);
 
+        // Check if baseDist > 100 mm, and if so convert to m
+        if (baseDist > 100){
+            baseDist = baseDist / 1000;
+            displayUnits = "meters";
+        }
+        else {
+            displayUnits = "mm";
+        }
+
     }
 
     return (
         <SafeAreaView style={baseStyle.container}>
             {/*Use KeyboardAware because there are some text inputs where the keyboard would otherwise cover the input */}
-            <KeyboardAwareScrollView>   
+            <KeyboardAwareScrollView ref={endRef} onContentSizeChange={() => endRef.current.scrollToEnd({ animated: true })}>   
 
                 {/*Page title and instructions */}
-                <Text style={baseStyle.textTitle} accessible={true} accessibilityLabel="Base distance calculator" accessibilityRole="text">Base Distance Calculator</Text>
+                <Text style={baseStyle.textTitle} accessible={true} accessibilityLabel="Base distance (hypo/hyper)" accessibilityRole="text">BASE DISTANCE (HYPO/HYPER)</Text>
                 <Text style={baseStyle.text} accessible={true} accessibilityLabel="This tool calculates the ideal base distance (distance between the stereo lenses) depending on the distance to your subject(s).  This is for medium format 6x6 photography. Use it for very close and very distant subjects." accessibilityRole="text">
                     This tool calculates the ideal base distance (distance between the stereo lenses) depending on the distance to your subject(s). This is for medium format 6x6 photography. Use it for very close and very distant subjects.
                 </Text>
@@ -367,7 +382,7 @@ const BaseScreen = () => {
                 </View>
 
                 {/*Results -- currently they appear just off-screen when they are calculated, may want to update some spacing to make it more clear that a user must scroll to see them?*/}
-                {showResults && (<Text style={baseStyle.textResult} accessible={true} accessibilityLabel="stereo base results" accessibilityRole="text">Stereo base:  {baseDist} mm</Text>)}
+                {showResults && (<Text style={baseStyle.textResult} accessible={true} accessibilityLabel="stereo base results" accessibilityRole="text">Stereo base: {baseDist} {displayUnits}</Text>)}
 
             </KeyboardAwareScrollView>
         </SafeAreaView>

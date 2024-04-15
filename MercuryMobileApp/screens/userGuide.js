@@ -73,7 +73,7 @@ const UserGuideContent = () => {
     return(
         <SafeAreaView>
     {/*Title*/}
-            <Text style={guideStyle.textTitle} accessible={true} accessibilityLabel="Stereo System User Guide" accessibilityRole="text">Stereo System User Guide</Text>
+            <Text style={guideStyle.textTitle} accessible={true} accessibilityLabel="Mercury Stereo User Guide" accessibilityRole="text">Mercury Stereo User Guide</Text>
             <Text style={guideStyle.noteText} accessible={true} accessibilityLabel="Version 0.8" accessibilityRole="text">Version 0.8</Text>
 
     {/*Table of contents header */}
@@ -1025,7 +1025,7 @@ const UserGuideScreen = () =>{
         <SafeAreaView style={guideStyle.footer}>
             <View accessible={true} accessibilityLabel="Click to jump to top" accessibilityRole="button">
                 <Button 
-                    title= "Back to top"
+                    title= "Back to Contents"
                     onPress={() => topRef.current?.scrollTo({
                         x:0,
                         y: 0, 
