@@ -107,7 +107,7 @@ const ReciprocityScreen = () => {
     // Function to load and play the sound effect from the audio directory under assets
     async function playSound() {
       console.log('Loading Sound');
-      const { sound } = await Audio.Sound.createAsync( require('../assets/audio/beep1.mp3')
+      const { sound } = await Audio.Sound.createAsync( require('../assets/audio/beep1a.mp3')
       );
       setSound(sound);
   
@@ -136,7 +136,7 @@ const ReciprocityScreen = () => {
       <SafeAreaView style={[(timerEnd == false) ? reciprocityStyle.containerRegular : reciprocityStyle.containerTimerEnd]}>
         <ScrollView ref={endRef} onContentSizeChange={() => endRef.current.scrollToEnd({ animated: true })}>
           {/*Page title */}
-            <Text style={reciprocityStyle.textTitle} accessible={true} accessibilityLabel="Reciprocity (Long Exposures)" accessibilityRole="text">RECIPROCITY (LONG EXPOSURES)</Text>
+            <Text style={reciprocityStyle.textTitle} accessible={true} accessibilityLabel="Reciprocity (Long Exposures)" accessibilityRole="text">Reciprocity (Long Exposures)</Text>
 
           {/*Instructions*/}
           <Text style={reciprocityStyle.text} accessible={true} accessibilityLabel="When shooting long exposures (over 1 second), use this calculator to convert your metered exposure to the actual exposure time required by your film stock." accessibilityRole="text">
@@ -237,11 +237,13 @@ const reciprocityStyle = StyleSheet.create({
       flexDirection: 'row',
       marginTop: 20,
     },
+    // Title text of page
     textTitle: {
       color: 'white',
       margin: 5,
-      fontSize: 40,
+      fontSize: 35,
       textAlign: 'center',
+      fontWeight: 'bold',
     },
     text: {
       color: 'white',
@@ -256,6 +258,7 @@ const reciprocityStyle = StyleSheet.create({
       margin: 20,
       marginTop: 40,
       fontSize: 20,
+      fontWeight: 'bold',
       alignSelf: 'center',
     },
     insideTimerText: {

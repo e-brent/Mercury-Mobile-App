@@ -33,7 +33,8 @@
     "react-native-sound": "^0.11.2",
     "react-native-sticky-header-footer-scroll-view": "^2.1.3",
     "react-native-svg": "13.9.0",
-    "react-native-webview": "13.2.2"
+    "react-native-webview": "13.2.2",
+    "expo-dev-client": "~2.4.13"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

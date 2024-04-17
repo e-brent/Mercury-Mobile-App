@@ -17,6 +17,7 @@ import BaseScreen from './screens/baseCalculator';
 import CloseFocusScreen from './screens/closeFocusCalculator';
 import UserGuideScreen from './screens/userGuide';
 //import UserGuideScreen from './screens/userGuide2';   // alternate user guide screen where I was testing stuff out
+import AboutScreen from './screens/about';
 
 
 const Stack = createNativeStackNavigator();
@@ -43,7 +44,7 @@ const App = () => {
           //  backgroundColor: '#000000'
           //}
           header: ({navigation}) => (
-            <SafeAreaView style={{backgroundColor:'black', height: 100, width:'100%', alignSelf: 'center' }}>
+            <SafeAreaView style={{backgroundColor:'black', height: 110, width:'100%', alignSelf: 'center' }}>
               <Pressable onPress={() => navigation.navigate("Home")}>
                 <HeaderLogo/>
               </Pressable>
@@ -78,6 +79,11 @@ const App = () => {
         <Stack.Screen
           name="UserGuideScreen"
           component={UserGuideScreen}
+        />
+
+        <Stack.Screen
+          name="AboutScreen"
+          component={AboutScreen}
         />
 
         {/* add more pages here as they're made. Copy and paste, then just change the name and component.*/}
