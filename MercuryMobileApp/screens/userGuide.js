@@ -1055,13 +1055,15 @@ const guideStyle = StyleSheet.create({
       flexDirection: 'row',
       marginTop: 20,
     },
+    // Title text of page
     textTitle: {
-      color: 'white',
-      margin: 5,
-      marginBottom: 0,
-      fontSize: 40,
-      textAlign: 'center',
-    },
+        color: 'white',
+        margin: 5,
+        marginBottom: 0,
+        fontSize: 35,
+        textAlign: 'center',
+        fontWeight: 'bold',
+      },
     text: {
       color: 'white',
       margin: 8,

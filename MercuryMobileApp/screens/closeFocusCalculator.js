@@ -89,6 +89,27 @@ const focalLength = [
     {lens:'Mamiya Sekor 135mm f/3.5 (TLR)', focal: 80},
 ]
 
+// Array of F-stop display values along with their "behind the scenes" value to use for comparing to the calculated f-stop value in order to return a more standard one
+const fStopComparisons = [
+    {display: '2.8', calculated: 2.8},
+    {display: '2.8 + 1/2', calculated: 3.4},
+    {display: '4', calculated: 4},
+    {display: '4 + 1/2', calculated: 4.8},
+    {display: '5.6', calculated: 5.6},
+    {display: '5.6 + 1/2', calculated: 6.8},
+    {display: '8', calculated: 8},
+    {display: '8 + 1/2', calculated: 9.5},
+    {display: '11', calculated: 11},
+    {display: '11 + 1/2', calculated: 13.5},
+    {display: '16', calculated: 16},
+    {display: '16 + 1/2', calculated: 19},
+    {display: '22', calculated: 22},
+    {display: '22 + 1/2', calculated: 27},
+    {display: '32', calculated: 32},
+    {display: '32 + 1/2', calculated: 38.5},
+    {display: '45', calculated: 45},
+];
+
 var closeFocus = 0;     // will be used for the results of the calculations
 var displayUnits = "";  // will be used to display the units of the results so they don't accidentally get changed without recalculating the results
 var fStop = "";         // will be used to display the aperature for the calculated range
@@ -173,7 +194,30 @@ const CloseFocusScreen = () => {
         let xn = ((sin - sif) * sin) / (sin + sif);         // intermediate value, can be ignored
         let entrancePupilDiameter = (sin * coc) / xn;       // in theory, this should be 2.08 mm or thereabouts
 
-        fStop = (fc / entrancePupilDiameter).toFixed(0); 
+        fStop = (fc / entrancePupilDiameter).toFixed(1);    //round the f-stop to 1 decimal place
+
+        // console.log('fstop: ' + fStop); // for debugging
+
+        // sometimes the calculated f-stop will be weird-- to fix this, find the nearest common f-stop to display for the results
+        // loop through the above f-stops and find the smallest difference in the calculated values, then save the display-value to f-stop
+
+        let minDifference = 100000;    // temp variable for storing the absolute value of the difference between the calculated f-stop and the listed ones in the array
+        let savedFStop = '';        // temp variable for storing the display f-stop with the current minimum difference
+
+        for (let i = 0; i < fStopComparisons.length; i ++){
+            let currDifference = Math.abs(fStop - fStopComparisons[i].calculated);
+            if (currDifference < minDifference){
+                // console.log('min diff: ' + minDifference);
+                // console.log('curr diff: ' + currDifference);
+
+                // if there is a new closest f-stop, update the values to save that data
+                minDifference = currDifference;
+                savedFStop = fStopComparisons[i].display;
+            }
+        }
+
+        // assign the savedFStop back to the global fStop variable to be displayed in the results
+        fStop = savedFStop;
 
         // convert results back to selected distance for results
         if (units.localeCompare("feet") == 0 ){
@@ -185,6 +229,15 @@ const CloseFocusScreen = () => {
 
         closeFocus = closeFocus.toFixed(1);
         displayUnits = units;
+
+        // for debugging
+        // console.log('fc: ' + fc);
+        // console.log('sof: ' + sof);
+        // console.log('sif: ' + sif);
+        // console.log('sin: ' + sin);
+        // console.log('son: ' + son);
+        // console.log('xn: ' + xn);
+        // console.log('entrance pupil diameter: ' + entrancePupilDiameter);
     }
 
 
@@ -194,7 +247,7 @@ const CloseFocusScreen = () => {
             <KeyboardAwareScrollView ref={endRef} onContentSizeChange={() => endRef.current.scrollToEnd({ animated: true })}>   
 
                 {/*Page title*/}
-                <Text style={closeFocusStyle.textTitle} accessible={true} accessibilityLabel="Depth range (close up)" accessibilityRole="text">DEPTH RANGE (CLOSE UP)</Text>
+                <Text style={closeFocusStyle.textTitle} accessible={true} accessibilityLabel="Depth range (close up)" accessibilityRole="text">Depth Range (Close Up)</Text>
 
                 {/*Page intro/instructions*/}
                 <Text style={closeFocusStyle.text} accessible={true} accessibilityLabel="Use this tool when you can restrict the visible distance range in your image. Enter the farthest visible object, and this will calculate the closest possible subject that will produce a 'legal' (comfortably viewable) stereo photo. The f-stop displayed will keep this entire range in sharp focus, but that's optional." accessibilityRole="text">
@@ -252,8 +305,8 @@ const CloseFocusScreen = () => {
                 </View>
 
                 {/*Results*/}
-                {showResults && (<Text style={closeFocusStyle.text} accessible={true} accessibilityLabel="Close focus distance results" accessibilityRole="text">Close focus distance: {closeFocus} {displayUnits}</Text>)}
-                {showResults && (<Text style={closeFocusStyle.text} accessible={true} accessibilityLabel="Aperature for the entire range" accessibilityRole="text">Aperature for the entire range: f/{fStop}</Text>)}
+                {showResults && (<Text style={closeFocusStyle.textResult} accessible={true} accessibilityLabel="Close focus distance results" accessibilityRole="text">Close focus distance: {closeFocus} {displayUnits}</Text>)}
+                {showResults && (<Text style={closeFocusStyle.textResult} accessible={true} accessibilityLabel="Aperature for the entire range" accessibilityRole="text">Aperature for the entire range: f/{fStop}</Text>)}
         
             </KeyboardAwareScrollView>
         </SafeAreaView>    
@@ -272,12 +325,14 @@ const closeFocusStyle = StyleSheet.create({
       flexDirection: 'row',
       marginTop: 20,
     },
+    // Title text of page
     textTitle: {
-      color: 'white',
-      margin: 5,
-      fontSize: 40,
-      textAlign: 'center',
-    },
+        color: 'white',
+        margin: 5,
+        fontSize: 35,
+        textAlign: 'center',
+        fontWeight: 'bold',
+      },
     text: {
       color: 'white',
       margin: 8,
@@ -288,10 +343,11 @@ const closeFocusStyle = StyleSheet.create({
       alignSelf: 'flex-start',
     },
     textResult: {
-        color: 'white',
+        color: 'red',
         margin: 8,
         marginTop: 13,
         fontSize: 20,
+        fontWeight: 'bold',
         alignSelf: 'center',
       },
     radioButton: {

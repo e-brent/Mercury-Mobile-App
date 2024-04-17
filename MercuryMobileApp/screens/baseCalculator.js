@@ -278,7 +278,7 @@ const BaseScreen = () => {
 
         // Check if baseDist > 100 mm, and if so convert to m
         if (baseDist > 100){
-            baseDist = baseDist / 1000;
+            baseDist = (baseDist / 1000).toFixed(2);
             displayUnits = "meters";
         }
         else {
@@ -290,10 +290,10 @@ const BaseScreen = () => {
     return (
         <SafeAreaView style={baseStyle.container}>
             {/*Use KeyboardAware because there are some text inputs where the keyboard would otherwise cover the input */}
-            <KeyboardAwareScrollView ref={endRef} onContentSizeChange={() => endRef.current.scrollToEnd({ animated: true })}>   
+            <KeyboardAwareScrollView ref={endRef} onContentSizeChange={() => {if(showResults) {endRef.current.scrollToEnd({ animated: true })}}}>   
 
                 {/*Page title and instructions */}
-                <Text style={baseStyle.textTitle} accessible={true} accessibilityLabel="Base distance (hypo/hyper)" accessibilityRole="text">BASE DISTANCE (HYPO/HYPER)</Text>
+                <Text style={baseStyle.textTitle} accessible={true} accessibilityLabel="Base distance (hypo/hyper)" accessibilityRole="text">Base Distance (Hypo/Hyper)</Text>
                 <Text style={baseStyle.text} accessible={true} accessibilityLabel="This tool calculates the ideal base distance (distance between the stereo lenses) depending on the distance to your subject(s).  This is for medium format 6x6 photography. Use it for very close and very distant subjects." accessibilityRole="text">
                     This tool calculates the ideal base distance (distance between the stereo lenses) depending on the distance to your subject(s). This is for medium format 6x6 photography. Use it for very close and very distant subjects.
                 </Text>
@@ -402,11 +402,12 @@ const baseStyle = StyleSheet.create({
       marginTop: 20,
     },
     textTitle: {
-      color: 'white',
-      margin: 5,
-      fontSize: 40,
-      textAlign: 'center',
-    },
+        color: 'white',
+        margin: 5,
+        fontSize: 35,
+        textAlign: 'center',
+        fontWeight: 'bold',
+      },
     text: {
       color: 'white',
       margin: 8,
@@ -417,10 +418,11 @@ const baseStyle = StyleSheet.create({
       alignSelf: 'flex-start',
     },
     textResult: {
-        color: 'white',
+        color: 'red',
         margin: 8,
         marginTop: 13,
         fontSize: 20,
+        fontWeight: 'bold',
         alignSelf: 'center',
       },
     radioButton: {
