@@ -34,6 +34,7 @@ const UserGuideContent = () => {
     const lensOptionsRef = React.useRef();
     const electronicLensRef = React.useRef();
     const manualLensRef = React.useRef();
+    const compatibleLensRef = React.useRef();
 
     // Image objects, created in the order they come up in the User Guide
     const image1 = [{
@@ -77,7 +78,7 @@ const UserGuideContent = () => {
             <Text style={guideStyle.noteText} accessible={true} accessibilityLabel="Version 0.8" accessibilityRole="text">Version 0.8</Text>
 
     {/*Table of contents header */}
-            <Text style={guideStyle.textSubtitle} accessible={true} accessibilityLabel="Table of contents" accessibilityRole="text">Table of Contents</Text>
+            <Text style={guideStyle.textSubtitle1} accessible={true} accessibilityLabel="Table of contents" accessibilityRole="text">Table of Contents</Text>
             
     {/*Table of contents links to further down the page. onPress function will bring the labeled reference into view.*/}
             <Pressable onPress={() => scrollIntoView(introRef.current, options)} style={guideStyle.button} accessible={true} accessibilityLabel="Introduction to Medium Format Stereo Photography" accessibilityHint="Jump to the introduction section" accessibilityRole="button">
@@ -104,10 +105,14 @@ const UserGuideContent = () => {
                 <Text style={guideStyle.buttonText}>Manual Lensboards</Text>
             </Pressable>
 
+            <Pressable onPress={() => scrollIntoView(compatibleLensRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Compatible Lenses" accessibilityHint="Jump to Compatible Lenses in Lens Options in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Compatible Lenses</Text>
+            </Pressable>
+
     {/*Introduction to Medium Format Stereo Photography*/}
             <View ref={introRef}>
                 <Text 
-                    style={guideStyle.textSubtitle}
+                    style={guideStyle.textSubtitle1}
                     accessible={true} 
                     accessibilityLabel="Introduction to Medium Format Stereo Photography" 
                     accessibilityRole="text"
@@ -273,7 +278,7 @@ const UserGuideContent = () => {
     {/*PART I: CAMERA BASICS*/}
             <View ref={partIRef}>
                 <Text 
-                    style={guideStyle.textSubtitle}
+                    style={guideStyle.textSubtitle1}
                     accessible={true} 
                     accessibilityLabel="PART I: CAMERA BASICS" 
                     accessibilityRole="text"
@@ -285,7 +290,7 @@ const UserGuideContent = () => {
     {/*Getting to Know Your Camera*/}
             <View ref={gettingToKnowRef}>
                 <Text 
-                    style={guideStyle.text}
+                    style={guideStyle.textSubtitle2}
                     accessible={true} 
                     accessibilityLabel="Getting to Know Your Camera" 
                     accessibilityRole="text"
@@ -701,7 +706,7 @@ const UserGuideContent = () => {
     {/*Lens Options*/}
             <View ref={lensOptionsRef}>
                 <Text 
-                    style={guideStyle.textSubtitle}
+                    style={guideStyle.textSubtitle2}
                     accessible={true} 
                     accessibilityLabel="Lens Options" 
                     accessibilityRole="text"
@@ -732,7 +737,7 @@ const UserGuideContent = () => {
     {/*Electronic Lensboards*/}
             <View ref={electronicLensRef}>
                 <Text 
-                    style={guideStyle.textSubtitle}
+                    style={guideStyle.textSubtitle3}
                     accessible={true} 
                     accessibilityLabel="Electronic Lensboards" 
                     accessibilityRole="text"
@@ -862,7 +867,7 @@ const UserGuideContent = () => {
     {/*Manual Lensboards*/}
             <View ref={manualLensRef}>
                 <Text 
-                    style={guideStyle.textSubtitle}
+                    style={guideStyle.textSubtitle3}
                     accessible={true} 
                     accessibilityLabel="Manual Lensboards" 
                     accessibilityRole="text"
@@ -1006,8 +1011,82 @@ const UserGuideContent = () => {
             >
                 This accepts two Mamiya TLR shutters. They must be actuated via two cable releases. Unlike the Stereo 12 Electronic version of this lensboard, no aperture preview method is build-in to this lensboard. Instead, a set of spacers are provided for ground glass use.
             </Text>
+
+    {/*Compatible Lenses*/}
+            <View ref={compatibleLensRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Compatible Lensboards" 
+                    accessibilityRole="text"
+                >
+                    Compatible Lensboards
+                </Text>
+            </View> 
+
+        {/*Paragraph 1*/}
+            <Text 
+                style={guideStyle.textBody}
+                accessible={true} 
+                accessibilityLabel="Most lenses that meet the following requirements are compatible with the Stereo 12:" 
+                accessibilityRole="text"
+            >
+                Most lenses that meet the following requirements are compatible with the Stereo 12:
+            </Text>
+
+        {/*Bullet 1*/}
+            <Text 
+                style={guideStyle.textBullet}
+                accessible={true} 
+                accessibilityLabel="* Front elements no larger than 60mm in diameter (usually this translates to a 58mm filter thread)." 
+                accessibilityRole="text"
+            >
+                * Front elements no larger than 60mm in diameter (usually this translates to a 58mm filter thread).
+            </Text>
+        {/*Bullet 2*/}
+            <Text 
+                style={guideStyle.textBullet}
+                accessible={true} 
+                accessibilityLabel="* Rear elements no larger than 60mm in diameter." 
+                accessibilityRole="text"
+            >
+                * Rear elements no larger than 60mm in diameter.
+            </Text>
+        {/*Bullet 3*/}
+            <Text 
+                style={guideStyle.textBullet}
+                accessible={true} 
+                accessibilityLabel="* Housed in a shutter model supported by the above lensboards." 
+                accessibilityRole="text"
+            >
+                * Housed in a shutter model supported by the above lensboards.
+            </Text>
+        {/*Bullet 4*/}
+            <Text 
+                style={guideStyle.textBullet}
+                accessible={true} 
+                accessibilityLabel="* Focal length between 47mm and 135mm. (Longer and shorter focal lengths are possible via special configurations.)" 
+                accessibilityRole="text"
+            >
+                * Focal length between 47mm and 135mm. (Longer and shorter focal lengths are possible via special configurations.)
+            </Text>
+
+        {/*Paragraph 1*/}
+            <Text 
+                style={guideStyle.textBody}
+                accessible={true} 
+                accessibilityLabel="The following is a non-exhaustive list of lenses compatible with the Stereo 12:" 
+                accessibilityRole="text"
+            >
+                The following is a non-exhaustive list of lenses compatible with the Stereo 12:
+            </Text>
+
+        {/*Start working on react native table for compatible lenses*/}
+
+            
+
         
-{/*FINISHED MANUAL LENSBOARD SECTION, READY TO START ON COMPATIBLE LENSES */}
+
 
         </SafeAreaView>
     )
@@ -1072,17 +1151,36 @@ const guideStyle = StyleSheet.create({
       textAlign: 'left',
       alignSelf: 'flex-start',
     },
-    textSubtitle: {
+    textSubtitle1: {
         color: 'white',
         margin: 8,
         marginTop: 13,
         fontSize: 25,
+        fontWeight: 'bold',
         textAlign: 'center',
         alignSelf: 'center',
+    },
+    textSubtitle2: {
+        color: 'white',
+        margin: 8,
+        marginTop: 13,
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        alignSelf: 'center',
+    },
+    textSubtitle3: {
+        color: 'white',
+        margin: 8,
+        marginTop: 13,
+        fontSize: 20,
+        textAlign: 'left',
+        alignSelf: 'flex-start',
     },
     textSubSubtitle: {
         color: 'white',
         margin: 8,
+        marginBottom: 0,
         marginLeft: 15,
         fontSize: 14,
         textAlign: 'left',
