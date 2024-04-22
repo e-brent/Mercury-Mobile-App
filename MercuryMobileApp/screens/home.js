@@ -32,17 +32,29 @@ const HomeScreen = ({navigation}) => {
 
           {/*Button to navigate to the Close Focus Calculator screen*/}
           <Pressable onPress={() => navigation.navigate("CloseFocusScreen")} style={homeStyle.button} accessible={true} accessibilityLabel="Depth range (close up)" accessibilityHint="Navigates to the close focus calculator screen" accessibilityRole="button">
+            <Image
+              style={{ width: 25, height: 25, alignSelf: 'center', marginRight: 8}}
+              source={require('../assets/images/ruler.png')}
+            />
             <Text style={homeStyle.buttonText}>DEPTH RANGE (CLOSE UP)</Text>
           </Pressable>
 
           {/*Button to navigate to the Base Distance Calculator screen*/}
           <Pressable onPress={() => navigation.navigate("BaseScreen")}style={homeStyle.button} accessible={true} accessibilityLabel="Base distance (hypo/hyper)" accessibilityHint="Navigates to the base distance calculator screen" accessibilityRole="button">
+            <Image
+              style={{ width: 25, height: 25, alignSelf: 'center', marginRight: 8}}
+              source={require('../assets/images/base.png')}
+            />
             <Text style={homeStyle.buttonText}>BASE DISTANCE (HYPO/HYPER)</Text>
           </Pressable>
     
 
           {/*Button to navigate to the Reciprocity Calculator screen*/}
           <Pressable onPress={() => navigation.navigate("ReciprocityScreen")} style={homeStyle.button} accessible={true} accessibilityLabel="Reciprocity (long exposures)" accessibilityHint="Navigates to the reciprocity calculator screen" accessibilityRole="button">
+            <Image
+              style={{ width: 25, height: 25, alignSelf: 'center', marginRight: 8}}
+              source={require('../assets/images/timer.png')}
+            />
             <Text style={homeStyle.buttonText}>RECIPROCITY (LONG EXPOSURES)</Text>
           </Pressable>
 
