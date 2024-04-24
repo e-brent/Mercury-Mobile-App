@@ -1,0 +1,13 @@
+transferring build: 
+
+- send code or download off github
+- get rid of bundle identifier, package, possibly project id in app.json
+- if it comes down to it, might just delete everything eas related
+- if it really really comes down to it, just copy the code over to a new expo project in a Mercury account (ask about Mercury github??)
+
+- to publish app: 
+
+1. create google developer account ($25 one-time fee) and apple developer account ($99 annual fee)
+2. have end-user license agreement and privacy policies (terms of use also recommended)
+
+3. 
