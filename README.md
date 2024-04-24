@@ -1,5 +1,6 @@
 # Mercury-Mobile-App
-A mobile app for Mercury Works camera company, containing calculators and the user guide for the stereo camera system.
+Respository for the Mercury Stereo Toolkit mobile app.  
+Developed Spring 2024 by Emmanuelle Brent.  
 
 ## Directory Guide
 * **README.md** - Contains documentation for the ease of use and information for future updates to this project.
@@ -7,15 +8,17 @@ A mobile app for Mercury Works camera company, containing calculators and the us
   * **App.js** - The navigation stack for the app and the shared header for the other pages.
   * **assets** - Directory containing the audio effects and images used throughout the app.
   * **screens** - Directory containing the screens that the app will render.
-    * **home.js** - The home screen and initial render of the app. Contains buttons for navigating to all other screens.
-    * **dofCalculator.js** - Contains the Depth of Field and Hyperfocal calculators, which can be toggled between.
-    * **reciprocityCalculator.js** - A calculator for the reciprocity of different film types.
+    * **about.js** - Short page with links to the Mercury Stereo website and Paypal (coming soon).
     * **baseCalculator.js** - Contains the calculator for the distance between two lens bases for stereo photography.
-    * **userGuide.js** - The stereo system user guide.  
+    * **closeFocusCalculator.js** - A calculator for determining the near focus distance of a lens, given a far distance of focus.
+    * **dofCalculator.js** - Contains the Depth of Field and Hyperfocal calculators, which can be toggled between.
+    * **home.js** - The home screen and initial render of the app. Contains buttons for navigating to all other screens.
+    * **reciprocityCalculator.js** - A calculator for the reciprocity of different film types.
+    * **userGuide.js** - The stereo system user guide.
 
-## Updating the app
+## Instructions for updating app files 
 
-### Adding a new screen
+### Adding a new screen/file
 Each screen is its own file in the 'screens' directory (with the exception of the Depth of Field Calculator and Hyperfocal Calculator, which are kept in the same file as they are very closely related and share variables).  
 
 To create a new screen: 
@@ -112,8 +115,10 @@ How this screen is organized:
 **Visible Screen Components**  
 When a user arrives on the screen, there is a single seachable dropdown menu, which a user uses to select the film stock they would like to find the reciprocity time for. There is also a text entry box which allows a user to enter a numeric value for the time they would like to caluclate the reciprocity on. When the user presses 'Done' on the keyboard when they enter a time, the `calculateReciprocity()` function will execute (see section below for details about this function).  
 
-Once a user presses 'Done', results will be displayed. The reciprocity time will be displayed, along with a countdown timer with a button to start it. When a user starts the timer, 
+Once a user presses 'Done', results will be displayed. The reciprocity time will be displayed, along with a countdown timer and a button to start it. When the timer runs out, the screen will turn red and a sound will play (a user's ringer must be turn on or they must be using headphones). 
 
+**Functions**  
+* `calculateReciprocity()` -- This function takes two arguments, for the film type and the time input by the users. 
 
 *This section of the README is still in progress, thank you for your patience*
 
