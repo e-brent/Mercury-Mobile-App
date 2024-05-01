@@ -35,6 +35,77 @@ const UserGuideContent = () => {
     const electronicLensRef = React.useRef();
     const manualLensRef = React.useRef();
     const compatibleLensRef = React.useRef();
+    const baseSpacersRef = React.useRef();
+    const focusSpacersRef = React.useRef();
+    const filmBacksRef = React.useRef();
+    const mercuryPanoBackRef = React.useRef();
+    const mercuryCutFilmBackRef = React.useRef();
+    const horsemanBackRef = React.useRef();
+    const linhofTechnoRollexRef = React.useRef();
+    const daYiBackRef = React.useRef();
+    const largeFormatSheetFilmHoldersRef = React.useRef();
+    const grafmaticRef = React.useRef();
+    const glassPlatesTintypesRef = React.useRef();
+    const instantFilmRef = React.useRef();
+    const essentialAccessoriesRef = React.useRef();
+    const viewfinderRef = React.useRef();
+    const cameraStrapRef = React.useRef();
+    const spannerWrenchRef = React.useRef();
+    const lensCapRef = React.useRef();
+    const recommendedAccessoriesRef = React.useRef();
+    const sideHandleRef = React.useRef();
+    const groundGlassBackRef = React.useRef();
+    const qrClampRef = React.useRef();
+    const lightMeterRef = React.useRef();
+    const remoteTriggerRef = React.useRef();
+    const miniScrewdriverRef = React.useRef();
+    const filterStepUpRingsRef = React.useRef();
+    const lensShadesRef = React.useRef();
+    const lensboardShellRef = React.useRef();
+    const graflokRearCapRef = React.useRef();
+    const mercuryAppRef = React.useRef();
+    const advancedAccessoriesRef = React.useRef();
+    const rangeFinderRef = React.useRef();
+    const lensElementMountref = React.useRef();
+    const groundGlassLoupeRef = React.useRef();
+    const mercuryTriggerControllerRef = React.useRef();
+    const otherUpgradesRef = React.useRef();
+    const partIIRef = React.useRef();
+    const partIIIRef = React.useRef();
+    const shootingGroundGlassRef = React.useRef();
+    const aperaturePrevRef = React.useRef();
+    const composingGroundGlassRef = React.useRef();
+    const exposingShotRef = React.useRef();
+    const deluxeGroundGlassBackRef = React.useRef();
+    const mercuryStereoLensShadeSysRef = React.useRef();
+    const shootingHyperCloseStereoRef = React.useRef();
+    const extremeHyperstereoRef = React.useRef();
+    const extremeCloseupRef = React.useRef();
+    const shootingFlashRef = React.useRef();
+    const offboardWirelessFlashRef = React.useRef();
+    const whichShutterRef = React.useRef();
+    const partIVRef = React.useRef();
+    const compositing3DImagesRef = React.useRef();
+    const screenViewingRef = React.useRef();
+    const formattingImageParlorscopeRef = React.useRef();
+    const xperia1SeriesRef = React.useRef();
+    const xperiaZ5PremRef = React.useRef();
+    const viewingImageParlorscopeRef = React.useRef();
+    const parlorscopeAdjustmentsRef = React.useRef();
+    const partVRef = React.useRef();
+    const shootingSlidesRef = React.useRef();
+    const mountingSlidesStndCardboardRef = React.useRef();
+    const viewingSlidesParlorscopeRef = React.useRef();
+    const partVIRef = React.useRef();
+    const lensCompatibilityRef = React.useRef();
+    const shutterCompatibilityRef = React.useRef();
+    const supportedShuttersRef = React.useRef();
+    const stereoElectronicLensboardRef = React.useRef();
+    const manualLensboardRef = React.useRef();
+    const settingUpLensboardRef = React.useRef();
+    const transportingRef = React.useRef();
+    const troubleshootingRef = React.useRef();
+
 
     // Image objects, created in the order they come up in the User Guide
     const image1 = [{
@@ -77,37 +148,333 @@ const UserGuideContent = () => {
             <Text style={guideStyle.textTitle} accessible={true} accessibilityLabel="Mercury Stereo User Guide" accessibilityRole="text">Mercury Stereo User Guide</Text>
             <Text style={guideStyle.noteText} accessible={true} accessibilityLabel="Version 0.8" accessibilityRole="text">Version 0.8</Text>
 
+            <Image
+                style={guideStyle.image}
+                source={require('../assets/images/MercuryStereoUserGuide_html_67faff9346fa14a.png')}
+            />
+
     {/*Table of contents header */}
             <Text style={guideStyle.textSubtitle1} accessible={true} accessibilityLabel="Table of contents" accessibilityRole="text">Table of Contents</Text>
             
     {/*Table of contents links to further down the page. onPress function will bring the labeled reference into view.*/}
-            <Pressable onPress={() => scrollIntoView(introRef.current, options)} style={guideStyle.button} accessible={true} accessibilityLabel="Introduction to Medium Format Stereo Photography" accessibilityHint="Jump to the introduction section" accessibilityRole="button">
+    {/*PART I*/}
+            <Pressable onPress={() => scrollIntoView(introRef.current, options)} style={guideStyle.button} accessible={true} accessibilityLabel="Introduction to Medium Format Stereo Photography" accessibilityHint="Click to jump to the introduction section" accessibilityRole="button">
                 <Text style={guideStyle.buttonText}>Introduction to Medium Format Stereo Photography</Text>
             </Pressable>
 
-            <Pressable onPress={() => scrollIntoView(partIRef.current, options)} style={guideStyle.button} accessible={true} accessibilityLabel="PART I: CAMERA BASICS" accessibilityHint="Jump to PART I: CAMERA BASICS" accessibilityRole="button">
+            <Pressable onPress={() => scrollIntoView(partIRef.current, options)} style={guideStyle.button} accessible={true} accessibilityLabel="PART I: CAMERA BASICS" accessibilityHint="Click to jump to PART I: CAMERA BASICS" accessibilityRole="button">
                 <Text style={guideStyle.buttonText}>PART I: CAMERA BASICS</Text>
             </Pressable>
 
-            <Pressable onPress={() => scrollIntoView(gettingToKnowRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Getting to Know Your Camera" accessibilityHint="Jump to Getting to Know Your Camera in Part I" accessibilityRole="button">
+            <Pressable onPress={() => scrollIntoView(gettingToKnowRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Getting to Know Your Camera" accessibilityHint="Click to jump to Getting to Know Your Camera in Part I" accessibilityRole="button">
                 <Text style={guideStyle.buttonText}>Getting to Know Your Camera</Text>
             </Pressable>
 
-            <Pressable onPress={() => scrollIntoView(lensOptionsRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Lens Options" accessibilityHint="Jump to Lens Options in Part I" accessibilityRole="button">
+            <Pressable onPress={() => scrollIntoView(lensOptionsRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Lens Options" accessibilityHint="Click to jump to Lens Options in Part I" accessibilityRole="button">
                 <Text style={guideStyle.buttonText}>Lens Options</Text>
             </Pressable>
 
-            <Pressable onPress={() => scrollIntoView(electronicLensRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Electronic Lensboards" accessibilityHint="Jump to Electronic Lensboards in Lens Options in Part I" accessibilityRole="button">
+            <Pressable onPress={() => scrollIntoView(electronicLensRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Electronic Lensboards" accessibilityHint="Click to jump to Electronic Lensboards in Lens Options in Part I" accessibilityRole="button">
                 <Text style={guideStyle.buttonText}>Electronic Lensboards</Text>
             </Pressable>
 
-            <Pressable onPress={() => scrollIntoView(manualLensRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Manual Lensboards" accessibilityHint="Jump to Manual Lensboards in Lens Options in Part I" accessibilityRole="button">
+            <Pressable onPress={() => scrollIntoView(manualLensRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Manual Lensboards" accessibilityHint="Click to jump to Manual Lensboards in Lens Options in Part I" accessibilityRole="button">
                 <Text style={guideStyle.buttonText}>Manual Lensboards</Text>
             </Pressable>
 
-            <Pressable onPress={() => scrollIntoView(compatibleLensRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Compatible Lenses" accessibilityHint="Jump to Compatible Lenses in Lens Options in Part I" accessibilityRole="button">
+            <Pressable onPress={() => scrollIntoView(compatibleLensRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Compatible Lenses" accessibilityHint="Click to jump to Compatible Lenses in Lens Options in Part I" accessibilityRole="button">
                 <Text style={guideStyle.buttonText}>Compatible Lenses</Text>
             </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(baseSpacersRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Base Spacers" accessibilityHint="Click to jump to Base Spacers in Lens Options in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Base Spacers</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(focusSpacersRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Focus Spacers" accessibilityHint="Click to jump to Focus Spacers in Lens Options in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Focus Spacers</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(filmBacksRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Film Backs" accessibilityHint="Click to jump to Film Backs in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Film Backs</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(mercuryPanoBackRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Mercury 65/70mm Panoramic Back" accessibilityHint="Click to jump to Mercury 65/70mm Panoramic Back in Film Backs in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Mercury 65/70mm Panoramic Back</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(mercuryCutFilmBackRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Mercury 65mm Cut Film Back" accessibilityHint="Click to jump to Mercury 65mm Cut Film Back in Film Backs in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Mercury 65mm Cut Film Back</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(horsemanBackRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Horseman 120 6x12 Back" accessibilityHint="Click to jump to Horseman 120 6x12 Back in Film Backs in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Horseman 120 6x12 Back</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(linhofTechnoRollexRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Linhof Techno Rollex" accessibilityHint="Click to jump to Linhof Techno Rollex in Film Backs in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Linhof Techno Rollex</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(daYiBackRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Da Yi 120 6x12 Back" accessibilityHint="Click to jump to Ca Yi 120 6x12 Back in Film Backs in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Da Yi 120 6x12 Back</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(largeFormatSheetFilmHoldersRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Large Format Sheet Film Holders" accessibilityHint="Click to jump to Large Format Sheet Film Holders in Film Backs in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Large Format Sheet Film Holders</Text>
+            </Pressable> 
+
+            <Pressable onPress={() => scrollIntoView(grafmaticRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Grafmatic" accessibilityHint="Click to jump to Grafmatic in Film Backs in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Grafmatic</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(glassPlatesTintypesRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Glass Plates and Tintypes" accessibilityHint="Click to jump to Glass Plates and Tintypes in Film Backs in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Glass Plates and Tintypes</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(instantFilmRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Instant Film" accessibilityHint="Click to jump to Instant Film in Film Backs in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Instant Film</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(essentialAccessoriesRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Essential Accessories" accessibilityHint="Click to jump to Essential Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Essential Accessories</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(viewfinderRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Viewfinder" accessibilityHint="Click to jump to Viewfinder in Essential Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Viewfinder</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(cameraStrapRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Camera Strap" accessibilityHint="Click to jump to Camera Strap in Essential Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Camera Strap</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(spannerWrenchRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Spanner Wrench" accessibilityHint="Click to jump to Spanner Wrench in Essential Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Spanner Wrench</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(lensCapRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Lens Cap" accessibilityHint="Click to jump to Lens Cap in Essential Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Lens Cap</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(recommendedAccessoriesRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Highly Recommended Accessories" accessibilityHint="Click to jump to Highly Recommended Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Highly Recommended Accessories</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(sideHandleRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Side Handle" accessibilityHint="Click to jump to Side Handle in Highly Recommended Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Side Handle</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(groundGlassBackRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Ground Glass Back" accessibilityHint="Click to jump to Ground Glass Back in Highly Recommended Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Ground Glass Back</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(qrClampRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="QR Clamp" accessibilityHint="Click to jump to QR Clamp in Highly Recommended Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>QR Clamp</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(lightMeterRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Light Meter" accessibilityHint="Click to jump to Light Meter in Highly Recommended Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Light Meter</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(remoteTriggerRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Remote Trigger" accessibilityHint="Click to jump to Remote Trigger in Highly Recommended Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Remote Trigger</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(miniScrewdriverRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Mini Screwdriver Set" accessibilityHint="Click to jump to Mini Screwdriver Set in Highly Recommended Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Mini Screwdriver Set</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(filterStepUpRingsRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Filter Step-Up Rings" accessibilityHint="Click to jump to Filter Step-Up Rings in Highly Recommended Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Filter Step-Up Rings</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(lensShadesRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Lens Shades" accessibilityHint="Click to jump to Lens Shades in Highly Recommended Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Lens Shades</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(lensboardShellRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Lensboard Shell" accessibilityHint="Click to jump to Lensboard Shell in Highly Recommended Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Lensboard Shell</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(graflokRearCapRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Graflok 45 Rear Protective Cap" accessibilityHint="Click to jump to Graflok 45 Rear Protective Cap in Highly Recommended Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Graflok 45 Rear Protective Cap</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(mercuryAppRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Mercury Stereo Toolkit App" accessibilityHint="Click to jump to Mercury Stereo Toolkit App in Highly Recommended Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Mercury Stereo Toolkit App</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(advancedAccessoriesRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Advanced Accessories" accessibilityHint="Click to jump to Advanced Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Advanced Accessories</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(rangeFinderRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Range Finder" accessibilityHint="Click to jump to Range Finder in Advanced Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Range Finder</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(lensElementMountref.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Lens Element Mount" accessibilityHint="Click to jump to Lens Element Mount in Advanced Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Lens Element Mount</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(groundGlassLoupeRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Ground Glass Loupe" accessibilityHint="Click to jump to Ground Glass Loupe in Advanced Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Ground Glass Loupe</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(mercuryTriggerControllerRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Mercury Trigger Controller" accessibilityHint="Click to jump to Mercury Trigger Controller in Advanced Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Mercury Trigger Controller</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(otherUpgradesRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Other Upgrades" accessibilityHint="Click to jump to Other Upgrades in Advanced Accessories in Part I" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Other Upgrades</Text>
+            </Pressable>
+
+    {/*PART II*/}
+            <Pressable onPress={() => scrollIntoView(partIIRef.current, options)} style={guideStyle.buttonLevel1} accessible={true} accessibilityLabel="PART II: HOW TO SHOOT A STEREO PHOTO WITH YOUR CAMERA" accessibilityHint="Click to jump to PART II: HOW TO SHOOT A STEREO PHOTO WITH YOUR CAMERA" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>PART II: HOW TO SHOOT A STEREO PHOTO WITH YOUR CAMERA</Text>
+            </Pressable>
+
+
+    {/*PART III*/}
+            <Pressable onPress={() => scrollIntoView(partIIIRef.current, options)} style={guideStyle.buttonLevel1} accessible={true} accessibilityLabel="PART III: ADVANCED OPTIONS" accessibilityHint="Click to jump to PART III: ADVANCED OPTIONS" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>PART III: ADVANCED OPTIONS</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(shootingGroundGlassRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Shooting with Ground Glass" accessibilityHint="Click to jump to Shooting with Ground Glass in Part III" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Shooting with Ground Glass</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(aperaturePrevRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Aperature Preview" accessibilityHint="Click to jump to Aperature Preview in Shooting with Ground Glass in Part III" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Aperature Preview</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(composingGroundGlassRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Composing on Ground Glass" accessibilityHint="Click to jump to Composing on Ground Glass in Shooting with Ground Glass in Part III" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Composing on Ground Glass</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(exposingShotRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Exposing Your Shot" accessibilityHint="Click to jump to Exposing Your Shot in Shooting with Ground Glass in Part III" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Exposing Your Shot</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(deluxeGroundGlassBackRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Deluxe Ground Glass Back Accessories" accessibilityHint="Click to jump to Deluxe Ground Glass Back Accessories in Shooting with Ground Glass in Part III" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Deluxe Ground Glass Back Accessories</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(mercuryStereoLensShadeSysRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Mercury Stereo Lens Shade System" accessibilityHint="Click to jump to Mercury Stereo Lens Shade System in Part III" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Mercury Stereo Lens Shade System</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(shootingHyperCloseStereoRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Shooting Hyperstereo and Close-Up Stereo" accessibilityHint="Click to jump to Shooting Hyperstereo and Close-Up Stereo in Part III" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Shooting Hyperstereo and Close-Up Stereo</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(extremeHyperstereoRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Extreme Hyperstereo" accessibilityHint="Click to jump to Extreme Hyperstereo in Shooting Hyperstereo and Close-Up Stereo in Part III" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Extreme Hyperstereo</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(extremeCloseupRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Extreme Close-Ups" accessibilityHint="Click to jump to Extreme Close-Ups in Shooting Hyperstereo and Close-Up Stereo in Part III" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Extreme Close-Ups</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(shootingFlashRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Shooting With Flash" accessibilityHint="Click to jump to Shooting With Flash in Part III" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Shooting With Flash</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(offboardWirelessFlashRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Off-Board/Wireless Flash" accessibilityHint="Click to jump to Off-Board/Wireless Flash in Shooting With Flash in Part III" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Off-Board/Wireless Flash</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(whichShutterRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Which Shutter?" accessibilityHint="Click to jump to Which Shutter? in Shooting With Flash in Part III" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Which Shutter?</Text>
+            </Pressable>
+
+        {/*PART IV*/}
+            <Pressable onPress={() => scrollIntoView(partIVRef.current, options)} style={guideStyle.buttonLevel1} accessible={true} accessibilityLabel="PART IV: VIEWING IN 3D: DIGITAL" accessibilityHint="Click to jump to PART IV: VIEWING IN 3D: DIGITAL" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>PART IV: VIEWING IN 3D: DIGITAL</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(compositing3DImagesRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Compositing Digital 3D Images" accessibilityHint="Click to jump to Compositing Digital 3D Images in Part IV" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Compositing Digital 3D Images</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(screenViewingRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Screen Viewing" accessibilityHint="Click to jump to Screen Viewing in Part IV" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Screen Viewing</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(formattingImageParlorscopeRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Formatting Digital Images for a Mercury Parlorscope" accessibilityHint="Click to jump to Formatting Digital Images for a Mercury Parlorscope in Part IV" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Formatting Digital Images for a Mercury Parlorscope</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(xperia1SeriesRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Xperia 1 Series: 3840 x 1644" accessibilityHint="Click to jump to Xperia 1 Series: 3840 x 1644 in Formatting Digital Images for a Mercury Parlorscope in Part IV" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Xperia 1 Series: 3844 x 1644</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(xperiaZ5PremRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Xpera Z5 Premium or XZ Premium" accessibilityHint="Click to jump to Xperia Z5 Premium or XZ Premium in Formatting Digital Images for a Mercury Parlorscope in Part IV" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Xperia Z5 Premium or XZ Premium</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(viewingImageParlorscopeRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Viewing Digital Images on your Mercury Parlorscope" accessibilityHint="Click to jump to Viewing Digital Images on your Mercury Parlorscope in Formatting Digital Images for a Mercury Parlorscope in Part IV" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Viewing Digital Images on your Mercury Parlorscope</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(parlorscopeAdjustmentsRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Parlorscope Optical Adjustments" accessibilityHint="Click to jump to Parlorscope Optical Adjustments in Formatting Digital Images for a Mercury Parlorscope in Part IV" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Parlorscope Optical Adjustments</Text>
+            </Pressable>
+
+        {/*PART V*/}
+            <Pressable onPress={() => scrollIntoView(partVRef.current, options)} style={guideStyle.buttonLevel1} accessible={true} accessibilityLabel="PART V: VIEWING IN 3D: SLIDES" accessibilityHint="Click to jump to PART V: VIEWING IN 3D: SLIDES" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>PART V: VIEWING IN 3D: SLIDES</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(shootingSlidesRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Shooting Slides" accessibilityHint="Click to jump to  Shooting Slides in Part V" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Shooting Slides</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(mountingSlidesStndCardboardRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Mounting MF3D Slides in Standard Cardboard Mounts" accessibilityHint="Click to jump to Mounting MF3D Slides in Standard Cardboard Mounts in Part V" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Mounting MF3D Slides in Standard Cardboard Mounts</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(viewingSlidesParlorscopeRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Viewing MF3D Slides in Mercury Parlorscope" accessibilityHint="Click to jump to Viewing MF3D Slides in Mercury Parlorscope in Part V" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Viewing MF3D Slides in Mercury Parlorscope</Text>
+            </Pressable>
+
+        {/*PART VI*/}
+            <Pressable onPress={() => scrollIntoView(partVIRef.current, options)} style={guideStyle.buttonLevel1} accessible={true} accessibilityLabel="PART VI: WORKING ON, EXPANDING, AND CARING FOR YOUR CAMERA" accessibilityHint="Click to jump to PART VI: WORKING ON, EXPANDING, AND CARING FOR YOUR CAMERA" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>PART VI: WORKING ON, EXPANDING, AND CARING FOR YOUR CAMERA</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(lensCompatibilityRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Lens Compatibility" accessibilityHint="Click to jump to Lens Compatibility in Part VI" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Lens Compatibility</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(shutterCompatibilityRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Shutter Compatibility" accessibilityHint="Click to jump to Shutter Compatibility in Part VI" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Shutter Compatibility</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(supportedShuttersRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Supported Shutters" accessibilityHint="Click to jump to Supported Shutters in Shutter Compatibility in Part VI" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Supported Shutters</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(stereoElectronicLensboardRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Stereo 12 Electronic Lensboards" accessibilityHint="Click to jump to Stereo 12 Electronic Lensboards in Shutter Compatibility in Part VI" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Stereo 12 Electronic Lensboards</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(manualLensboardRef.current, options)} style={guideStyle.buttonLevel3} accessible={true} accessibilityLabel="Manual Lensboards" accessibilityHint="Click to jump to Manual Lensboards in Shutter Compatibility in Part VI" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Manual Lensboards</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(settingUpLensboardRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Setting Up Your Lensboard" accessibilityHint="Click to jump to Setting Up Your Lensboard in Part VI" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Setting Up Your Lensboard</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(transportingRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Transporting Your Camera" accessibilityHint="Click to jump to Transporting Your Camera in Part VI" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Transporting Your Camera</Text>
+            </Pressable>
+
+            <Pressable onPress={() => scrollIntoView(troubleshootingRef.current, options)} style={guideStyle.buttonLevel2} accessible={true} accessibilityLabel="Troubleshooting" accessibilityHint="Click to jump to Troubleshooting in Part VI" accessibilityRole="button">
+                <Text style={guideStyle.buttonText}>Troubleshooting</Text>
+            </Pressable>
+
+
+
+        
 
     {/*Introduction to Medium Format Stereo Photography*/}
             <View ref={introRef}>
@@ -1081,7 +1448,860 @@ const UserGuideContent = () => {
                 The following is a non-exhaustive list of lenses compatible with the Stereo 12:
             </Text>
 
-        {/*Start working on react native table for compatible lenses*/}
+
+{/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/}
+{/*Start working on react native table for compatible lenses*/}
+
+        
+
+    {/*Base Spacers*/}
+            <View ref={baseSpacersRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Base Spacers" 
+                    accessibilityRole="text"
+                >
+                    Base Spacers
+                </Text>
+            </View>
+
+    {/*Focus Spacers*/}
+            <View ref={focusSpacersRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Focus Spacers" 
+                    accessibilityRole="text"
+                >
+                    Focus Spacers
+                </Text>
+            </View>
+            
+    {/*Film Backs*/}
+            <View ref={filmBacksRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Film Backs" 
+                    accessibilityRole="text"
+                >
+                    Film Backs
+                </Text>
+            </View>
+
+    {/*Mercury 65/70mm Panoramic Back*/}
+            <View ref={mercuryPanoBackRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Mercury 65/70mm Panoramic Back" 
+                    accessibilityRole="text"
+                >
+                    Mercury 65/70mm Panoramic Back
+                </Text>
+            </View>
+
+    {/*Mercury 66mm Cut Film Back*/}
+            <View ref={mercuryCutFilmBackRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Mercury 65mm Cut Film Back" 
+                    accessibilityRole="text"
+                >
+                    Mercury 65mm Cut Film Back
+                </Text>
+            </View>
+
+    {/*Horseman 120 6x12 Back*/}
+            <View ref={horsemanBackRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Horseman 120 6x12 Back" 
+                    accessibilityRole="text"
+                >
+                    Horseman 120 6x12 Back
+                </Text>
+            </View>
+
+    {/*Linhof Techno Rollex*/}
+            <View ref={linhofTechnoRollexRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Linhof Techno Rollex" 
+                    accessibilityRole="text"
+                >
+                    Linhof Techno Rollex
+                </Text>
+            </View>
+
+    {/*Da Yi 120 6x12 Back*/}
+            <View ref={daYiBackRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Da Yi 120 6x12 Back" 
+                    accessibilityRole="text"
+                >
+                    Da Yi 120 6x12 Back
+                </Text>
+            </View>
+
+    {/*Large Format Sheet Film Holders*/}
+            <View ref={largeFormatSheetFilmHoldersRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Large Format Sheet Film Holders" 
+                    accessibilityRole="text"
+                >
+                    Large Format Sheet Film Holders
+                </Text>
+            </View>
+
+    {/*Grafmatic*/}
+            <View ref={grafmaticRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Grafmatic" 
+                    accessibilityRole="text"
+                >
+                    Grafmatic
+                </Text>
+            </View>
+
+            
+    {/*Glass Plates and Tintypes*/}
+            <View ref={glassPlatesTintypesRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Glass Plates and Tintypes" 
+                    accessibilityRole="text"
+                >
+                    Glass Plates and Tintypes
+                </Text>
+            </View>
+
+    {/*Instant Film*/}
+            <View ref={instantFilmRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Instant Film" 
+                    accessibilityRole="text"
+                >
+                    Instant Film
+                </Text>
+            </View>
+
+    {/*Essential Accessories*/}
+            <View ref={essentialAccessoriesRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Essential Accessories" 
+                    accessibilityRole="text"
+                >
+                    Essential Accessories
+                </Text>
+            </View>
+
+    {/*Viewfinder*/}
+            <View ref={viewfinderRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Viewfinder" 
+                    accessibilityRole="text"
+                >
+                    Viewfinder
+                </Text>
+            </View>
+
+    {/*Camera Strap*/}
+            <View ref={cameraStrapRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Camera Strap" 
+                    accessibilityRole="text"
+                >
+                    Camera Strap
+                </Text>
+            </View>
+
+    {/*Spanner Wrench*/}
+            <View ref={spannerWrenchRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Spanner Wrench" 
+                    accessibilityRole="text"
+                >
+                    Spanner Wrench
+                </Text>
+            </View>
+
+    {/*Lens Cap*/}
+            <View ref={lensCapRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Lens Cap" 
+                    accessibilityRole="text"
+                >
+                    Lens Cap
+                </Text>
+            </View>
+
+    {/*Highly Recommended Accessories*/}
+            <View ref={recommendedAccessoriesRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Highly Recommended Accessories" 
+                    accessibilityRole="text"
+                >
+                    Highly Recommended Accessories
+                </Text>
+            </View>
+
+    {/*Side Handle*/}
+            <View ref={sideHandleRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Side Handle" 
+                    accessibilityRole="text"
+                >
+                    Side Handle
+                </Text>
+            </View>
+
+    {/*Ground Glass Back*/}
+            <View ref={groundGlassBackRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Ground Glass Back" 
+                    accessibilityRole="text"
+                >
+                    Ground Glass Back
+                </Text>
+            </View>
+
+    {/*QR Clamp*/}
+            <View ref={qrClampRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="QR Clamp" 
+                    accessibilityRole="text"
+                >
+                    QR Clamp
+                </Text>
+            </View>
+
+    {/*Light Meter*/}
+            <View ref={lightMeterRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Light Meter" 
+                    accessibilityRole="text"
+                >
+                    Light Meter
+                </Text>
+            </View>
+
+    {/*Remote Trigger*/}
+            <View ref={remoteTriggerRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Remote Trigger" 
+                    accessibilityRole="text"
+                >
+                    Remote Trigger
+                </Text>
+            </View>
+
+    {/*Mini Screwdriver Set*/}
+            <View ref={miniScrewdriverRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Mini Screwdriver Set" 
+                    accessibilityRole="text"
+                >
+                    Mini Screwdriver Set
+                </Text>
+            </View>
+
+    {/*Filter Step-Up Rings*/}
+            <View ref={filterStepUpRingsRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Filter Step-Up Rings" 
+                    accessibilityRole="text"
+                >
+                    Filter Step-Up Rings
+                </Text>
+            </View>
+
+    {/*Lens Shades*/}
+            <View ref={lensShadesRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Lens Shades" 
+                    accessibilityRole="text"
+                >
+                    Lens Shades
+                </Text>
+            </View>
+
+    {/*Lensboard Shell*/}
+            <View ref={lensboardShellRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Lensboard Shell" 
+                    accessibilityRole="text"
+                >
+                    Lensboard Shell
+                </Text>
+            </View>
+
+    {/*Graflok 45 Rear Protective Cap*/}
+            <View ref={graflokRearCapRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Graflok Rear 45 Protective Cap" 
+                    accessibilityRole="text"
+                >
+                    Graflok Read 45 Protective Cap
+                </Text>
+            </View>
+
+    {/*Mercury Stereo Toolkit App*/}
+            <View ref={mercuryAppRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Mercury Stereo Toolkit App" 
+                    accessibilityRole="text"
+                >
+                    Mercury Stereo Toolkit App
+                </Text>
+            </View>
+
+    {/*Advanced Accessories*/}
+            <View ref={advancedAccessoriesRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Advanced Accessories" 
+                    accessibilityRole="text"
+                >
+                    Advanced Accessories
+                </Text>
+            </View>
+
+    {/*Range Finder*/}
+            <View ref={rangeFinderRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Range Finder" 
+                    accessibilityRole="text"
+                >
+                    Range Finder
+                </Text>
+            </View>
+
+    {/*Lens Element Mount*/}
+            <View ref={lensElementMountref}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Lens Element Mount" 
+                    accessibilityRole="text"
+                >
+                    Lens Element Mount
+                </Text>
+            </View>
+
+    {/*Ground Glass Loupe*/}
+            <View ref={groundGlassLoupeRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Ground Glass Loupe" 
+                    accessibilityRole="text"
+                >
+                    Ground Glass Loupe
+                </Text>
+            </View>
+
+    {/*Mercury Trigger Controller*/}
+            <View ref={mercuryTriggerControllerRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Mercury Trigger Controller" 
+                    accessibilityRole="text"
+                >
+                    Mercury Trigger Controller
+                </Text>
+            </View>
+
+    {/*Other Upgrades*/}
+            <View ref={otherUpgradesRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Other Upgrades" 
+                    accessibilityRole="text"
+                >
+                    Other Upgrades
+                </Text>
+            </View>
+
+    {/*PART II: HOW TO SHOOT A STEREO PHOTO WITH YOUR CAMERA*/}
+            <View ref={partIIRef}>
+                <Text 
+                    style={guideStyle.textSubtitle1}
+                    accessible={true} 
+                    accessibilityLabel="PART II: HOW TO SHOOT A STEREO PHOTO WITH YOUR CAMERA" 
+                    accessibilityRole="text"
+                >
+                    PART II: HOW TO SHOOT A STEREO PHOTO WITH YOUR CAMERA
+                </Text>
+            </View>
+
+    {/*PART III: ADVANCED OPTIONS*/}
+            <View ref={partIIIRef}>
+                <Text 
+                    style={guideStyle.textSubtitle1}
+                    accessible={true} 
+                    accessibilityLabel="PART III: ADVANCED OPTIONS" 
+                    accessibilityRole="text"
+                >
+                    PART III: ADVANCED OPTIONS
+                </Text>
+            </View>
+
+    {/*Shooting with Ground Glass*/}
+            <View ref={shootingGroundGlassRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Shooting with Ground Glass" 
+                    accessibilityRole="text"
+                >
+                    Shooting with Ground Glass
+                </Text>
+            </View>
+
+    {/*Aperature Preview*/}
+            <View ref={aperaturePrevRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Aperature Preview" 
+                    accessibilityRole="text"
+                >
+                    Aperature Preview
+                </Text>
+            </View>
+
+    {/*Composing on Ground Glass*/}
+            <View ref={composingGroundGlassRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Composing on Ground Glass" 
+                    accessibilityRole="text"
+                >
+                    Composing on Ground Glass
+                </Text>
+            </View>
+
+    {/*Exposing Your Shot*/}
+            <View ref={exposingShotRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Exposing Your Shot" 
+                    accessibilityRole="text"
+                >
+                    Exposing Your Shot
+                </Text>
+            </View>
+
+    {/*Deluxe Ground Glass Back Accessories*/}
+            <View ref={deluxeGroundGlassBackRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Deluxe Ground Glass Back Accessories" 
+                    accessibilityRole="text"
+                >
+                    Deluxe Ground Glass Back Accessories
+                </Text>
+            </View>
+
+    {/*Mercury Stereo Lens Shade System*/}
+            <View ref={mercuryStereoLensShadeSysRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Mercury Stereo Lens Shade System" 
+                    accessibilityRole="text"
+                >
+                    Mercury Stereo Lens Shade System
+                </Text>
+            </View>
+
+    {/*Shooting Hyperstereo and Close-Up Stereo*/}
+            <View ref={shootingHyperCloseStereoRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Shooting Hyperstereo and Close-Up Stereo" 
+                    accessibilityRole="text"
+                >
+                    Shooting Hyperstereo and Close-Up Stereo
+                </Text>
+            </View>
+
+    {/*Extreme Hyperstereo*/}
+            <View ref={extremeHyperstereoRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Extreme Hyperstereo" 
+                    accessibilityRole="text"
+                >
+                    Extreme Hyperstereo
+                </Text>
+            </View>
+
+    {/*Extreme Close-Up*/}
+            <View ref={extremeCloseupRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Extreme Close-Up" 
+                    accessibilityRole="text"
+                >
+                    Extreme Close-Up
+                </Text>
+            </View>
+
+    {/*Shooting with Flash*/}
+            <View ref={shootingFlashRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Shooting with Flash" 
+                    accessibilityRole="text"
+                >
+                    Shooting with Flash
+                </Text>
+            </View>
+
+    {/*Off-Board/Wireless Flash*/}
+            <View ref={offboardWirelessFlashRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Off-Board/Wireless Flash" 
+                    accessibilityRole="text"
+                >
+                    Off-Board/Wireless Flash
+                </Text>
+            </View>
+
+    {/*Which Shutter?*/}
+            <View ref={whichShutterRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Which Shutter?" 
+                    accessibilityRole="text"
+                >
+                    Which Shutter? 
+                </Text>
+            </View>
+
+    {/*PART IV: VIEWING IN 3D: DIGITAL*/}
+            <View ref={partIVRef}>
+                <Text 
+                    style={guideStyle.textSubtitle1}
+                    accessible={true} 
+                    accessibilityLabel="PART IV: VIEWING IN 3D: DIGITAL" 
+                    accessibilityRole="text"
+                >
+                    PART IV: VIEWING IN 3D: DIGITAL
+                </Text>
+            </View>
+
+    {/*Copmpositing Digital 3D Images*/}
+            <View ref={compositing3DImagesRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Compositing Digital 3D Images" 
+                    accessibilityRole="text"
+                >
+                    Compositing Digital 3D Images
+                </Text>
+            </View>
+
+    {/*Screen Viewing*/}
+            <View ref={screenViewingRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Screen Viewing" 
+                    accessibilityRole="text"
+                >
+                    Screen Viewing
+                </Text>
+            </View>
+
+    {/*Formatting Digital Images for a Mercury Parlorscope*/}
+            <View ref={formattingImageParlorscopeRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Formatting Digital Images for a Mercury Parlorscope" 
+                    accessibilityRole="text"
+                >
+                    Formatting Digital Images for a Mercury Parlorscope
+                </Text>
+            </View>
+
+    {/*Xperia 1 Series: 3840 x 1644*/}
+            <View ref={xperia1SeriesRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Xperia 1 Series: 3840 x 1644" 
+                    accessibilityRole="text"
+                >
+                    Xperia 1 Series: 3840 x 1644 
+                </Text>
+            </View>
+
+    {/*Xperia Z5 Premium or XZ Premium*/}
+        <View ref={xperiaZ5PremRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Xperia Z5 Premium of XZ Premium" 
+                    accessibilityRole="text"
+                >
+                    Xperia Z5 Premium or XZ Premium 
+                </Text>
+            </View>
+
+    {/*Viewing Digital Images on Your Mercury Parlorscope*/}
+            <View ref={viewingImageParlorscopeRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Viewing Digital Images on Your Mercury Parlorscope" 
+                    accessibilityRole="text"
+                >
+                    Viewing Digital Images on Your Mercury Parlorscope
+                </Text>
+            </View>
+
+    {/*Parlorscope Optical Adjustments*/}
+            <View ref={parlorscopeAdjustmentsRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Parlorscope Optical Adjustments" 
+                    accessibilityRole="text"
+                >
+                    Parlorscope Optical Adjustments
+                </Text>
+            </View>
+
+    {/*PART V: VIEWING IN 3D: SLIDES*/}
+            <View ref={partVRef}>
+                <Text 
+                    style={guideStyle.textSubtitle1}
+                    accessible={true} 
+                    accessibilityLabel="PART V: VIEWING IN 3D: SLIDES" 
+                    accessibilityRole="text"
+                >
+                    PART V: VIEWING IN 3D: SLIDES
+                </Text>
+            </View>
+
+    {/*Shooting Slides*/}
+            <View ref={shootingSlidesRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Shooting Slides" 
+                    accessibilityRole="text"
+                >
+                    Shooting Slides
+                </Text>
+            </View>
+
+    {/*Mounting MF3D Slides in Standard Cardboard Mounts*/}
+            <View ref={mountingSlidesStndCardboardRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Mounting MF3D Slides in Standard Cardboard Mounts" 
+                    accessibilityRole="text"
+                >
+                    Mounting MF3D Slides in Standard Cardboard Mounts
+                </Text>
+            </View>
+
+    {/*Viewing MF3D SLides in Mercury Parlorscopes*/}
+            <View ref={viewingSlidesParlorscopeRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Viewing MF3D Slides in Mercury Parlorscopes" 
+                    accessibilityRole="text"
+                >
+                    Viewing MF3D Slides in Mercury Parlorscopes
+                </Text>
+            </View>
+
+    {/*PART VI: WORKING ON, EXPANDING, AND CARING FOR YOUR CAMERA*/}
+            <View ref={partVIRef}>
+                <Text 
+                    style={guideStyle.textSubtitle1}
+                    accessible={true} 
+                    accessibilityLabel="PART VI: WORKING ON, EXPANDING, AND CARING FOR YOUR CAMERA" 
+                    accessibilityRole="text"
+                >
+                    PART VI: WORKING ON, EXPANDING, AND CARING FOR YOUR CAMERA
+                </Text>
+            </View>
+
+    {/*Lens Compatibility*/}
+            <View ref={lensCompatibilityRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Lens Compatibility" 
+                    accessibilityRole="text"
+                >
+                    Lens Compatibility
+                </Text>
+            </View>
+
+    {/*Shutter Compatibility*/}
+            <View ref={shutterCompatibilityRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Shutter Compatibility" 
+                    accessibilityRole="text"
+                >
+                    Shutter Compatibility
+                </Text>
+            </View>
+
+    {/*Supported Shutters*/}
+            <View ref={supportedShuttersRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Supported Shutters" 
+                    accessibilityRole="text"
+                >
+                    Supported Shutters
+                </Text>
+            </View>
+
+    {/*Stereo 12 Electronic Lensboards*/}
+            <View ref={stereoElectronicLensboardRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Stereo 12 Electronic Lensboards" 
+                    accessibilityRole="text"
+                >
+                    Stereo 12 Electronic Lensboard
+                </Text>
+            </View>
+
+    {/*Manual Lensboard*/}
+            <View ref={manualLensboardRef}>
+                <Text 
+                    style={guideStyle.textSubtitle3}
+                    accessible={true} 
+                    accessibilityLabel="Manual Lensboards" 
+                    accessibilityRole="text"
+                >
+                    Manual Lensboards
+                </Text>
+            </View>
+
+    {/*Setting Up Your Lensboard*/}
+            <View ref={settingUpLensboardRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Setting Up Your Lensboard" 
+                    accessibilityRole="text"
+                >
+                    Setting Up Your Lensboard
+                </Text>
+            </View>
+
+    {/*Transporting Your Camera*/}
+            <View ref={transportingRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Transporting Your Camera" 
+                    accessibilityRole="text"
+                >
+                    Transporting Your Camera
+                </Text>
+            </View>
+
+    {/*Troubleshooting*/}
+            <View ref={troubleshootingRef}>
+                <Text 
+                    style={guideStyle.textSubtitle2}
+                    accessible={true} 
+                    accessibilityLabel="Troubleshooting" 
+                    accessibilityRole="text"
+                >
+                    Troubleshooting
+                </Text>
+            </View>
+
+            
+
+            
+
+            
+
+
 
             
 
@@ -1138,6 +2358,7 @@ const guideStyle = StyleSheet.create({
     textTitle: {
         color: 'white',
         margin: 5,
+        marginTop: 55,
         marginBottom: 0,
         fontSize: 35,
         textAlign: 'center',

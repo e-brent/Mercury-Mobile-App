@@ -212,7 +212,7 @@ const ReciprocityScreen = () => {
 
             {/*Notes for the bottom of the page to clarify some of the features to users */}
               {result && (<Text style={reciprocityStyle.noteText} accessible={true} accessibilityLabel="The displayed time on the timer will reset automatically when the timer is started" accessibilityRole="text">The displayed time on the timer will reset automatically when the timer is started.</Text>)}  
-              {result && (<Text style={reciprocityStyle.noteText} accessible={true} accessibilityLabel="Turn ringer on or use headphones for sound" accessibilityRole="text">Turn ringer on or use headphones for sound.</Text>)}
+              {result && (<Text style={reciprocityStyle.noteText} accessible={true} accessibilityLabel="Turn ringer/media volume on for sound when timer ends" accessibilityRole="text">Turn ringer/media volume on for sound when timer ends.</Text>)}
             </View> 
 
           </ScrollView>           
@@ -240,6 +240,7 @@ const reciprocityStyle = StyleSheet.create({
     // Title text of page
     textTitle: {
       color: 'white',
+      marginTop: 55,
       margin: 5,
       fontSize: 35,
       textAlign: 'center',

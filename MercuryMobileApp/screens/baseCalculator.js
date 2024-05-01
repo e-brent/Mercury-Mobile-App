@@ -13,52 +13,48 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 // NOTE: SOME OF THESE LENSES AND HOW THEY ARE REFERRED TO IS DIFFERENT FROM THE DOF CALCULATOR. DO NOT COPY AND PASTE BETWEEN THE TWO FILES
 const lensName = [
     {key:'1', value:'Super-Angulon 47mm f/5.6'},
-    {key:'2', value:'Apo-Digitar 35mm f/5.6 XL'},
-    {key:'3', value:'Pinhole 50mm (0.3mm)'},
-    {key:'4', value:'Bronica 50mm f/2.8 MC (ETRS)'},
-    {key:'5', value:'Mamiya Sekor 55mm f/4.5 (TLR)'},
-    {key:'6', value:'Apo-Digitar 60mm f/4'},
-    {key:'7', value:'Ilex 60mm f/16'},
-    {key:'8', value:'Pinhole 65mm (0.35mm)'},
-    {key:'9', value:'Mamiya Sekor 65mm f/3.5 (TLR)'},
-    {key:'10', value:'Grandagon 65mm f/4.5'},
-    {key:'11', value:'Angulon 65mm f/6.8'},
-    {key:'12', value:'Super-Angulon 65mm f/8'},
-    {key:'13', value:'Fujinon SW 65mm f/8'},
-    {key:'14', value:'Graflex Optar W.A. 65mm f/6.8'},
-    {key:'15', value:'Super Topcor 65mm f/7'},
-    {key:'16', value:'HR Digiron-W 70mm f/5.6'},
-    {key:'17', value:'Grandagon 75mm f/6.8'},
-    {key:'18', value:'Super Angulon 75mm f/8'},
-    {key:'19', value:'Fujinon SW 75mm F/8'},
-    {key:'20', value:'Horseman Professional 75mm f/5.6'},
-    {key:'21', value:'Mamiya Sekor 80mm f/2.8 (TLR)'},
-    {key:'22', value:'Heligon 80mm f/2.8'},
-    {key:'23', value:'Apo-Digitar 80mm f/4'},
-    {key:'24', value:'Apo-Digitar 90mm f/4.5'},
-    {key:'25', value:'Angulon 90mm f/6.8'},
-    {key:'26', value:'Tessar 100mm f/3.5'},
-    {key:'27', value:'Nikkor-W 100mm f/5.6'},
-    {key:'28', value:'Apo-Digitar 100mm f/5.6'},
-    {key:'29', value:'Sironar-N 100mm f/5.6'},
-    {key:'30', value:'Symmar-S 100mm f/5.6'},
-    {key:'31', value:'APO-Symmar 100mm f/5.6'},
-    {key:'32', value:'Trioptar 103mm f/4.5'},
-    {key:'33', value:'Mamiya Sekor 105mm f/3.5 (TLR)'},
-    {key:'34', value:'APO-Symmar 120mm f/5.6'},
-    {key:'35', value:'Wista ID 130mm f/5.6'},
-    {key:'36', value:'Mamiya Sekor 135mm f/3.5 (TLR)'},
+    {key:'2', value:'Pinhole 50mm (0.3mm)'},
+    {key:'3', value:'Bronica 50mm f/2.8 MC (ETRS)'},
+    {key:'4', value:'Mamiya Sekor 55mm f/4.5 (TLR)'},
+    {key:'5', value:'Apo-Digitar 60mm f/4'},
+    {key:'6', value:'Pinhole 65mm (0.35mm)'},
+    {key:'7', value:'Mamiya Sekor 65mm f/3.5 (TLR)'},
+    {key:'8', value:'Grandagon 65mm f/4.5'},
+    {key:'9', value:'Angulon 65mm f/6.8'},
+    {key:'10', value:'Super-Angulon 65mm f/8'},
+    {key:'11', value:'Fujinon SW 65mm f/8'},
+    {key:'12', value:'Graflex Optar W.A. 65mm f/6.8'},
+    {key:'13', value:'Super Topcor 65mm f/7'},
+    {key:'14', value:'HR Digiron-W 70mm f/5.6'},
+    {key:'15', value:'Grandagon 75mm f/6.8'},
+    {key:'16', value:'Super-Angulon 75mm f/8'},
+    {key:'17', value:'Fujinon SW 75mm F/8'},
+    {key:'18', value:'Horseman Professional 75mm f/5.6'},
+    {key:'19', value:'Mamiya Sekor 80mm f/2.8 (TLR)'},
+    {key:'20', value:'Heligon 80mm f/2.8'},
+    {key:'21', value:'Apo-Digitar 80mm f/4'},
+    {key:'22', value:'Apo-Digitar 90mm f/4.5'},
+    {key:'23', value:'Angulon 90mm f/6.8'},
+    {key:'24', value:'Tessar 100mm f/3.5'},
+    {key:'25', value:'Nikkor-W 100mm f/5.6'},
+    {key:'26', value:'Apo-Digitar 100mm f/5.6'},
+    {key:'27', value:'Sironar-N 100mm f/5.6'},
+    {key:'28', value:'Symmar-S 100mm f/5.6'},
+    {key:'29', value:'Apo-Symmar 100mm f/5.6'},
+    {key:'30', value:'Trioptar 103mm f/4.5'},
+    {key:'31', value:'Mamiya Sekor 105mm f/3.5 (TLR)'},
+    {key:'32', value:'Apo-Symmar 120mm f/5.6'},
+    {key:'33', value:'Wista ID 130mm f/5.6'},
+    {key:'34', value:'Mamiya Sekor 135mm f/4.5 (TLR)'},
 ];
 
 // Array of the lenses with their respective focal lengths (mm)
 const focalLength = [
     {lens:'Super-Angulon 47mm f/5.6', focal: 24},
-    {lens:'Apo-Digitar 35mm f/5.6 XL', focal: 24},
     {lens:'Pinhole 50mm (0.3mm)', focal: 25},
     {lens:'Bronica 50mm f/2.8 MC (ETRS)', focal: 25},
     {lens:'Mamiya Sekor 55mm f/4.5 (TLR)', focal: 28},
     {lens:'Apo-Digitar 60mm f/4', focal: 30},
-    {lens:'Ilex 60mm f/16', focal: 30},
     {lens:'Pinhole 65mm (0.35mm)', focal: 35},
     {lens:'Mamiya Sekor 65mm f/3.5 (TLR)', focal: 35},
     {lens:'Grandagon 65mm f/4.5', focal: 35},
@@ -69,7 +65,7 @@ const focalLength = [
     {lens:'Super Topcor 65mm f/7', focal: 35},
     {lens:'HR Digiron-W 70mm f/5.6', focal: 40},
     {lens:'Grandagon 75mm f/6.8', focal: 45},
-    {lens:'Super Angulon 75mm f/8', focal: 45},
+    {lens:'Super-Angulon 75mm f/8', focal: 45},
     {lens:'Fujinon SW 75mm F/8', focal: 45},
     {lens:'Horseman Professional 75mm f/5.6', focal: 45},
     {lens:'Mamiya Sekor 80mm f/2.8 (TLR)', focal: 50},
@@ -82,12 +78,12 @@ const focalLength = [
     {lens:'Apo-Digitar 100mm f/5.6', focal: 60},
     {lens:'Sironar-N 100mm f/5.6', focal: 60},
     {lens:'Symmar-S 100mm f/5.6', focal: 60},
-    {lens:'APO-Symmar 100mm f/5.6', focal: 60},
+    {lens:'Apo-Symmar 100mm f/5.6', focal: 60},
     {lens:'Trioptar 103mm f/4.5', focal: 60},
     {lens:'Mamiya Sekor 105mm f/3.5 (TLR)', focal: 60},
-    {lens:'APO-Symmar 120mm f/5.6', focal: 70},
+    {lens:'Apo-Symmar 120mm f/5.6', focal: 70},
     {lens:'Wista ID 130mm f/5.6', focal: 75},
-    {lens:'Mamiya Sekor 135mm f/3.5 (TLR)', focal: 80},
+    {lens:'Mamiya Sekor 135mm f/4.5 (TLR)', focal: 80},
 ]
 
 // Default base distance value; used for results
@@ -149,6 +145,17 @@ const BaseScreen = () => {
             accessible: true,
             accessibilityLabel: 'feet',
             accessibilityRole: 'radio',
+        },
+        {
+            id: 'yards', // acts as primary key, should be unique and non-empty string
+            label: 'yards',
+            value: 'yards',
+            color: '#ffffff',
+            labelStyle: {textAlign:'left', color: '#ffffff'},
+            containerStyle: {alignSelf: 'flex-start'},
+            accessible: true,
+            accessibilityLabel: 'yards',
+            accessibilityRole: 'radio'
         },
         {
             id: 'inches', // acts as primary key, should be unique and non-empty string
@@ -237,6 +244,12 @@ const BaseScreen = () => {
                 l = l * 25.4;
             }
         }
+        else if (units.localeCompare('yards') == 0){
+            n = n * 914.4;
+            if(!isNaN(l)){
+                l = l * 914.4;
+            }
+        }
 
         // Check if n < 12 inches, will be a factor in the chosen formula
         if ( (n/25.4) < 12 ){
@@ -277,9 +290,13 @@ const BaseScreen = () => {
         baseDist = baseDist.toFixed(2);
 
         // Check if baseDist > 100 mm, and if so convert to m
-        if (baseDist > 100){
+        if (baseDist >= 1000){
             baseDist = (baseDist / 1000).toFixed(2);
             displayUnits = "meters";
+        }
+        else if (baseDist >= 100){
+            baseDist = (baseDist / 10).toFixed(2);
+            displayUnits = "cm";
         }
         else {
             displayUnits = "mm";
@@ -402,11 +419,12 @@ const baseStyle = StyleSheet.create({
       marginTop: 20,
     },
     textTitle: {
-        color: 'white',
-        margin: 5,
-        fontSize: 35,
-        textAlign: 'center',
-        fontWeight: 'bold',
+      color: 'white',
+      marginTop: 55,
+      margin: 5,
+      fontSize: 35,
+      textAlign: 'center',
+      fontWeight: 'bold',
       },
     text: {
       color: 'white',
