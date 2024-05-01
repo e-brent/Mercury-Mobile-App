@@ -5,9 +5,10 @@ import { StyleSheet, Text, View, Button, SafeAreaView, Image, Pressable, ScrollV
 
 
 
-const supportedURL = 'https://www.mercurystereo.com';
+const mercuryStereoURL = 'https://www.mercurystereo.com';
+const paypalURL = 'https://www.paypal.com/ncp/payment/TQDA8X6HZKP5Y';
 
-const OpenURLButton = ({url, children}) => {
+const OpenURLLink = ({url, children}) => {
   const handlePress = React.useCallback(async () => {
     // Checking if the link is supported for links with custom URL scheme.
     const supported = await Linking.canOpenURL(url);
@@ -24,6 +25,23 @@ const OpenURLButton = ({url, children}) => {
   return <Button title={children} onPress={handlePress} />;
 };
 
+const OpenURLButton = ({url, children}) => {
+  const handlePress = React.useCallback(async () => {
+    // Checking if the link is supported for links with custom URL scheme.
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${url}`);
+    }
+  }, [url]);
+
+  return <Button color="black" title={children} onPress={handlePress} />;
+};
+
 
 // About screen of app
 const AboutScreen = () => {
@@ -35,8 +53,20 @@ const AboutScreen = () => {
                 <Text style={aboutStyle.text2} accessible={true} accessibilityLabel='For Medium Format 3D cameras, tools, and instructions, visit' accessibilityRole='text'>
                     For Medium Format 3D cameras, tools, and instructions, visit 
                 </Text>
-                <OpenURLButton url={supportedURL}>www.merucrystereo.com</OpenURLButton>
+                <OpenURLLink url={mercuryStereoURL}>www.merucrystereo.com</OpenURLLink>
             </View>
+
+            <View>
+                <Text style={aboutStyle.text2} accessible={true} accessibilityLabel="Find this app useful? We'd be very grateful for a donation of any amount to support it!" accessibilityRole='text'>
+                Find this app useful? We'd be very grateful for a donation of any amount to support it! 
+                </Text>
+                <View style={aboutStyle.button}>
+                  <OpenURLButton url={paypalURL}>DONATE</OpenURLButton>
+                </View>
+            </View>
+
+            <Text style={aboutStyle.text} accessible={true} accessibilityLabel='Special thanks to Ian Andvaag for Depth Range formulas.' accessibilityRole='text'>Special thanks to Ian Andvaag for Depth Range formulas.</Text>
+
         </SafeAreaView>
     );
 }
@@ -87,13 +117,10 @@ const aboutStyle = StyleSheet.create({
       margin: 20,
       borderRadius: 10,
       height: 50,
-      width: '90%',
+      width: '50%',
       alignSelf: 'center',
       display: 'flex',
-      justifyContent: 'center',
-      flex: 1,
-      flexDirection: 'row',
-    
+      justifyContent: 'center',    
     }, 
     buttonText: {
       alignSelf: 'center',
@@ -104,3 +131,4 @@ const aboutStyle = StyleSheet.create({
 
 export default AboutScreen;
 
+//height: 50, backgroundColor: 'white', width: '90%', borderRadius: 10,

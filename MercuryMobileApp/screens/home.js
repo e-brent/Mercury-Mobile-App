@@ -69,8 +69,8 @@ const HomeScreen = ({navigation}) => {
           </Pressable>
 
           {/*Button to navigate to the About screen*/}
-          <Pressable onPress={() => navigation.navigate("AboutScreen")} style={homeStyle.button} accessible={true} accessibilityLabel="About" accessibilityHint="Navigates to the about screen" accessibilityRole="button">
-            <Text style={homeStyle.buttonText}>ABOUT</Text>
+          <Pressable onPress={() => navigation.navigate("AboutScreen")} style={homeStyle.buttonAbout} accessible={true} accessibilityLabel="About" accessibilityHint="Navigates to the about screen" accessibilityRole="button">
+            <Text style={homeStyle.buttonTextAbout}>ABOUT</Text>
           </Pressable>
 
           {/*Add new buttons here as new screens are created!*/}
@@ -92,10 +92,12 @@ const HomeScreen = ({navigation}) => {
     },
     // Main title
     textTitle: {
-        color: 'white',
-        marginTop: 10,
-        fontSize: 30,
-        textAlign: 'center',
+      color: 'white',
+      marginTop: 55,
+      margin: 5,
+      fontSize: 35,
+      textAlign: 'center',
+      fontWeight: 'bold',
       },
     // Subtitle 
     textSubtitle: {
@@ -114,7 +116,7 @@ const HomeScreen = ({navigation}) => {
       textAlign: 'left',
       alignSelf: 'flex-start',
     },
-    // View around the buttons -- buttons themselves don't have a lot of styling options, so I mostly styled the views as needed
+    // Styling the Pressable component, functions as a button but it has more styling options
     button: {
       backgroundColor: 'white',
       padding: 5,
@@ -127,12 +129,26 @@ const HomeScreen = ({navigation}) => {
       justifyContent: 'center',
       flex: 1,
       flexDirection: 'row',
-    
+    },
+    buttonAbout: {
+      height: 50,
+      width: '90%',
+      alignSelf: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      flex: 1,
+      flexDirection: 'row',
     }, 
     buttonText: {
       alignSelf: 'center',
       fontSize: 18,
     },
+    buttonTextAbout: {
+      alignSelf: 'center',
+      fontSize: 18,
+      color: '#007AFF',
+    },
+
   });
 
 
