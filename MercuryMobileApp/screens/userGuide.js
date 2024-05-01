@@ -17,6 +17,8 @@ const options ={
     },
 }
 
+var yourPicture = require('../assets/images/MercuryStereo UserGuide_html_67faff9346fa14a.jpg');
+
 /*NOTE: As this is a long document, the paragraphs and images have been numbered in comments below for ease of jumping to a specific paragraph to make updates.
         The numbers for the paragraphs reset with each heading in the table of contents. The image count is cumultive to keep it consistent with the variable names. */
 
@@ -149,8 +151,8 @@ const UserGuideContent = () => {
             <Text style={guideStyle.noteText} accessible={true} accessibilityLabel="Version 0.8" accessibilityRole="text">Version 0.8</Text>
 
             <Image
-                style={guideStyle.image}
-                source={require('../assets/images/MercuryStereoUserGuide_html_67faff9346fa14a.png')}
+                style={guideStyle.imageJPG}
+                source={yourPicture}
             />
 
     {/*Table of contents header */}
@@ -2493,6 +2495,13 @@ const guideStyle = StyleSheet.create({
       alignSelf: 'flex-start',
     },
     image: {
+        width: 300,
+        height: 250,
+        resizeMode: 'cover',
+        alignSelf: 'center',
+        margin: 10,
+    },
+    imageJPG: {
         width: 300,
         height: 250,
         resizeMode: 'cover',
