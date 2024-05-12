@@ -87,6 +87,7 @@ const HomeScreen = ({navigation}) => {
     // background of the page
     container: {
       flex: 1,
+      flexDirection: 'row',
       backgroundColor: 'black',
       justifyContent: 'tops',
     },

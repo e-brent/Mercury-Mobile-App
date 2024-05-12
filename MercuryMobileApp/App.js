@@ -5,6 +5,7 @@ import * as React from 'react';
 // navigation imports -- see the README for links to more information about these
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import 'react-native-reanimated';
 import { Header } from '@react-navigation/elements';
 
 // not using most of these but I'm scared to get rid of them
@@ -46,7 +47,7 @@ const App = () => {
           //headerMode: 'float',
           header: ({navigation}) => (
             <SafeAreaView style= {{flex: 1, flexDirection: 'row', alignSelf: 'center', justifyContent: 'center', backgroundColor: 'black', height: 0}}>     
-              <View style={{backgroundColor:'black', height: 50, width: '100%'}}>
+              <View style={{backgroundColor:'black', height: 55, width: '100%'}}>
                 <Pressable onPress={() => navigation.navigate("Home")}>
                   <HeaderLogo/>
                 </Pressable>
