@@ -686,7 +686,7 @@ const dofStyle = StyleSheet.create({
       fontSize: 35,
       textAlign: 'center',
       fontWeight: 'bold',
-    },
+      },
     // Subtitle text on page
     textSubtitle: {
       color: 'white',
