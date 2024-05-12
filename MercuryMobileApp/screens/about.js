@@ -81,10 +81,12 @@ const aboutStyle = StyleSheet.create({
     },
     // Main title
     textTitle: {
-        color: 'white',
-        marginTop: 10,
-        fontSize: 30,
-        textAlign: 'center',
+      color: 'white',
+      marginTop: 55,
+      margin: 5,
+      fontSize: 35,
+      textAlign: 'center',
+      fontWeight: 'bold',
       },
     // Subtitle 
     textSubtitle: {

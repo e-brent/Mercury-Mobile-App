@@ -245,7 +245,7 @@ const reciprocityStyle = StyleSheet.create({
       fontSize: 35,
       textAlign: 'center',
       fontWeight: 'bold',
-    },
+      },
     text: {
       color: 'white',
       margin: 8,
