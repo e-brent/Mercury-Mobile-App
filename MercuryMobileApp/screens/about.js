@@ -47,6 +47,7 @@ const OpenURLButton = ({url, children}) => {
 const AboutScreen = () => {
     return(
         <SafeAreaView style={aboutStyle.container}>
+            <View style={{height: 55}}></View>
             <Text style={aboutStyle.text} accessible={true} accessibilityLabel='App designed by Emmanuelle Brent' accessibilityRole='text'>App designed by Emmanuelle Brent</Text>
             <Text style={aboutStyle.text} accessible={true} accessibilityLabel='Copyright 2024 Mercury Works' accessibilityRole='text'>Copyright &copy; 2024 Mercury Works</Text>
             <View>

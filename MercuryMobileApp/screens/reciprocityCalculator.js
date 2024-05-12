@@ -64,7 +64,7 @@ const ReciprocityScreen = () => {
         reciprocityTime = seconds;
       }
       else if (film.localeCompare('Fuji Velvia, 64T') == 0){
-        reciprocityTime = -0.9718 + (seconds ** 1.1);
+        reciprocityTime = -0.9718 + ((1.088 * seconds) ** 1.1);
       }
       else if (film.localeCompare('Fuji Acros (I, II)') == 0){
         if (seconds > 120){
@@ -96,6 +96,10 @@ const ReciprocityScreen = () => {
       }
       else {
         reciprocityTime  = seconds ** 1.41;
+      }
+
+      if (reciprocityTime < seconds){
+        reciprocityTime = seconds;
       }
 
       // Round the reciprocity time to one decimal point

@@ -636,6 +636,15 @@ const UserGuideContent = () => {
         }
     }];
 
+    const recommendedShadeSize = [{
+        url: '',
+        width: 300,
+        height: 250,
+        props: {
+            source: require('../assets/images/recommendedShadeSize.png')
+        }
+    }];
+
     const hyperstereoMount = [{
         url: '',
         width: 300,
@@ -708,21 +717,21 @@ const UserGuideContent = () => {
         }
     }];
 
-    const electronicLensboardTable = [{
+    const electronicLensboardsTable = [{
         url: '',
         width: 300,
         height: 850,
         props: {
-            source: require('../assets/images/electronicLensboardTable.png')
+            source: require('../assets/images/electronicLensboardsTable.png')
         }
     }];
 
-    const manualLensboardTable = [{
+    const manualLensboardsTable = [{
         url: '',
         width: 300,
         height: 850,
         props: {
-            source: require('../assets/images/manualLensboardTable.png')
+            source: require('../assets/images/manualLensboardsTable.png')
         }
     }];
 
@@ -782,6 +791,7 @@ const UserGuideContent = () => {
     const [cameraIllustrationVisible, setCameraIllustrationVisible] = React.useState(false);
     const [ggMagnifierVisible, setGgMagnifierVisible] = React.useState(false);
     const [lensShadeSysVisible, setLensShadeSysVisible] = React.useState(false);
+    const [recommendedShadeSizeVisible, setRecommendedShadeSizeVisible] = React.useState(false);
     const [hyperstereoMountVisible, setHyperstereoMountVisible] = React.useState(false);
     const [screenViewer1Visible, setScreenViewer1Visible] = React.useState(false);
     const [screenViewer2Visible, setScreenViewer2Visible] = React.useState(false);
@@ -790,8 +800,8 @@ const UserGuideContent = () => {
     const [mountingTabsVisible, setMountingTabsVisible] = React.useState(false);
     const [mylarTapeVisible, setMylarTapeVisible] = React.useState(false);
     const [supportedShuttersTableVisible, setSupportedShuttersTableVisible] = React.useState(false);
-    const [electronicLensboardTableVisible, setElectronicLensboardTableVisible] = React.useState(false);
-    const [manualLensboardTableVisible, setManualLensboardTableVisible] = React.useState(false);
+    const [electronicLensboardsTableVisible, setElectronicLensboardsTableVisible] = React.useState(false);
+    const [manualLensboardsTableVisible, setManualLensboardsTableVisible] = React.useState(false);
     
 
 
@@ -6194,45 +6204,25 @@ const UserGuideContent = () => {
                 This table shows the maximum recommended Shade depth for different lens focal lengths. Note that you can always use a shorter shade if you want your camera to be more compact or you want even easier access to your lens filters/caps.
             </Text>
 
-        {/*Shade Size Table*/}
-            <DataTable style={guideStyle.table}>
-                <DataTable.Header style={guideStyle.tableHeader}>
-                    <DataTable.Title>Lens Focal Length</DataTable.Title>
-                    <DataTable.Title>Max Recommended Shade Size</DataTable.Title>
-                </DataTable.Header>
-                <DataTable.Row>
-                    <DataTable.Cell>47mm</DataTable.Cell>
-                    <DataTable.Cell>25</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                    <DataTable.Cell>55mm</DataTable.Cell>
-                    <DataTable.Cell>30</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                    <DataTable.Cell>60mm</DataTable.Cell>
-                    <DataTable.Cell>35</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                    <DataTable.Cell>65mm</DataTable.Cell>
-                    <DataTable.Cell>40</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                    <DataTable.Cell>75mm</DataTable.Cell>
-                    <DataTable.Cell>45</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                    <DataTable.Cell>80mm</DataTable.Cell>
-                    <DataTable.Cell>45</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                    <DataTable.Cell>90mm</DataTable.Cell>
-                    <DataTable.Cell>45</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                    <DataTable.Cell>100mm +</DataTable.Cell>
-                    <DataTable.Cell>50</DataTable.Cell>
-                </DataTable.Row>
-            </DataTable>
+        {/*Shade Size Table Image*/}
+            {/*Camera Strap Image*/}
+            <Pressable onPress={() => setRecommendedShadeSizeVisible(true)}>
+                <Image
+                    style={guideStyle.imageTableSmall}
+                    source={require('../assets/images/recommendedShadeSize.png')}
+                />
+            </Pressable>
+            <Modal 
+                visible={recommendedShadeSizeVisible} 
+                transparent={true}
+            >
+                <ImageViewer 
+                    imageUrls={recommendedShadeSize} 
+                    enableSwipeDown={true}
+                    onSwipeDown={() => setRecommendedShadeSizeVisible(false)}
+                    onClick={() => setRecommendedShadeSizeVisible(false)}
+                />
+            </Modal>
 
 
     {/*Shooting Hyperstereo and Close-Up Stereo*/}
@@ -8242,7 +8232,7 @@ const UserGuideContent = () => {
         {/*Supported Shutters Table Image*/}
             <Pressable onPress={() => setSupportedShuttersTableVisible(true)}>
                 <Image
-                    style={guideStyle.imageTable}
+                    style={guideStyle.imageTableSmall}
                     source={require('../assets/images/supportedShuttersTable.png')}
                 />
             </Pressable>
@@ -8270,22 +8260,22 @@ const UserGuideContent = () => {
                 </Text>
             </View>
 
-        {/*Electronic Lensboard Table Image*/}
-            <Pressable onPress={() => setElectronicLensboardTableVisible(true)}>
+        {/*Electronic Lensboards Table Image*/}
+            <Pressable onPress={() => setElectronicLensboardsTableVisible(true)}>
                 <Image
-                    style={guideStyle.imageTable}
-                    source={require('../assets/images/electronicLensboardTable.png')}
+                    style={guideStyle.imageTableSmall}
+                    source={require('../assets/images/electronicLensboardsTable.png')}
                 />
             </Pressable>
             <Modal 
-                visible={electronicLensboardTableVisible} 
+                visible={electronicLensboardsTableVisible} 
                 transparent={true}
             >
                 <ImageViewer 
-                    imageUrls={electronicLensboardTable} 
+                    imageUrls={electronicLensboardsTable} 
                     enableSwipeDown={true}
-                    onSwipeDown={() => setElectronicLensboardTableVisible(false)}
-                    onClick={() => setElectronicLensboardTableVisible(false)}
+                    onSwipeDown={() => setElectronicLensboardsTableVisible(false)}
+                    onClick={() => setElectronicLensboardsTableVisible(false)}
                 />
             </Modal>
 
@@ -8301,22 +8291,22 @@ const UserGuideContent = () => {
                 </Text>
             </View>
 
-            {/*Manual Lensboard Table Image*/}
-            <Pressable onPress={() => setManualLensboardTableVisible(true)}>
+            {/*Manual Lensboards Table Image*/}
+            <Pressable onPress={() => setManualLensboardsTableVisible(true)}>
                 <Image
-                    style={guideStyle.imageTable}
-                    source={require('../assets/images/manualLensboardTable.png')}
+                    style={guideStyle.imageTableSmall}
+                    source={require('../assets/images/manualLensboardsTable.png')}
                 />
             </Pressable>
             <Modal 
-                visible={manualLensboardTableVisible} 
+                visible={manualLensboardsTableVisible} 
                 transparent={true}
             >
                 <ImageViewer 
-                    imageUrls={manualLensboardTable} 
+                    imageUrls={manualLensboardsTable} 
                     enableSwipeDown={true}
-                    onSwipeDown={() => setManualLensboardTableVisible(false)}
-                    onClick={() => setManualLensboardTableVisible(false)}
+                    onSwipeDown={() => setManualLensboardsTableVisible(false)}
+                    onClick={() => setManualLensboardsTableVisible(false)}
                 />
             </Modal>
 
@@ -8720,6 +8710,13 @@ const guideStyle = StyleSheet.create({
     imageTable: {
         width: 300,
         height: 850,
+        resizeMode: 'contain',
+        alignSelf: 'center',
+        margin: 10,
+    },
+    imageTableSmall: {
+        width: 300,
+        height: 550,
         resizeMode: 'contain',
         alignSelf: 'center',
         margin: 10,
