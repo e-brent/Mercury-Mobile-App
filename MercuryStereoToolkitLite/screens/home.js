@@ -73,7 +73,7 @@ const HomeScreen = ({navigation}) => {
           </Pressable>
 
           {/*Button to navigate to the Pinhole tab on the Reciprocity Calculator screen*/}
-          <Pressable onPress={() => navigation.navigate("ReciprocityScreen", {tab: 0})} style={homeStyle.button} accessible={true} accessibilityLabel="Pinhole" accessibilityHint="Navigates to the pinhole tab of the reciprocity calculator screen" accessibilityRole="button">
+          <Pressable onPress={() => navigation.navigate("PinholeScreen", {tab: 0})} style={homeStyle.button} accessible={true} accessibilityLabel="Pinhole" accessibilityHint="Navigates to the pinhole calculator screen" accessibilityRole="button">
             <Image
               style={{ width: 25, height: 25, alignSelf: 'center', marginRight: 8}}
               source={require('../assets/images/timer.png')}
@@ -83,7 +83,7 @@ const HomeScreen = ({navigation}) => {
     
 
           {/*Button to navigate to the Reciprocity Only tab on the Reciprocity Calculator screen*/}
-          <Pressable onPress={() => navigation.navigate("ReciprocityScreen", {tab: 1})} style={homeStyle.button} accessible={true} accessibilityLabel="Reciprocity (long exposures)" accessibilityHint="Navigates to the reciprocity only tab of the reciprocity calculator screen" accessibilityRole="button">
+          <Pressable onPress={() => navigation.navigate("ReciprocityScreen", {tab: 1})} style={homeStyle.button} accessible={true} accessibilityLabel="Reciprocity (long exposures)" accessibilityHint="Navigates to the reciprocity only calculator screen" accessibilityRole="button">
             <Image
               style={{ width: 25, height: 25, alignSelf: 'center', marginRight: 8}}
               source={require('../assets/images/timer.png')}
@@ -93,7 +93,7 @@ const HomeScreen = ({navigation}) => {
 
 
           {/*Button to navigate to the Stereo System User Guide screen*/}
-          <OpenURLLink url={userGuideURL}>MERCURY STEREO USER GUIDE (BROWSER LINK)</OpenURLLink>
+          <OpenURLLink url={userGuideURL}>MERCURY STEREO USER GUIDE (LINK)</OpenURLLink>
 
 
           {/*Button to navigate to the About screen*/}

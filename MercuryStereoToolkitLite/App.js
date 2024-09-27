@@ -18,6 +18,7 @@ import HomeScreen from './screens/home';
 import BaseScreen from './screens/baseCalculator';
 import CloseFocusScreen from './screens/closeFocusCalculator';
 import AboutScreen from './screens/about';
+import PinholeScreen from './screens/pinhole';
 
 
 const Stack = createNativeStackNavigator();
@@ -63,6 +64,11 @@ const App = () => {
           name="DOFScreen"  
           component={DOFScreen}
         /> 
+
+        <Stack.Screen
+          name="PinholeScreen"
+          component={PinholeScreen}
+        />
 
         <Stack.Screen
           name="ReciprocityScreen"

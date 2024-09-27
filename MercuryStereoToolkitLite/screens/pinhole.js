@@ -22,6 +22,11 @@ const filmStock = [
     {key: '10', value: 'Ilford Delta 400'}
 ];
 
+// Array/dictionary of key value pairs for different pinhole sizes, used in dropdown menu
+const pinholeSize = [
+  {key: '1', value: '0.3mm diameter / 50mm FL'},
+  {key: '2', value: '0.35mm diameter / 70mm FL'}
+];
 
 // Global variable which stores the calculated reciprocity time, based on the selected film stock
 var reciprocityTime = 0;
@@ -29,12 +34,13 @@ var reciprocityTime = 0;
 var timerTime = 0;
 
 // Screen component
-const ReciprocityScreen = () => {
+const PinholeScreen = () => {
 
   // Reference to use to automatically scroll down to see results
     const endRef = React.useRef();
 
   // State variables for saving data and updating the screen
+    const [selectedPinholeSize, setSelectedPinholeSize] = React.useState(''); // Selected pinhole size
     const [selectedFilm, setSelectedFilm] = React.useState(''); // Selected film stock
     const [time, onChangeTime] = React.useState('');            // The time entered by users in the textbox
     const [result, showResult] = React.useState(false);         // Boolean value for whether or not to display results
@@ -44,15 +50,9 @@ const ReciprocityScreen = () => {
     const [timerEnd, setTimerEnd] = React.useState(false);      // Boolean variable to track whether the countdown timer has completed counting down (determines when sound plays and screen color turns red)
     const [sound, setSound] = React.useState();                 // Variable which the sound effect is assigned to
     
-    // Custom function to update which tab is being displayed and clear the results whenever the tab is switched
-    const handleSingleIndexSelect = () => {
-      showResult(false);
-      setSelectedPinholeSize('');
-    };
-    
 
     // Given the film stock and an input time, calculates the reciprocity time
-    const calculateReciprocity = (film, seconds) => {
+    const calculatePinhole = (pinhole, film, seconds) => {
 
       // Sets state variables to show/update results, stop the timer from playing, and change background color back to default
       showResult(true);
@@ -62,6 +62,15 @@ const ReciprocityScreen = () => {
 
       // take user input (string number) and make it a number to be used for calculations
       seconds = parseFloat(seconds);
+
+      // additional calculation that needs to be done if on the Pinhole tab, otherwise just use the entered time
+      if (pinhole.localeCompare('0.3mm diameter / 50mm FL') == 0){
+        seconds = (seconds * 28224)/2025;
+      }
+      else if (pinhole.localeCompare('0.35mm diameter / 70mm FL') == 0){
+        seconds = (seconds * 40000)/2025;
+      }
+      //NEED TO COME UP WITH SOMETHING HERE IF THEY DON'T SELECT A PINHOLE FOR SOME REASON ... ACTUALLY PROBABLY NEED TO HANDLE THESE CASES ALL THROUGHOUT THE APP WHOOPS
 
       // based on the selected film stock and time length, apply the correct formula to calculate the reciprocity time
       if (film.localeCompare('Color negative') == 0){
@@ -146,13 +155,27 @@ const ReciprocityScreen = () => {
     return (
       <SafeAreaView style={[(timerEnd == false) ? reciprocityStyle.containerRegular : reciprocityStyle.containerTimerEnd]}>
         <ScrollView ref={endRef} onContentSizeChange={() => endRef.current.scrollToEnd({ animated: true })}>
-          {/*Page title*/}
-            <Text style={reciprocityStyle.textTitle} accessible={true} accessibilityLabel="Reciprocity" accessibilityRole="text">Reciprocity</Text>
+            {/*Title*/}
+            <Text style={reciprocityStyle.textTitle} accessible={true} accessibilityLabel="Pinhole" accessibilityRole="text">Pinhole</Text>
 
           {/*Instructions*/}
-          <Text style={reciprocityStyle.text} accessible={true} accessibilityLabel="When shooting long exposures (over 1 second), use this calculator to convert your metered exposure to the actual exposure time required by your film stock." accessibilityRole="text">
-            When shooting long exposures (over 1 second), use this calculator to convert your metered exposure to the actual exposure time required by your film stock.
-          </Text>
+            <Text style={reciprocityStyle.text} accessible={true} accessibilityLabel="Meter for f/22.  Select your pinhole size, film stock, and the exposure time your meter calculates, and we will calculate your actual exposure time (taking into account your pinhole and film reciprocity)." accessibilityRole="text">
+                Meter for f/22. Select your pinhole size, film stock, and the exposure time your meter calculates, and we will calculate your actual exposure time (taking into account your pinhole and film reciprocity).
+            </Text>
+
+          {/*Dropdown menu for selecting pinhole size to use in calculation*/}
+            <Text style={reciprocityStyle.text} accessible={true} accessibilityLabel="Select pinhole size" accessibilityRole="text">Select pinhole size:</Text>
+            <SelectList
+              setSelected={(val) => setSelectedPinholeSize(val)} // updates state variable
+              data={pinholeSize}
+              save="value"
+              boxStyles={{marginBottom:12}}
+              dropdownTextStyles={{color:'white'}}
+              inputStyles={{color:'white'}}
+              onSelect = {() => setTimerEnd(false)}
+              accessible={true}
+              accessibilityHint="A searchable drop down menu to select a pinhole size option"
+            />
 
           {/*Dropdown menu for selecting film stock to use in calculation*/}
             <Text style={reciprocityStyle.text} accessible={true} accessibilityLabel="Select film stock" accessibilityRole="text">Select film stock:</Text>
@@ -182,7 +205,7 @@ const ReciprocityScreen = () => {
               keyboardType='decimal-pad'
               enterKeyHint='done'
               returnKeyType='done'
-              onSubmitEditing={() => calculateReciprocity(selectedFilm, time)}
+              onSubmitEditing={() => calculatePinhole(selectedPinholeSize, selectedFilm, time)}
               accessible={true}
               accessibilityLabel="Text entry box to enter a time in seconds"
             /> 
@@ -309,4 +332,4 @@ const reciprocityStyle = StyleSheet.create({
     },
   });
 
-  export default ReciprocityScreen;
+  export default PinholeScreen;
