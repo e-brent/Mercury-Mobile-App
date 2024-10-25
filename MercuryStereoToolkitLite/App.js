@@ -19,6 +19,7 @@ import BaseScreen from './screens/baseCalculator';
 import CloseFocusScreen from './screens/closeFocusCalculator';
 import AboutScreen from './screens/about';
 import PinholeScreen from './screens/pinhole';
+import CombinedReciprocityScreen from './screens/reciprocityCombined';
 
 
 const Stack = createNativeStackNavigator();
@@ -73,6 +74,11 @@ const App = () => {
         <Stack.Screen
           name="ReciprocityScreen"
           component={ReciprocityScreen}
+        />
+
+        <Stack.Screen
+          name="CombinedReciprocityScreen"
+          component={CombinedReciprocityScreen}
         />
 
         <Stack.Screen

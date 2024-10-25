@@ -5,8 +5,8 @@ import { StyleSheet, View , Text, SafeAreaView, TextInput, Button, ScrollView } 
 
 // Special imports for this file, see README for links with more information about them
 import { SelectList } from 'react-native-dropdown-select-list'; 
-import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
-import { Audio } from 'expo-av';
+//import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
+//import { Audio } from 'expo-av';
 
 // Array/dictionary of key value pairs of different film stock for use in the dropdown menu
 const filmStock = [
@@ -26,7 +26,7 @@ const filmStock = [
 // Global variable which stores the calculated reciprocity time, based on the selected film stock
 var reciprocityTime = 0;
 // Separate global variable which is used to pass the calculated reicprocity time to the timer... honestly I don't remember by just using reciprocityTime wasn't working, but it wasn't for some reason so idk
-var timerTime = 0;
+//var timerTime = 0;
 
 // Screen component
 const ReciprocityScreen = () => {
@@ -39,16 +39,10 @@ const ReciprocityScreen = () => {
     const [time, onChangeTime] = React.useState('');            // The time entered by users in the textbox
     const [result, showResult] = React.useState(false);         // Boolean value for whether or not to display results
     const [updateResult, setUpdateResult] = React.useState(0);  // Value to increment to ensure that the screen is displayed with the most up-to-date data
-    const [key, setKey] = React.useState(0);                    // Variable which allows the countdown timer to be restarted at any point
-    const [playTimer, setPlayTimer] = React.useState(false);    // Boolean value which controls whether the countdown timer is playing or not
+    //const [key, setKey] = React.useState(0);                    // Variable which allows the countdown timer to be restarted at any point
+    //const [playTimer, setPlayTimer] = React.useState(false);    // Boolean value which controls whether the countdown timer is playing or not
     const [timerEnd, setTimerEnd] = React.useState(false);      // Boolean variable to track whether the countdown timer has completed counting down (determines when sound plays and screen color turns red)
-    const [sound, setSound] = React.useState();                 // Variable which the sound effect is assigned to
-    
-    // Custom function to update which tab is being displayed and clear the results whenever the tab is switched
-    const handleSingleIndexSelect = () => {
-      showResult(false);
-      setSelectedPinholeSize('');
-    };
+    //const [sound, setSound] = React.useState();                 // Variable which the sound effect is assigned to
     
 
     // Given the film stock and an input time, calculates the reciprocity time
@@ -57,8 +51,8 @@ const ReciprocityScreen = () => {
       // Sets state variables to show/update results, stop the timer from playing, and change background color back to default
       showResult(true);
       setUpdateResult(updateResult + 1);
-      setPlayTimer(false);
-      setTimerEnd(false);
+      //setPlayTimer(false);
+      //setTimerEnd(false);
 
       // take user input (string number) and make it a number to be used for calculations
       seconds = parseFloat(seconds);
@@ -112,9 +106,10 @@ const ReciprocityScreen = () => {
       // Round the reciprocity time to one decimal point
       reciprocityTime = reciprocityTime.toFixed(1);
       // Assign the reciprocity time to the timerTime variable for use by the countdown timer
-      timerTime = parseFloat(reciprocityTime);
+      //timerTime = parseFloat(reciprocityTime);
     }
 
+    /*
     // Function to load and play the sound effect from the audio directory under assets
     async function playSound() {
       console.log('Loading Sound');
@@ -141,6 +136,7 @@ const ReciprocityScreen = () => {
       playSound();
       setTimerEnd(true);
     }
+    */
 
 
     return (
@@ -192,7 +188,8 @@ const ReciprocityScreen = () => {
           {/*Results text*/}
             {result && (<Text style={reciprocityStyle.timerText} accessible={true} accessibilityLabel="Calculated reciprocity time" accessibilityRole="text">Reciprocity time:  {reciprocityTime} seconds</Text>)}
 
-          {/*Countdown timer*/}
+      {/*
+          {/*Countdown timer
             <View style = {reciprocityStyle.timer} accessible={true} accessibilityLabel="Countdown timer. Will sound when it reaches 0 if ringer is on">
               { result && (<CountdownCircleTimer
                 key = {key}
@@ -207,7 +204,7 @@ const ReciprocityScreen = () => {
 
             <View style = {reciprocityStyle.timer}>
 
-            {/*Button to start/re-start the timer*/}
+            {/*Button to start/re-start the timer
               { result && (<View style={reciprocityStyle.button} accessible={true} accessibilityLabel="Start timer" accessibilityHint="Click here to start the countdown timer" accessibilityRole="button">
                 { result && (<Button
                 title="Start timer"
@@ -220,10 +217,11 @@ const ReciprocityScreen = () => {
                 />)}
                 </View>)}
 
-            {/*Notes for the bottom of the page to clarify some of the features to users */}
+            {/*Notes for the bottom of the page to clarify some of the features to users
             {result && (<Text style={reciprocityStyle.noteText} accessible={true} accessibilityLabel="The timer bar will automatically reset when the timer is started." accessibilityRole="text">The timer bar will automatically reset when the timer is started.</Text>)}  
             {result && (<Text style={reciprocityStyle.noteText} accessible={true} accessibilityLabel="Turn ringer/media volume on for sound when timer ends" accessibilityRole="text">Turn ringer/media volume on for sound when timer ends.</Text>)}
             </View> 
+      */}
 
           </ScrollView>           
       </SafeAreaView>

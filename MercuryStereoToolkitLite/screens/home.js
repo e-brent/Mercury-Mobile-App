@@ -5,7 +5,7 @@ import { StyleSheet, Text, View, Button, SafeAreaView, Image, Pressable, ScrollV
 
 
 //link to external Mercury Stereo User Guide
-const userGuideURL = 'https://www.mercurystereo.com/mobileguide';
+const userGuideURL = 'https://www.mercurystereo.com/mobile/mobileguide.html';
 
 // component for opening external links
 const OpenURLLink = ({url, children}) => {
@@ -73,7 +73,7 @@ const HomeScreen = ({navigation}) => {
           </Pressable>
 
           {/*Button to navigate to the Pinhole tab on the Reciprocity Calculator screen*/}
-          <Pressable onPress={() => navigation.navigate("PinholeScreen", {tab: 0})} style={homeStyle.button} accessible={true} accessibilityLabel="Pinhole" accessibilityHint="Navigates to the pinhole calculator screen" accessibilityRole="button">
+          <Pressable onPress={() => navigation.navigate("CombinedReciprocityScreen", {tab: 0})} style={homeStyle.button} accessible={true} accessibilityLabel="Pinhole" accessibilityHint="Navigates to the pinhole calculator screen" accessibilityRole="button">
             <Image
               style={{ width: 25, height: 25, alignSelf: 'center', marginRight: 8}}
               source={require('../assets/images/timer.png')}
@@ -83,6 +83,26 @@ const HomeScreen = ({navigation}) => {
     
 
           {/*Button to navigate to the Reciprocity Only tab on the Reciprocity Calculator screen*/}
+          <Pressable onPress={() => navigation.navigate("CombinedReciprocityScreen", {tab: 1})} style={homeStyle.button} accessible={true} accessibilityLabel="Reciprocity (long exposures)" accessibilityHint="Navigates to the reciprocity only calculator screen" accessibilityRole="button">
+            <Image
+              style={{ width: 25, height: 25, alignSelf: 'center', marginRight: 8}}
+              source={require('../assets/images/timer.png')}
+            />
+            <Text style={homeStyle.buttonText}>RECIPROCITY (LONG EXPOSURES)</Text>
+          </Pressable>
+
+          {/* The following two buttons are used to navigate to the separate Reciprocity and Pinhole calculator files*/}
+          {/*Button to navigate to the Pinhole Calculator screen*
+          <Pressable onPress={() => navigation.navigate("PinholeScreen", {tab: 0})} style={homeStyle.button} accessible={true} accessibilityLabel="Pinhole" accessibilityHint="Navigates to the pinhole calculator screen" accessibilityRole="button">
+            <Image
+              style={{ width: 25, height: 25, alignSelf: 'center', marginRight: 8}}
+              source={require('../assets/images/timer.png')}
+            />
+            <Text style={homeStyle.buttonText}>PINHOLE</Text>
+          </Pressable>
+    
+
+          {/*Button to navigate to the Reciprocity Calculator screen
           <Pressable onPress={() => navigation.navigate("ReciprocityScreen", {tab: 1})} style={homeStyle.button} accessible={true} accessibilityLabel="Reciprocity (long exposures)" accessibilityHint="Navigates to the reciprocity only calculator screen" accessibilityRole="button">
             <Image
               style={{ width: 25, height: 25, alignSelf: 'center', marginRight: 8}}
@@ -90,6 +110,7 @@ const HomeScreen = ({navigation}) => {
             />
             <Text style={homeStyle.buttonText}>RECIPROCITY (LONG EXPOSURES)</Text>
           </Pressable>
+          */}
 
 
           {/*Button to navigate to the Stereo System User Guide screen*/}
