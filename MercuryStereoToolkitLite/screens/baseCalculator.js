@@ -1,7 +1,7 @@
 // See README.md for information about this file and how to make updates
 
 import * as React from 'react';
-import { StyleSheet, View , Text, SafeAreaView, TextInput, Button, ScrollView } from 'react-native';
+import { StyleSheet, View , Text, SafeAreaView, TextInput, Button, ScrollView, Platform } from 'react-native';
 
 // Special imports for this file, see README for links with more information about them
 import { SelectList } from 'react-native-dropdown-select-list'; 
@@ -307,7 +307,16 @@ const BaseScreen = () => {
     return (
         <SafeAreaView style={baseStyle.container}>
             {/*Use KeyboardAware because there are some text inputs where the keyboard would otherwise cover the input */}
-            <KeyboardAwareScrollView ref={endRef} onContentSizeChange={() => {if(showResults) {endRef.current.scrollToEnd({ animated: true })}}}>   
+            <KeyboardAwareScrollView 
+                ref={endRef} 
+                onContentSizeChange={() => {if(showResults) {endRef.current.scrollToEnd({ animated: true })}}} 
+                enableOnAndroid={true} 
+                enableAutomaticScroll={(Platform.OS === 'ios')}
+                extraScrollHeight={100} // (when scroll)to have extra height between keyboard and text input 
+                extraHeight={80} // make some height so the keyboard wont cover other component
+                //contentContainerStyle={{flexGrow: 1}} // make the scrollView full screen 
+                contentContainerStyle={{paddingBottom: 60}}
+            >   
 
                 {/*Page title and instructions */}
                 <Text style={baseStyle.textTitle} accessible={true} accessibilityLabel="Base distance (hypo/hyper)" accessibilityRole="text">Base Distance (Hypo/Hyper)</Text>
@@ -403,7 +412,7 @@ const BaseScreen = () => {
 
             </KeyboardAwareScrollView>
         </SafeAreaView>
-    )
+    );
 }
 
 // Stylesheet for the base calculator screen
