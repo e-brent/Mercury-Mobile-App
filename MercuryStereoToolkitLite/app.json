@@ -20,7 +20,11 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "softwareKeyboardLayoutMode": "pan",
       "package": "com.mercurycamera.MercuryStereoToolkitLite"
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#000000"
     },
     "web": {
       "bundler": "metro",
